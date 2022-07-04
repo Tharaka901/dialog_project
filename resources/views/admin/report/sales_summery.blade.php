@@ -48,18 +48,10 @@
                             <div class="btn-group">
                                <button class="btn btn-exp btn-sm" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Table Data</button>
                                <ul class="dropdown-menu exp-drop" role="menu">
-                                <li>
-                                    <a href="#" onclick="$('#dataTableExample1').tableExport({type:'doc',escape:'false'});">
-                                    <img src="assets/dist/img/word.png" width="24" alt="logo"> Word</a>
-                                 </li>
-                                 <li>
-                                    <a href="#" onclick="$('#dataTableExample1').tableExport({type:'powerpoint',escape:'false'});">
-                                    <img src="assets/dist/img/ppt.png" width="24" alt="logo"> PowerPoint</a>
-                                 </li>
                                 <li class="dropdown-divider"></li>
                                  <li>
-                                    <a href="#" onclick="$('#dataTableExample1').tableExport({type:'png',escape:'false'});">
-                                    <img src="assets/dist/img/png.png" width="24" alt="logo"> Excel</a>
+                                    <a href="#" onclick="$('#dataTableExample1').tableExport({type:'xlsx',escape:'false'});">
+                                    <img src="assets/dist/img/excel.png" width="24" alt="logo"> Excel</a>
                                  </li>
                                  <li>
                                     <a href="#" onclick="$('#dataTableExample1').tableExport({type:'pdf',pdfFontSize:'7',escape:'false'});">
