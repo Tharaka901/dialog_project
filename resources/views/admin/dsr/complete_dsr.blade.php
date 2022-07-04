@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                         <!-- Plugin content:pdf,png,word,xl -->
+                         <!-- Plugin content:pdf,excel -->
                             <div class="btn-group">
                                <button class="btn btn-exp btn-sm" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Table Data</button>
                                <ul class="dropdown-menu exp-drop" role="menu">
