@@ -23,7 +23,7 @@
                            </div>
                        </div>
                        <div class="card-body">
-                            <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
+                            <!-- Plugin content:pdf,excel -->
                                <div class="btn-group d-flex" role="group">
                                   <div class="buttonexport">
                                      <a href="#" class="btn btn-add" data-toggle="modal" data-target="#adduser"><i class="fa fa-plus"></i> Add Items</a>
@@ -43,7 +43,7 @@
                                      </li>
                                   </ul>
                                </div>
-                               <!-- ./Plugin content:powerpoint,txt,pdf,png,word,xl -->
+                               <!-- ./Plugin content:pdf,excel -->
                                <div class="table-responsive">
                                   <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
                                      <thead class="back_table_color">
