@@ -6,6 +6,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\DsrController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,15 +19,20 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.index');
-});
+Route::get('/',[AdminController::class,'main'])->name('/');
+Route::post('login',[AdminController::class,'Login'])->name('login');
+Route::get('logout',[AdminController::class,'Logout'])->name('logout');
 
 //Dashboard
-Route::get('/dashboard',[DashboardController::class,'Dashboard']);
+Route::get('/dashboard',[DashboardController::class,'Dashboard'])->name('dashboard');
 
 //User
 Route::get('/user',[UserController::class,'user']);
+Route::post('user_registration',[UserController::class, 'UserRegistration'])->name('user_registration');
+Route::post('get_user',[UserController::class, 'GetUser'])->name('get_user');
+Route::post('user_update',[UserController::class, 'UserUpdate'])->name('user_update');
+Route::post('delete_user',[UserController::class, 'DeleteUser'])->name('delete_user');
+
 
 //Item
 Route::get('/item',[ItemController::class,'item']);
