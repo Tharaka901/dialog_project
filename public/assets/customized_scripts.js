@@ -63,7 +63,6 @@ function editUser(user_id){
   success: function(data) {
 
     $("#edit_user_id").val(data.data[0].id);
-    $("#delete_user_id").val(data.data[0].id);
     $("#edit_user_name").val(data.data[0].name);
     $("#edit_user_email").val(data.data[0].email);
     $("#edit_user_nic").val(data.data[0].nic);
@@ -85,3 +84,46 @@ function deleteUser(user_id){
   $("#delete_user_id").val(user_id);
   $("#deleteUserModal").modal('show');
 }
+
+
+// edit Item //
+function editItem(item_id){
+ $.ajax({
+  type: 'post',
+  url: "/get_item",
+  dataType: 'json',
+  data: {
+    "id": item_id,
+  },
+  success: function(data) {
+
+    $("#edit_item_id").val(data.data[0].id);
+    $("#edit_item_name").val(data.data[0].name);
+    $("#edit_item_pprice").val(data.data[0].purchasing_price);
+    $("#edit_item_sprice").val(data.data[0].selling_price);
+    $("#edit_item_qty").val(data.data[0].qty);
+
+    $("#updateItemModal").modal('show');
+  },
+  error: function(error) {
+    alert("error occured " + JSON.stringify(error));
+  }
+});
+}
+
+
+// delete item //
+function deleteItem(item_id){
+  $("#delete_item_id").val(item_id);
+  $("#deleteItemModal").modal('show');
+}
+
+
+
+$('.btnNext').click(function() {
+  $('.nav-tabs .active').parent().next('li').find('a').trigger('click');
+});
+
+$('.btnPrevious').click(function() {
+  $('.nav-tabs .active').parent().prev('li').find('a').trigger('click');
+});
