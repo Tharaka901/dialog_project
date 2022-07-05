@@ -36,6 +36,10 @@ Route::post('delete_user',[UserController::class, 'DeleteUser'])->name('delete_u
 
 //Item
 Route::get('/item',[ItemController::class,'item']);
+Route::post('/item_registration',[ItemController::class,'ItemRegistration'])->name('item_registration');
+Route::post('/get_item',[ItemController::class,'GetItem'])->name('get_item');
+Route::post('/item_update',[ItemController::class,'ItemUpdate'])->name('item_update');
+Route::post('/delete_item',[ItemController::class,'DeleteItem'])->name('delete_item');
 
 //DSR
 Route::get('/pending_dsr',[DsrController::class,'PendingDsr']);
