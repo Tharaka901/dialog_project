@@ -30,6 +30,15 @@
              <ul class="treeview-menu">
                 <li><a href="{{ asset('/item') }}">Item List</a></li>
              </ul>
+             <ul class="treeview-menu">
+                <li><a href="{{ asset('/send_inventry') }}">Send Inventry</a></li>
+             </ul>
+             <ul class="treeview-menu">
+                 <li><a href="{{ asset('/return_inventry') }}">Return Inventry</a></li>
+             </ul>
+             <ul class="treeview-menu">
+                 <li><a href="{{ asset('/view_balance') }}">View Balance</a></li>
+             </ul>
           </li>
           <li class="treeview">
             <a href="#">
