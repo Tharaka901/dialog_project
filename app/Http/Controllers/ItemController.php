@@ -18,7 +18,7 @@ class ItemController extends Controller
         ->orderBy('id', 'desc')
         ->paginate(5);
         return view('admin.item.item',['itemData'=>$data]);
-    } 
+    }
 
     public function ItemRegistration(Request $request){
         $data = Item::all()->where('status', '=',"1")->where('name', '=',$request->get('item_name'));
@@ -73,6 +73,18 @@ public function DeleteItem(Request $request){
   Alert::success('Deleted!!', 'Item Deleted Successfully');
   return redirect()->back();
 
+}
+
+public function SendInventry(){
+    return view('admin.item.send_inventry');
+}
+
+public function ReturnInventry(){
+    return view('admin.item.return_inventry');
+}
+
+public function ViewBalance(){
+    return view('admin.item.view_balance');
 }
 
 

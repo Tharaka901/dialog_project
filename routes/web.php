@@ -41,6 +41,12 @@ Route::post('/get_item',[ItemController::class,'GetItem'])->name('get_item');
 Route::post('/item_update',[ItemController::class,'ItemUpdate'])->name('item_update');
 Route::post('/delete_item',[ItemController::class,'DeleteItem'])->name('delete_item');
 
+Route::get('/send_inventry',[ItemController::class,'SendInventry']);
+
+Route::get('/return_inventry',[ItemController::class,'ReturnInventry']);
+
+Route::get('/view_balance',[ItemController::class,'ViewBalance']);
+
 //DSR
 Route::get('/pending_dsr',[DsrController::class,'PendingDsr']);
 
