@@ -60,42 +60,35 @@
                                <thead class="back_table_color">
                                   <tr class="info">
                                      <th>Item Name</th>
-                                     <th style="width: 100px">Qty</th>
-                                     <th>Amount</th>
+                                     <th style="width: 150px">Qty</th>
                                   </tr>
                                </thead>
                                <tbody>
                                   <tr>
                                      <td>Internet Card 49</td>
                                      <td>1000</td>
-                                     <td>49,000.00</td>
                                   </tr>
                                   <tr>
                                     <td>Internet Card 99</td>
                                     <td>500</td>
-                                    <td>49,500.00</td>
                                  </tr>
                                  <tr>
                                     <td>KIT 50</td>
                                     <td>1500</td>
-                                    <td>75,000.00</td>
                                  </tr>
                                  <tr>
                                     <td>KIT 100</td>
                                     <td>1000</td>
-                                    <td>100,000.00</td>
                                  </tr>
                                  <tr>
                                     <td>Dialog TV</td>
                                     <td>10</td>
-                                    <td>89,000.00</td>
                                  </tr>
                                </tbody>
                                <tfoot class="back_table_color">
                                 <tr>
                                     <th>Total</th>
                                     <th>4010</th>
-                                    <th>362,500.00</th>
                                 </tr>
                              </tfoot>
                             </table>
