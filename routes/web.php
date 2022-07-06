@@ -43,6 +43,9 @@ Route::post('/delete_item',[ItemController::class,'DeleteItem'])->name('delete_i
 
 //DSR
 Route::get('/pending_dsr',[DsrController::class,'PendingDsr']);
+Route::post('dsr_save',[DsrController::class,'DsrSave'])->name('dsr_save');
+Route::post('get_dsr',[DsrController::class,'GetDsr'])->name('get_dsr');
+Route::post('approve_dsr',[DsrController::class,'ApproveDsr'])->name('approve_dsr');
 
 Route::get('/complete_dsr',[DsrController::class,'CompleteDsr']);
 
