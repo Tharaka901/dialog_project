@@ -51,50 +51,53 @@
      <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
         <thead class="back_table_color">
            <tr class="info">
-              <th>Date</th>
-              <th>Name</th>
-              <th>Sales</th>
-              <th>Inhand</th>
-              <th>Banking</th>
-              <th>Direct Banking</th>
-              <th>Credit</th>
-              <th>Retailer Return</th>
-              <th>Credit Collection</th>
-              <th>Approve</th>
-           </tr>
-        </thead>
-        <tbody>
-           <tr>
-              <td>28/06/2022</td>
-              <td>Chathuranga</td>
-              <td>Rs.450,000.00</td>
-              <td>Rs.150,000.00</td>
-              <td>Rs.300,000.00</td>
-              <td>Rs. 50,000.00</td>
-              <td>Rs.100,000.00</td>
-              <td> 00</td>
-              <td>Rs.150,000.00</td>
-              <td>
-                 <button type="button" class="btn btn-add btn-sm text-center" data-toggle="modal" data-target="#update"><i class="fa fa-pencil"></i></button>
-              </td>
-           </tr>
-           <tr>
-              <td>28/06/2022</td>
-              <td>Viduranga</td>
-              <td>Rs.650,000.00</td>
-              <td>Rs. 50,000.00</td>
-              <td>Rs.400,000.00</td>
-              <td>Rs. 50,000.00</td>
-              <td>Rs.100,000.00</td>
-              <td> 00</td>
-              <td>Rs.150,000.00</td>
-              <td>
-                 <button type="button" class="btn btn-add btn-sm text-center" data-toggle="modal" data-target="#update"><i class="fa fa-pencil"></i></button>
-              </td>
-           </tr>
-        </tbody>
-     </table>
+            <th>#</th>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Sales</th>
+            <th>Inhand</th>
+            <th>Banking</th>
+            <th>Direct Banking</th>
+            <th>Credit</th>
+            <th>Retailer Return</th>
+            <th>Credit Collection</th>
+            <th>Approve</th>
+         </tr>
+      </thead>
+      <tbody>
+
+         @if($dsrData)
+         <?php $count = 1; ?>
+         @foreach($dsrData as $dd)
+
+         <tr>
+            <td><?php echo $count ?></td>
+            <td>{{ $dd->created_at }}</td>
+            <td>{{ $dd->name }}</td>
+            <td>Rs. <?php echo number_format($dd->salesum) ?></td>
+            <td>Rs. <?php echo number_format($dd->in_hand) ?></td>
+            <td>Rs. <?php echo number_format($dd->banksum) ?></td>
+            <td>Rs. <?php echo number_format($dd->dbsum) ?></td>
+            <td>Rs. <?php echo number_format($dd->csum) ?></td>
+            <td>Rs. <?php echo number_format($dd->resum) ?></td>
+            <td>Rs. <?php echo number_format($dd->ccsum) ?></td>
+            <td class="text-center">
+               <button type="button" class="btn btn-add btn-sm" onclick="viewDsr({{$dd->id}});"><i class="fa fa-pencil"></i></button>
+            </td>
+         </tr>
+         <?php $count++ ?>
+
+         @endforeach
+         @endif
+
+      </tbody>
+   </table>
+
+   <div class="d-flex justify-content-center">
+     <div>{!! $dsrData->links() !!}</div>
   </div>
+  
+</div>
 </div>
 </div>
 </div>
@@ -102,8 +105,8 @@
 
 
 <!-- Modal1 -->
-<div class="modal fade" id="update" tabindex="-1" role="dialog">
-   <div class="modal-lg modal-dialog">
+<div class="modal fade" id="dsrModal" tabindex="-1" role="dialog">
+   <div class="modal-xl modal-dialog">
      <div class="modal-content">
         <div class="modal-header modal-header-primary">
            <h3><i class="fa fa-plus m-r-5"></i> Approve Form</h3>
@@ -113,64 +116,308 @@
            <div class="row">
               <div class="col-md-12">
 
-               <ul class="nav nav-tabs" id="myTab" role="tablist">
-                 <li class="nav-item">
-                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#credit" role="tab" aria-controls="home" aria-selected="true">Credit</a>
-               </li>
-               <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#credit_collection" role="tab" aria-controls="profile" aria-selected="false">Credit Collection</a>
-             </li>
-             <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#ret_return" role="tab" aria-controls="contact" aria-selected="false">Retailer Return</a>
-             </li>
-             <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#banking" role="tab" aria-controls="contact" aria-selected="false">Banking</a>
-             </li>
-             <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#direct_banking" role="tab" aria-controls="contact" aria-selected="false">Direct Banking</a>
-             </li>
-          </ul>
+               <form class="mt-3" method="post" id="dsrSave">
 
-          <div class="tab-content" id="myTabContent">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                     <a class="nav-link active" id="contact-tab" data-toggle="tab" href="#sales" role="tab" aria-controls="contact" aria-selected="false">Sales</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#day" role="tab" aria-controls="contact" aria-selected="false">In-Hand</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" id="home-tab" data-toggle="tab" href="#credit" role="tab" aria-controls="home" aria-selected="true">Credit</a>
+                  </li>
+                  <li class="nav-item">
+                   <a class="nav-link" id="profile-tab" data-toggle="tab" href="#credit_collection" role="tab" aria-controls="profile" aria-selected="false">Credit Collection</a>
+                </li>
+                <li class="nav-item">
+                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#ret_return" role="tab" aria-controls="contact" aria-selected="false">Retailer Return</a>
+                </li>
+                <li class="nav-item">
+                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#banking" role="tab" aria-controls="contact" aria-selected="false">Banking</a>
+                </li>
+                <li class="nav-item">
+                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#direct_banking" role="tab" aria-controls="contact" aria-selected="false">Direct Banking</a>
+                </li>
+             </ul>
 
-            <form action="#" method="post">
-               <div class="tab-pane fade show active" id="credit" role="tabpanel" aria-labelledby="home-tab">
-                  <p>Credit</p>
-                  <div class="input-group mb-3 group-end text-end">
-                     <a class="btn btn-add btnNext text-white">Next</a>
+             <div class="tab-content" id="myTabContent">
+
+               <input type="hidden" value="0" id="txt_drs_id">
+               <div class="tab-pane fade show active" id="sales" role="tabpanel" aria-labelledby="contact-tab">
+                <!--  <div class="mt-3">
+                  <div class="form-group">
+                     <label for="exampleInputEmail1">Item Name</label>
+                     <input type="text" class="form-control" id="sale_item_name" name="sale_item_name">
                   </div>
-               </div>
-               <div class="tab-pane fade" id="credit_collection" role="tabpanel" aria-labelledby="profile-tab">
-                <p>Credit Collection</p>
-                <div class="input-group mb-3 group-end">
-                  <a class="btn btn-danger btnPrevious text-white">Previous</a>
+                  <div class="form-group">
+                     <label for="exampleInputPassword1">Amount</label>
+                     <input type="text" class="form-control" id="sale_amount" name="sale_amount">
+                  </div>
+                  <div class="form-group">
+                     <label for="exampleInputPassword1">Quantity</label>
+                     <input type="text" class="form-control" id="sale_qty" name="sale_qty">
+                  </div>
+               </div> -->
+
+               <div class="table-responsive mt-3">
+                 <table id="salesTable" class="table table-bordered table-striped table-hover">
+                    <thead class="back_table_color">
+                       <tr class="info">
+                          <th>#</th>
+                          <th>Item Name</th>
+                          <th>Quantity</th>
+                          <th>Amount</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                 </table>
+              </div>
+
+              <div class="float-right">
+               <div class="input-group mb-3 group-end text-end">
                   <a class="btn btn-add btnNext text-white">Next</a>
                </div>
             </div>
-            <div class="tab-pane fade" id="ret_return" role="tabpanel" aria-labelledby="contact-tab">
-             <p>R Return</p>
-             <div class="input-group mb-3 group-end">
-               <a class="btn btn-danger btnPrevious text-white">Previous</a>
-               <a class="btn btn-add btnNext text-white">Next</a>
-            </div>
          </div>
-         <div class="tab-pane fade" id="banking" role="tabpanel" aria-labelledby="contact-tab">
-            <p>Banking</p>
-            <div class="input-group mb-3 group-end">
-               <a class="btn btn-danger btnPrevious text-white">Previous</a>
-               <a class="btn btn-add btnNext text-white">Next</a>
-            </div>
-         </div>
-         <div class="tab-pane fade" id="direct_banking" role="tabpanel" aria-labelledby="contact-tab">
-            <p>Direct Banking</p>
-            <div class="input-group mb-3 group-end">
-               <a class="btn btn-danger btnPrevious text-white">Previous</a>
-               <a class="btn btn-add btnSubmit text-white">Submit</a>
-            </div>
-         </div>
-      </form>
 
+         <div class="tab-pane fade" id="day" role="tabpanel" aria-labelledby="contact-tab">
+          <!-- <div class="mt-3">
+            <div class="form-group">
+               <label for="exampleInputEmail1">Inhand</label>
+               <input type="text" class="form-control" id="day_inhand" name="day_inhand">
+            </div>
+            <div class="form-group">
+               <label for="exampleInputPassword1">Cash</label>
+               <input type="text" class="form-control" id="day_cash" name="day_cash">
+            </div>
+            <div class="form-group">
+               <label for="exampleInputPassword1">Cheque</label>
+               <input type="text" class="form-control" id="day_cheque" name="day_cheque">
+            </div>
+         </div> -->
+
+         <div class="table-responsive mt-3">
+           <table id="inHandTable" class="table table-bordered table-striped table-hover">
+              <thead class="back_table_color">
+                 <tr class="info">
+                    <th>#</th>
+                    <th>In-Hand</th>
+                    <th>Cash</th>
+                    <th>Cheque</th>
+                 </tr>
+              </thead>
+              <tbody>
+              </tbody>
+           </table>
+        </div>
+
+        <div class="float-right">
+         <div class="input-group mb-3 group-end">
+            <a class="btn btn-danger btnPrevious text-white">Previous</a>
+            <a class="btn btn-add btnNext text-white">Next</a>
+         </div>
+      </div>
    </div>
+
+   <div class="tab-pane fade" id="credit" role="tabpanel" aria-labelledby="home-tab">
+     <!-- <div class="mt-3">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Customer Name</label>
+          <input type="text" class="form-control" id="credit_customer_name" name="credit_customer_name">
+       </div>
+       <div class="form-group">
+          <label for="exampleInputPassword1">Amount</label>
+          <input type="text" class="form-control" id="credit_amount" name="credit_amount">
+       </div>
+    </div> -->
+
+    <div class="table-responsive mt-3">
+     <table id="creditTable" class="table table-bordered table-striped table-hover">
+        <thead class="back_table_color">
+           <tr class="info">
+              <th>#</th>
+              <th>Customer Name</th>
+              <th>Amount</th>
+           </tr>
+        </thead>
+        <tbody>
+        </tbody>
+     </table>
+  </div>
+
+  <div class="float-right">
+   <div class="input-group mb-3 group-end">
+      <a class="btn btn-danger btnPrevious text-white">Previous</a>
+      <a class="btn btn-add btnNext text-white">Next</a>
+   </div>
+</div>
+</div>
+
+<div class="tab-pane fade" id="credit_collection" role="tabpanel" aria-labelledby="profile-tab">
+   <!-- <div class="mt-3">
+      <div class="form-group">
+       <label for="exampleInputEmail1">Customer Name</label>
+       <input type="text" class="form-control" id="credit_collection_customer_name" name="credit_collection_customer_name">
+    </div>
+    <div class="form-group">
+       <label for="exampleInputPassword1">Amount</label>
+       <input type="text" class="form-control" id="credit_collection_amount" name="credit_collection_amount">
+    </div>
+ </div> -->
+
+ <div class="table-responsive mt-3">
+  <table id="creditCollectionTable" class="table table-bordered table-striped table-hover">
+     <thead class="back_table_color">
+        <tr class="info">
+           <th>#</th>
+           <th>Customer Name</th>
+           <th>Amount</th>
+        </tr>
+     </thead>
+     <tbody>
+     </tbody>
+  </table>
+</div>
+
+<div class="float-right">
+   <div class="input-group mb-3 group-end">
+      <a class="btn btn-danger btnPrevious text-white">Previous</a>
+      <a class="btn btn-add btnNext text-white">Next</a>
+   </div>
+</div>
+</div>
+
+<div class="tab-pane fade" id="ret_return" role="tabpanel" aria-labelledby="contact-tab">
+   <!-- <div class="mt-3">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Customer Name</label>
+        <input type="text" class="form-control" id="ret_return_customer_name" name="ret_return_customer_name">
+     </div>
+     <div class="form-group">
+        <label for="exampleInputPassword1">Amount</label>
+        <input type="text" class="form-control" id="ret_return_amount" name="ret_return_amount">
+     </div>
+     <div class="form-group">
+      <label for="exampleInputPassword1">Quantity</label>
+      <input type="text" class="form-control" id="ret_return_qty" name="ret_return_qty">
+   </div>
+</div> -->
+
+<div class="table-responsive mt-3">
+ <table id="retailerTable" class="table table-bordered table-striped table-hover">
+    <thead class="back_table_color">
+       <tr class="info">
+          <th>#</th>
+          <th>Customer Name</th>
+          <th>Item Name</th>
+          <th>Quantity</th>
+          <th>Amount</th>
+       </tr>
+    </thead>
+    <tbody>
+    </tbody>
+ </table>
+</div>
+
+<div class="float-right">
+   <div class="input-group mb-3 group-end">
+      <a class="btn btn-danger btnPrevious text-white">Previous</a>
+      <a class="btn btn-add btnNext text-white">Next</a>
+   </div>
+</div>
+</div>
+
+<div class="tab-pane fade" id="banking" role="tabpanel" aria-labelledby="contact-tab">
+   <!-- <div class="mt-3">
+      <div class="form-group">
+         <label for="exampleInputEmail1">Bank Name</label>
+         <input type="text" class="form-control" id="bank_name" name="bank_name">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Ref #</label>
+        <input type="text" class="form-control" id="bank_ref_no" name="bank_ref_no">
+     </div>
+     <div class="form-group">
+      <label for="exampleInputPassword1">Amount</label>
+      <input type="text" class="form-control" id="bank_amount" name="bank_amount">
+   </div>
+</div> -->
+
+<div class="table-responsive mt-3">
+ <table id="bankTable" class="table table-bordered table-striped table-hover">
+    <thead class="back_table_color">
+       <tr class="info">
+          <th>#</th>
+          <th>Bank Name</th>
+          <th>Ref #</th>
+          <th>Amount</th>
+       </tr>
+    </thead>
+    <tbody>
+    </tbody>
+ </table>
+</div>
+
+<div class="float-right">
+   <div class="input-group mb-3 group-end">
+      <a class="btn btn-danger btnPrevious text-white">Previous</a>
+      <a class="btn btn-add btnNext text-white">Next</a>
+   </div>
+</div>
+</div>
+
+<div class="tab-pane fade" id="direct_banking" role="tabpanel" aria-labelledby="contact-tab">
+ <!-- <div class="mt-3">
+   <div class="form-group">
+      <label for="exampleInputEmail1">Bank Name</label>
+      <input type="text" class="form-control" id="direct_banking_name" name="direct_banking_name">
+   </div>
+   <div class="form-group">
+    <label for="exampleInputPassword1">Ref #</label>
+    <input type="text" class="form-control" id="direct_banking_ref_no" name="direct_banking_ref_no">
+ </div>
+ <div class="form-group">
+   <label for="exampleInputPassword1">Amount</label>
+   <input type="text" class="form-control" id="direct_banking_amount" name="direct_banking_amount">
+</div>
+<div class="form-group">
+   <label for="exampleInputPassword1">Customer Name</label>
+   <input type="text" class="form-control" id="direct_banking_customer" name="direct_banking_customer">
+</div>
+</div> -->
+
+<div class="table-responsive mt-3">
+ <table id="directBankTable" class="table table-bordered table-striped table-hover">
+    <thead class="back_table_color">
+       <tr class="info">
+          <th>#</th>
+          <th>Customer Name</th>
+          <th>Bank Name</th>
+          <th>Ref #</th>
+          <th>Amount</th>
+       </tr>
+    </thead>
+    <tbody>
+    </tbody>
+ </table>
+</div>
+
+<div class="float-right">
+   <div class="input-group mb-3 group-end">
+      <a class="btn btn-danger btnPrevious text-white">Previous</a>
+      <button type="button" class="btn btn-add btnSubmit text-white" id="btnDsrApprove">Approve</button>
+   </div>
+</div>
+</div>
+
+
+
+</div>
+</form>
+
 
 </div>
 </div>
