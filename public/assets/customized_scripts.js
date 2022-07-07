@@ -234,12 +234,26 @@ function viewDsr(dsr_id){
 $("#btnDsrApprove").click(function() {
 
   var dsr_id =$("#txt_drs_id").val();
+  var saleTable = JSON.stringify(saleTableValues());
+  var inHandTable = JSON.stringify(inHandTableValues());
+  var creditTable = JSON.stringify(creditTableValues());
+  var creditCollectionTable = JSON.stringify(creditCollectionTableValues());
+  var retailerTable = JSON.stringify(retailerTableValues());
+  var bankingTable = JSON.stringify(bankingTableValues());
+  var directBankingTable = JSON.stringify(directBankingTableValues());
 
   $.ajax({
     type: 'post',
     url: "/approve_dsr",
     dataType: 'json',
     data: {
+      "saleTable": saleTable,
+      "inHandTable": inHandTable,
+      "creditTable": creditTable,
+      "creditCollectionTable": creditCollectionTable,
+      "retailerTable": retailerTable,
+      "bankingTable": bankingTable,
+      "directBankingTable": directBankingTable,
       "id": dsr_id,
     },
     success: function(data) {
@@ -255,3 +269,104 @@ $("#btnDsrApprove").click(function() {
 });
 
 });
+
+
+
+// sale table (values).
+function saleTableValues(){
+ var TableData = new Array();
+ $('#salesTable tr').each(function(row, tr){
+  TableData[row]={
+    "itemName" : $(tr).find('td:eq(1)').find('input').val(),
+    "itemQty" : $(tr).find('td:eq(2)').find('input').val(),
+    "itemPrice" : $(tr).find('td:eq(3)').find('input').val()
+  }     
+}); 
+ TableData.shift();
+ return TableData;
+}
+
+// inhand table (values).
+function inHandTableValues(){
+ var TableData = new Array();
+ $('#inHandTable tr').each(function(row, tr){
+  TableData[row]={
+    "inHand" : $(tr).find('td:eq(1)').find('input').val(),
+    "cash" : $(tr).find('td:eq(2)').find('input').val(),
+    "cheque" : $(tr).find('td:eq(3)').find('input').val()
+  }     
+}); 
+ TableData.shift();
+ return TableData;
+}
+
+// credit table (values).
+function creditTableValues(){
+ var TableData = new Array();
+ $('#creditTable tr').each(function(row, tr){
+  TableData[row]={
+    "customerName" : $(tr).find('td:eq(1)').find('input').val(),
+    "amount" : $(tr).find('td:eq(2)').find('input').val(),
+  }     
+}); 
+ TableData.shift();
+ return TableData;
+}
+
+// credit collection table (values).
+function creditCollectionTableValues(){
+ var TableData = new Array();
+ $('#creditCollectionTable tr').each(function(row, tr){
+  TableData[row]={
+    "ccName" : $(tr).find('td:eq(1)').find('input').val(),
+    "ccAmount" : $(tr).find('td:eq(2)').find('input').val(),
+  }     
+}); 
+ TableData.shift();
+ return TableData;
+}
+
+
+// retailer table (values).
+function retailerTableValues(){
+ var TableData = new Array();
+ $('#retailerTable tr').each(function(row, tr){
+  TableData[row]={
+    "reCustomerName" : $(tr).find('td:eq(1)').find('input').val(),
+    "reitemName" : $(tr).find('td:eq(2)').find('input').val(),
+    "reQuantity" : $(tr).find('td:eq(3)').find('input').val(),
+    "reAmount" : $(tr).find('td:eq(4)').find('input').val(),
+  }     
+}); 
+ TableData.shift();
+ return TableData;
+}
+
+// banking table (values).
+function bankingTableValues(){
+ var TableData = new Array();
+ $('#bankTable tr').each(function(row, tr){
+  TableData[row]={
+    "bank" : $(tr).find('td:eq(1)').find('input').val(),
+    "refno" : $(tr).find('td:eq(2)').find('input').val(),
+    "amount" : $(tr).find('td:eq(3)').find('input').val(),
+  }     
+}); 
+ TableData.shift();
+ return TableData;
+}
+
+// direct banking table (values).
+function directBankingTableValues(){
+ var TableData = new Array();
+ $('#directBankTable tr').each(function(row, tr){
+  TableData[row]={
+    "customerName" : $(tr).find('td:eq(1)').find('input').val(),
+    "bank" : $(tr).find('td:eq(2)').find('input').val(),
+    "refno" : $(tr).find('td:eq(3)').find('input').val(),
+    "amount" : $(tr).find('td:eq(4)').find('input').val(),
+  }     
+}); 
+ TableData.shift();
+ return TableData;
+}
