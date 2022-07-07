@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2022 at 05:43 AM
+-- Generation Time: Jul 07, 2022 at 05:56 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -66,8 +66,7 @@ CREATE TABLE `bankings` (
 --
 
 INSERT INTO `bankings` (`id`, `bank_name`, `bank_ref_no`, `bank_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Sampath Bank', '123456789', 25, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23'),
-(2, 'Sampath Bank', '123456789', 75000, 2, 1, '2022-07-05 22:00:13', '2022-07-05 22:00:13');
+(1, 'Sampath', '123456789', 9, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23');
 
 -- --------------------------------------------------------
 
@@ -90,8 +89,7 @@ CREATE TABLE `credits` (
 --
 
 INSERT INTO `credits` (`id`, `credit_customer_name`, `credit_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Chathuranga', 20, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23'),
-(2, 'Viduranga', 75000, 2, 1, '2022-07-05 22:00:13', '2022-07-05 22:00:13');
+(1, 'Chathuranga', 5, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23');
 
 -- --------------------------------------------------------
 
@@ -114,8 +112,7 @@ CREATE TABLE `credit_collections` (
 --
 
 INSERT INTO `credit_collections` (`id`, `credit_collection_customer_name`, `credit_collection_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Chathuranga', 30, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23'),
-(2, 'Chathuranga', 75000, 2, 1, '2022-07-05 22:00:13', '2022-07-05 22:00:13');
+(1, 'Chathuranga', 6, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23');
 
 -- --------------------------------------------------------
 
@@ -140,8 +137,7 @@ CREATE TABLE `directbankings` (
 --
 
 INSERT INTO `directbankings` (`id`, `direct_bank_customer_name`, `direct_bank_name`, `direct_bank_ref_no`, `direct_bank_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Viduranga', 'Commercial Bank', '987654321', 5, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23'),
-(2, 'Viduranga', 'Commercial Bank', '987654321', 85000, 2, 1, '2022-07-05 22:00:13', '2022-07-05 22:00:13');
+(1, 'Viduranga', 'Commercial', '987654321', 10, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23');
 
 -- --------------------------------------------------------
 
@@ -154,7 +150,8 @@ CREATE TABLE `dsrs` (
   `in_hand` double NOT NULL DEFAULT 0,
   `cash` double NOT NULL DEFAULT 0,
   `cheque` double NOT NULL DEFAULT 0,
-  `status` int(11) NOT NULL DEFAULT 1,
+  `dsr_user_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 1 COMMENT 'approve_status = 2',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -163,9 +160,8 @@ CREATE TABLE `dsrs` (
 -- Dumping data for table `dsrs`
 --
 
-INSERT INTO `dsrs` (`id`, `in_hand`, `cash`, `cheque`, `status`, `created_at`, `updated_at`) VALUES
-(1, 10, 25, 15, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23'),
-(2, 100000, 25000, 75000, 1, '2022-07-05 22:00:13', '2022-07-05 22:00:13');
+INSERT INTO `dsrs` (`id`, `in_hand`, `cash`, `cheque`, `dsr_user_id`, `status`, `created_at`, `updated_at`) VALUES
+(1, 2, 3, 4, 1, 2, '2022-07-05 21:43:23', '2022-07-05 21:43:23');
 
 -- --------------------------------------------------------
 
@@ -241,7 +237,20 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (10, '2022_07_05_094307_create_retailer_returns_table', 1),
 (11, '2022_07_05_094337_create_bankings_table', 1),
 (12, '2022_07_05_094403_create_directbankings_table', 1),
-(13, '2022_07_05_095611_create_dsrs_table', 1);
+(13, '2022_07_05_095611_create_dsrs_table', 1),
+(27, '2014_10_12_000000_create_users_table', 1),
+(28, '2014_10_12_100000_create_password_resets_table', 1),
+(29, '2019_08_19_000000_create_failed_jobs_table', 1),
+(30, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(31, '2022_07_03_071847_create_admins_table', 1),
+(32, '2022_07_04_120017_create_items_table', 1),
+(33, '2022_07_05_093949_create_sales_table', 1),
+(34, '2022_07_05_094024_create_credits_table', 1),
+(35, '2022_07_05_094219_create_credit_collections_table', 1),
+(36, '2022_07_05_094307_create_retailer_returns_table', 1),
+(37, '2022_07_05_094337_create_bankings_table', 1),
+(38, '2022_07_05_094403_create_directbankings_table', 1),
+(39, '2022_07_05_095611_create_dsrs_table', 1);
 
 -- --------------------------------------------------------
 
@@ -296,8 +305,7 @@ CREATE TABLE `retailer_returns` (
 --
 
 INSERT INTO `retailer_returns` (`id`, `re_customer_name`, `re_item_name`, `re_item_qty`, `re_item_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Viduranga', 'DIALOG tv', 15, 10, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23'),
-(2, 'Viduranga', 'DIALOG tv', 150, 84000, 2, 1, '2022-07-05 22:00:13', '2022-07-05 22:00:13');
+(1, 'Viduranga', 'DIALOG', 7, 8, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23');
 
 -- --------------------------------------------------------
 
@@ -321,10 +329,7 @@ CREATE TABLE `sales` (
 --
 
 INSERT INTO `sales` (`id`, `item_name`, `item_qty`, `item_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'KIT', 2, 10, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23'),
-(2, 'KIT2', 4, 20, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23'),
-(3, 'KIT', 100, 150000, 2, 1, '2022-07-05 22:00:13', '2022-07-05 22:00:13'),
-(4, 'KIT2', 10, 15, 2, 1, '2022-07-05 22:00:13', '2022-07-05 22:00:13');
+(1, 'KIT', 1, 10, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23');
 
 -- --------------------------------------------------------
 
@@ -462,31 +467,31 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `bankings`
 --
 ALTER TABLE `bankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `credits`
 --
 ALTER TABLE `credits`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `credit_collections`
 --
 ALTER TABLE `credit_collections`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `directbankings`
 --
 ALTER TABLE `directbankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `dsrs`
 --
 ALTER TABLE `dsrs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -504,7 +509,7 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -516,13 +521,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `retailer_returns`
 --
 ALTER TABLE `retailer_returns`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
