@@ -43,7 +43,9 @@ Route::post('/delete_item',[ItemController::class,'DeleteItem'])->name('delete_i
 
 Route::get('/send_inventry',[ItemController::class,'SendInventry']);
 
-Route::get('/return_inventry',[ItemController::class,'ReturnInventry']);
+Route::get('/dsr_receive',[ItemController::class,'DsrReceive']);
+
+Route::get('transfer_status',[ItemController::class,'TransferStatus']);
 
 Route::get('/view_balance',[ItemController::class,'ViewBalance']);
 

@@ -79,8 +79,12 @@ public function SendInventry(){
     return view('admin.item.send_inventry');
 }
 
-public function ReturnInventry(){
-    return view('admin.item.return_inventry');
+public function DsrReceive(){
+    return view('admin.item.dsr_receive');
+}
+
+public function TransferStatus(){
+    return view('admin.item.transfer_status');
 }
 
 public function ViewBalance(){
