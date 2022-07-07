@@ -40,6 +40,28 @@ class AdminController extends Controller
   }
 }
 
+// public function MobileLogin(Request $request){
+//     $request->validate([
+//        'email' => 'required',
+//        'password' => 'required',
+//     ]);
+
+//     $admin_login = Admin::all()->where('email', '=', $request->get('email'));
+//     if(count($admin_login) != 0){
+//       if(Hash::check($request->get('password'), $admin_login[0]->password)){
+//          $request->session()->put('user_id', $admin_login[0]->id);
+//          $request->session()->put('user_name', $admin_login[0]->name);
+//          return redirect()->route('dashboard');
+//       }else{
+//          Alert::warning('Oops..', 'User name or password is incorrect!');
+//          return redirect()->back();
+//       }
+//    }else{
+//      Alert::warning('Oops..', 'Please check your credentials!');
+//      return redirect()->back();
+//   }
+// }
+
 
 
 public function Logout(Request $request){
