@@ -93,9 +93,6 @@
                                        <td>Rs. <?php echo number_format($dd->credit_amount) ?></td>
                                        <td>Rs. <?php echo number_format($dd->re_item_amount) ?></td>
                                        <td>Rs. <?php echo number_format($dd->credit_collection_amount) ?></td>
-                                       <td class="text-center">
-                                          <button type="button" class="btn btn-add btn-sm" onclick="viewDsr({{$dd->id}});"><i class="fa fa-pencil"></i></button>
-                                       </td>
                                     </tr>
                                     <?php $count++ ?>
 
