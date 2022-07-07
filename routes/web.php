@@ -7,6 +7,7 @@ use App\Http\Controllers\DsrController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Api\PassportAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,10 @@ Route::get('/',[AdminController::class,'main'])->name('/');
 Route::post('login',[AdminController::class,'Login'])->name('login');
 Route::get('logout',[AdminController::class,'Logout'])->name('logout');
 
+
 //Dashboard
 Route::get('/dashboard',[DashboardController::class,'Dashboard'])->name('dashboard');
+
 
 //User
 Route::get('/user',[UserController::class,'user']);
@@ -41,13 +44,18 @@ Route::post('/get_item',[ItemController::class,'GetItem'])->name('get_item');
 Route::post('/item_update',[ItemController::class,'ItemUpdate'])->name('item_update');
 Route::post('/delete_item',[ItemController::class,'DeleteItem'])->name('delete_item');
 
+
 Route::get('/send_inventry',[ItemController::class,'SendInventry']);
+
 
 Route::get('/dsr_receive',[ItemController::class,'DsrReceive']);
 
+
 Route::get('transfer_status',[ItemController::class,'TransferStatus']);
 
+
 Route::get('/view_balance',[ItemController::class,'ViewBalance']);
+
 
 //DSR
 Route::get('/pending_dsr',[DsrController::class,'PendingDsr']);
@@ -55,9 +63,15 @@ Route::post('dsr_save',[DsrController::class,'DsrSave'])->name('dsr_save');
 Route::post('get_dsr',[DsrController::class,'GetDsr'])->name('get_dsr');
 Route::post('approve_dsr',[DsrController::class,'ApproveDsr'])->name('approve_dsr');
 
+
 Route::get('/complete_dsr',[DsrController::class,'CompleteDsr']);
+
 
 //Report
 Route::get('/sales_summery',[ReportController::class,'SalesSummery']);
 Route::get('/collection',[ReportController::class,'Collection']);
 
+
+
+// mobile apis
+Route::get('mobile_login',[PassportAuthController::class,'MobileLogin'])->name('mobile_login');
