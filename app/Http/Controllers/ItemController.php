@@ -24,20 +24,20 @@ class ItemController extends Controller
         $data = Item::all()->where('status', '=',"1")->where('name', '=',$request->get('item_name'));
         if($data->isEmpty()){
 
-         $item = new Item;
-         $item->name = $request->get('item_name');
-         $item->purchasing_price = $request->get('item_pprice');
-         $item->selling_price = $request->get('item_sprice');
-         $item->qty = $request->get('item_qty');
-         $item->save();
+           $item = new Item;
+           $item->name = $request->get('item_name');
+           $item->purchasing_price = $request->get('item_pprice');
+           $item->selling_price = $request->get('item_sprice');
+           $item->qty = $request->get('item_qty');
+           $item->save();
         // getting last id after save
         // $last_id = $item->id;
-         Alert::success('Success!!', 'Item Registered');
-         return redirect()->back();
-     }
- }
+           Alert::success('Success!!', 'Item Registered');
+           return redirect()->back();
+       }
+   }
 
- public function GetItem(Request $request){
+   public function GetItem(Request $request){
     $data = DB::table('items')
     ->select('id','name','purchasing_price','selling_price','qty')
     ->where('status','=','1')
@@ -75,21 +75,7 @@ public function DeleteItem(Request $request){
 
 }
 
-public function SendInventry(){
-    return view('admin.item.send_inventry');
-}
 
-public function DsrReceive(){
-    return view('admin.item.dsr_receive');
-}
-
-public function TransferStatus(){
-    return view('admin.item.transfer_status');
-}
-
-public function ViewBalance(){
-    return view('admin.item.view_balance');
-}
 
 
 }

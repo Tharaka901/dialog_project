@@ -32,7 +32,7 @@ class DsrController extends Controller
         ->select('dsrs.id',
             'dsrs.created_at',
             'dsrs.in_hand',
-            'users.name'
+            'users.name',
             DB::raw('SUM(sales.item_amount) as salesum'),
             DB::raw('SUM(bankings.bank_amount) as banksum'),
             DB::raw('SUM(directbankings.direct_bank_amount) as dbsum'),

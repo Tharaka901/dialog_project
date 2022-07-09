@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\DsrController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
@@ -45,16 +46,15 @@ Route::post('/item_update',[ItemController::class,'ItemUpdate'])->name('item_upd
 Route::post('/delete_item',[ItemController::class,'DeleteItem'])->name('delete_item');
 
 
-Route::get('/send_inventry',[ItemController::class,'SendInventry']);
+Route::get('/send_inventry',[StockController::class,'SendInventry']);
+Route::post('/send_item',[StockController::class,'SendItem'])->name('send_item');
 
+Route::get('/dsr_receive',[StockController::class,'DsrReceive']);
+Route::post('get_stock_items',[StockController::class,'GetStockItems']);
 
-Route::get('/dsr_receive',[ItemController::class,'DsrReceive']);
+Route::get('transfer_status',[StockController::class,'TransferStatus']);
 
-
-Route::get('transfer_status',[ItemController::class,'TransferStatus']);
-
-
-Route::get('/view_balance',[ItemController::class,'ViewBalance']);
+Route::get('/view_balance',[StockController::class,'ViewBalance']);
 
 
 //DSR
@@ -75,3 +75,4 @@ Route::get('/collection',[ReportController::class,'Collection']);
 
 // mobile apis
 Route::get('mobile_login',[PassportAuthController::class,'MobileLogin'])->name('mobile_login');
+Route::get('mobile_get_inventory',[PassportAuthController::class,'MobileGetInventory'])->name('mobile_get_inventory');

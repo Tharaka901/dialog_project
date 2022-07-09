@@ -50,6 +50,16 @@ function swal_success(text){
   })
 }
 
+function swal_warning(text){
+  Swal.fire({
+    position: 'center',
+    icon: 'warning',
+    title: text,
+    showConfirmButton: false,
+    timer: 1500
+  })
+}
+
 
 // edit User //
 function editUser(user_id){
@@ -119,7 +129,7 @@ function deleteItem(item_id){
 }
 
 
-
+////////////////////////////////////  Pending Dsr /////////////////////////////////////////////
 $('.btnNext').click(function() {
   $('.nav-tabs .active').parent().next('li').find('a').trigger('click');
 });
@@ -370,3 +380,167 @@ function directBankingTableValues(){
  TableData.shift();
  return TableData;
 }
+
+
+
+////////////////////////////////////  Pending Dsr end/////////////////////////////////////////////
+
+
+
+////////////////////////////////////  Inventory /////////////////////////////////////////////
+
+
+$("#txtItem").change(function(){
+
+  var stock = $("#txtStock").val();
+  var dsr = $("#txtDsr").val();
+  var item = $(this).val();
+
+  if(dsr == ""){
+    swal_warning("Select a Dsr");
+  }else if(item == ""){
+    swal_warning("Select an item");
+  }else{
+
+    $.ajax({
+      type: 'post',
+      url: "/get_item",
+      dataType: 'json',
+      data: {
+        "id": item,
+      },
+      success: function(data) {
+
+        for (var i = 0; i < data.data.length; i++) {
+
+          var contain_data =   $('#inventoryTable tr > td:contains('+data.data[i].name+')').length;
+
+          if(contain_data == 0){
+           $("#inventoryTable tbody").append("<tr>"+
+            "<td style='display: none;'>"+data.data[i].id+"</td>"+
+            "<td>"+data.data[i].name+"</td>"+
+            "<td><input type='number' class='form-control' placeholder='Qty' required min='0'></td>"+
+            "<td>"+data.data[i].qty+"</td>"+
+            "</tr>");
+         }else{
+          swal_warning("Item Exist!");
+        }
+      }
+
+    },
+    error: function(error) {
+      alert("error occured " + JSON.stringify(error));
+    }
+  });
+
+  }
+
+});
+
+
+$("#btnSenditems").click(function() {
+
+  var table_rows = $('#inventoryTable tbody tr').length;
+  var stock_id = $("#txtStock").val();
+  var dsr_id = $("#txtDsr").val();
+
+  if(table_rows == 0){
+    swal_warning("Add items to table!");
+  }else if(stock_id == ""){
+    swal_warning("Select the stock");
+  }else if(dsr_id == ""){
+    swal_warning("Select a dsr");
+  }else{
+
+    var tableData = JSON.stringify(inventoryTableValues());
+
+    $.ajax({
+      type: 'post',
+      url: "/send_item",
+      dataType: 'json',
+      data: {
+        "stock_id": stock_id,"dsr_id": dsr_id,"tableData": tableData,
+      },
+      success: function(data) {
+
+        swal_success("Data sent successfully!!");
+        setTimeout(function() {
+          location.reload();
+        }, 1500);
+
+      },
+      error: function(error) {
+        alert("error occured " + JSON.stringify(error));
+      }
+    });
+
+  }
+
+});
+
+
+// send inventory table (values).
+function inventoryTableValues(){
+ var TableData = new Array();
+ $('#inventoryTable tr').each(function(row, tr){
+  TableData[row]={
+    "item_id" : $(tr).find('td:eq(0)').text(),
+    "qty" : $(tr).find('td:eq(2)').find('input').val(),
+    "bstock" : $(tr).find('td:eq(3)').text(),
+  }     
+}); 
+ TableData.shift();
+ return TableData;
+}
+
+
+function viewStockItems(stock_id){
+
+  $.ajax({
+    type: 'post',
+    url: "/get_stock_items",
+    dataType: 'json',
+    data: {
+      "id": stock_id
+    },
+    success: function(data) {
+
+     var content = '<div class="table-responsive">'
+     content = content + '<table id="stockItemTable" class="table table-bordered table-striped table-hover">';
+     content = content + '<thead class="back_table_color">';
+     content = content + '<tr class="info">';
+     content = content + '<th>#</th>';
+     content = content + '<th>Item</th>';
+     content = content + '<th class="text-center">Quantity</th>';
+     content = content + '</tr>';
+     content = content + '</thead>';
+     content = content + '<tbody>';
+
+     var count = 1;
+     for (var i = 0; i < data.data.length; i++) {
+      content = content + '<tr>';
+      content = content + '<td>'+count+'</td>';
+      content = content + '<td>'+data.data[i].name+'</td>';
+      content = content + '<td class="text-center">'+data.data[i].qty+'</td>';
+      content = content + '</tr>';
+      count++;
+    }
+
+    content = content + '</tbody>';
+    content = content + '</table>';
+    content = content + '</div>';
+
+    document.getElementById('stockItemTable').innerHTML = "";
+    document.getElementById('stockItemTable').innerHTML = content;
+
+    $("#stockItemModal").modal("show");stockItemModal
+
+  },
+  error: function(error) {
+    alert("error occured " + JSON.stringify(error));
+  }
+});
+
+}
+
+////////////////////////////////////  Inventory end/////////////////////////////////////////////
