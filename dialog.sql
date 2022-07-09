@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2022 at 08:25 AM
+-- Generation Time: Jul 09, 2022 at 02:12 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -151,7 +151,7 @@ CREATE TABLE `dsrs` (
   `cash` double NOT NULL DEFAULT 0,
   `cheque` double NOT NULL DEFAULT 0,
   `dsr_user_id` int(11) NOT NULL,
-  `status` int(11) NOT NULL DEFAULT 1 COMMENT 'approve_status = 2',
+  `status` int(11) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -255,7 +255,31 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (41, '2016_06_01_000002_create_oauth_access_tokens_table', 2),
 (42, '2016_06_01_000003_create_oauth_refresh_tokens_table', 2),
 (43, '2016_06_01_000004_create_oauth_clients_table', 2),
-(44, '2016_06_01_000005_create_oauth_personal_access_clients_table', 2);
+(44, '2016_06_01_000005_create_oauth_personal_access_clients_table', 2),
+(45, '2022_07_08_080439_create_stocks_table', 3),
+(46, '2022_07_08_102458_stock_has_dsr', 4),
+(47, '2022_07_08_102458_stock_dsr_items', 5),
+(69, '2014_10_12_000000_create_users_table', 1),
+(70, '2014_10_12_100000_create_password_resets_table', 1),
+(71, '2016_06_01_000001_create_oauth_auth_codes_table', 1),
+(72, '2016_06_01_000002_create_oauth_access_tokens_table', 1),
+(73, '2016_06_01_000003_create_oauth_refresh_tokens_table', 1),
+(74, '2016_06_01_000004_create_oauth_clients_table', 1),
+(75, '2016_06_01_000005_create_oauth_personal_access_clients_table', 1),
+(76, '2019_08_19_000000_create_failed_jobs_table', 1),
+(77, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(78, '2022_07_03_071847_create_admins_table', 1),
+(79, '2022_07_04_120017_create_items_table', 1),
+(80, '2022_07_05_093949_create_sales_table', 1),
+(81, '2022_07_05_094024_create_credits_table', 1),
+(82, '2022_07_05_094219_create_credit_collections_table', 1),
+(83, '2022_07_05_094307_create_retailer_returns_table', 1),
+(84, '2022_07_05_094337_create_bankings_table', 1),
+(85, '2022_07_05_094403_create_directbankings_table', 1),
+(86, '2022_07_05_095611_create_dsrs_table', 1),
+(87, '2022_07_08_080439_create_stocks_table', 1),
+(88, '2022_07_08_102458_stock_dsr_items', 1),
+(89, '2022_07_08_102458_stock_has_dsr', 1);
 
 -- --------------------------------------------------------
 
@@ -436,6 +460,78 @@ INSERT INTO `sales` (`id`, `item_name`, `item_qty`, `item_amount`, `dsr_id`, `st
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `stocks`
+--
+
+CREATE TABLE `stocks` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `stock_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `stocks`
+--
+
+INSERT INTO `stocks` (`id`, `stock_name`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Main Stock', 1, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_dsr_items`
+--
+
+CREATE TABLE `stock_dsr_items` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `qty` double NOT NULL DEFAULT 0,
+  `stock_dsr_id` double NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `stock_dsr_items`
+--
+
+INSERT INTO `stock_dsr_items` (`id`, `item_id`, `qty`, `stock_dsr_id`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 10, 1, 1, '2022-07-07 18:30:00', NULL),
+(2, 3, 20, 1, 1, '2022-07-07 18:30:00', NULL),
+(3, 5, 30, 1, 1, '2022-07-07 18:30:00', NULL),
+(4, 6, 5, 2, 1, '2022-07-07 18:30:00', NULL),
+(5, 4, 15, 2, 1, '2022-07-07 18:30:00', NULL),
+(6, 2, 25, 2, 1, '2022-07-07 18:30:00', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_has_dsrs`
+--
+
+CREATE TABLE `stock_has_dsrs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `stock_id` int(11) NOT NULL,
+  `dsr_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `stock_has_dsrs`
+--
+
+INSERT INTO `stock_has_dsrs` (`id`, `stock_id`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 5, 1, '2022-07-07 18:30:00', NULL),
+(2, 1, 4, 1, '2022-07-07 18:30:00', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -462,7 +558,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `nic`, `contact`, `route`, `password
 (1, 'rehan peter', 'rehan@gmail.com', '256465186418', '0489411846', 'Panadura', '$2y$10$WhA9uQF599EF9Fi.wx93TuMsMutlQKtpJTRiDUZArDt/sKUsEqOm.', 'upload/user_images/1656933319.jpg', 1, NULL, '2022-07-04 05:45:19', '2022-07-04 05:45:19'),
 (2, 'erandaka', 'erandaka@gmail.com', '123489494986', '0756486186', 'Malabe', '$2y$10$wSy7ivlrjVSCfECerhNKZuhw0VhEYxWmOXnNjFiigcsh8ojy4AjS2', 'upload/user_images/1656933369.jpg', 1, NULL, '2022-07-04 05:46:09', '2022-07-04 05:46:09'),
 (3, 'Kasun Dimantha', 'kasun@gmail.com', '516486516486', '4646848948', 'Colombo', '$2y$10$GIOFmb0xaPO1nJQZA0IkvO1ATJ46D/..AKOUzCSBFFF.WIu.2K09G', 'upload/user_images/1656933403.jpg', 1, NULL, '2022-07-04 05:46:43', '2022-07-04 05:46:43'),
-(4, 'Harsha Dilshan edit', 'harsha@gmail.com', '123', '546', 'route name edit', '$2y$10$3aZTsF53qj7j7oHEkoh5qulKO3b.7kUM4rImSwDB0rO1qVvWLPlD2', 'upload/user_images/1656934822.png', 1, NULL, '2022-07-04 05:47:25', '2022-07-04 05:47:25');
+(4, 'Harsha Dilshan edit', 'harsha@gmail.com', '123', '546', 'route name edit', '$2y$10$3aZTsF53qj7j7oHEkoh5qulKO3b.7kUM4rImSwDB0rO1qVvWLPlD2', 'upload/user_images/1656934822.png', 1, NULL, '2022-07-04 05:47:25', '2022-07-04 05:47:25'),
+(5, 'Nuwan Kulasekara', 'nuwan@gmail.com', '12489484848v', '5664646846', 'Route', '$2y$10$h1.SX.HbUKdaMczNgoJib.qlQx4M1UhnbFL3AYtczxE5AlvjXMSuq', 'upload/user_images/1657262257.jpg', 1, NULL, '2022-07-08 01:07:37', '2022-07-08 01:07:37');
 
 --
 -- Indexes for dumped tables
@@ -584,6 +681,24 @@ ALTER TABLE `sales`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `stocks`
+--
+ALTER TABLE `stocks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `stock_dsr_items`
+--
+ALTER TABLE `stock_dsr_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `stock_has_dsrs`
+--
+ALTER TABLE `stock_has_dsrs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -603,31 +718,31 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `bankings`
 --
 ALTER TABLE `bankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `credits`
 --
 ALTER TABLE `credits`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `credit_collections`
 --
 ALTER TABLE `credit_collections`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `directbankings`
 --
 ALTER TABLE `directbankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `dsrs`
 --
 ALTER TABLE `dsrs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -645,7 +760,7 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -669,19 +784,37 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `retailer_returns`
 --
 ALTER TABLE `retailer_returns`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `stocks`
+--
+ALTER TABLE `stocks`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `stock_dsr_items`
+--
+ALTER TABLE `stock_dsr_items`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `stock_has_dsrs`
+--
+ALTER TABLE `stock_has_dsrs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

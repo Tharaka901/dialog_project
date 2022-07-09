@@ -62,36 +62,37 @@ if(!isset($_SESSION['user_id'])){
             display: flex;
             width: 60% !important;
             margin: unset !important;
+            margin: 20px 80px !important;
          }
 
-         .swal2-warning {
+/*         .swal2-warning {
           font-size: unset !important;
           width: 18% !important;
           height: 84% !important;
-          margin-left: 180px !important;
-       }
-    </style>
+          margin-left: 180px !important;*/
+          /*}*/
+       </style>
 
- </head>
- <body class="hold-transition sidebar-mini">
-   <!--preloader-->
-   <div id="preloader">
-      <div id="status"></div>
-   </div>
-   <!-- Site wrapper -->
+    </head>
+    <body class="hold-transition sidebar-mini">
+      <!--preloader-->
+      <div id="preloader">
+         <div id="status"></div>
+      </div>
+      <!-- Site wrapper -->
 
-   @include('sweetalert::alert')
+      @include('sweetalert::alert')
 
-   @include('admin.body.header')
+      @include('admin.body.header')
 
-   <!-- Left side column. contains the sidebar -->
-   @include('admin.body.sidebar')
-   <!-- =============================================== -->
-   <!-- Content Wrapper. Contains page content -->
-   @yield('admin')
-   <!-- /.content-wrapper -->
-   @include('admin.body.footer')
-   <!-- /.wrapper -->
+      <!-- Left side column. contains the sidebar -->
+      @include('admin.body.sidebar')
+      <!-- =============================================== -->
+      <!-- Content Wrapper. Contains page content -->
+      @yield('admin')
+      <!-- /.content-wrapper -->
+      @include('admin.body.footer')
+      <!-- /.wrapper -->
       <!-- Start Core Plugins
          =====================================================================-->
 
