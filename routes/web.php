@@ -55,6 +55,7 @@ Route::post('get_stock_items',[StockController::class,'GetStockItems']);
 Route::get('transfer_status',[StockController::class,'TransferStatus']);
 
 Route::get('/view_balance',[StockController::class,'ViewBalance']);
+Route::post('/get_stock_items',[StockController::class,'GetStockItemsById'])->name('get_stock_items');
 
 
 //DSR
