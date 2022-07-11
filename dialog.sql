@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2022 at 02:12 PM
+-- Generation Time: Jul 11, 2022 at 12:23 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -201,12 +201,12 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `name`, `purchasing_price`, `selling_price`, `qty`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Internet Card 49', 45, 49, 1000, 1, '2022-07-04 07:08:20', '2022-07-04 07:08:20'),
-(2, 'Internet Card 99', 90, 100, 1000, 1, '2022-07-04 07:13:04', '2022-07-04 07:13:04'),
-(3, 'Internet Card 199', 180, 199, 500, 1, '2022-07-04 07:26:10', '2022-07-04 07:26:10'),
-(4, 'Internet Card 249', 230, 250, 500, 1, '2022-07-04 07:26:53', '2022-07-04 07:26:53'),
-(5, 'Dialog Tv', 4500, 5000, 150, 1, '2022-07-04 07:27:24', '2022-07-04 07:27:24'),
-(6, 'Dialog Broadband EDIT', 800, 990, 650, 1, '2022-07-04 07:28:06', '2022-07-04 07:28:06');
+(1, 'Internet Card 49', 45, 49, 975, 1, '2022-07-04 07:08:20', '2022-07-04 07:08:20'),
+(2, 'Internet Card 99', 90, 100, 990, 1, '2022-07-04 07:13:04', '2022-07-04 07:13:04'),
+(3, 'Internet Card 199', 180, 199, 495, 1, '2022-07-04 07:26:10', '2022-07-04 07:26:10'),
+(4, 'Internet Card 249', 230, 250, 485, 1, '2022-07-04 07:26:53', '2022-07-04 07:26:53'),
+(5, 'Dialog Tv', 4500, 5000, 200, 1, '2022-07-04 07:27:24', '2022-07-04 07:27:24'),
+(6, 'Dialog Broadband EDIT', 800, 990, 590, 1, '2022-07-04 07:28:06', '2022-07-04 07:28:06');
 
 -- --------------------------------------------------------
 
@@ -499,12 +499,9 @@ CREATE TABLE `stock_dsr_items` (
 --
 
 INSERT INTO `stock_dsr_items` (`id`, `item_id`, `qty`, `stock_dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 10, 1, 1, '2022-07-07 18:30:00', NULL),
-(2, 3, 20, 1, 1, '2022-07-07 18:30:00', NULL),
-(3, 5, 30, 1, 1, '2022-07-07 18:30:00', NULL),
-(4, 6, 5, 2, 1, '2022-07-07 18:30:00', NULL),
-(5, 4, 15, 2, 1, '2022-07-07 18:30:00', NULL),
-(6, 2, 25, 2, 1, '2022-07-07 18:30:00', NULL);
+(1, 1, 5, 1, 1, '2022-07-11 05:37:52', NULL),
+(2, 6, 10, 1, 1, '2022-07-11 05:37:52', NULL),
+(3, 3, 5, 1, 1, '2022-07-11 05:37:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -526,8 +523,7 @@ CREATE TABLE `stock_has_dsrs` (
 --
 
 INSERT INTO `stock_has_dsrs` (`id`, `stock_id`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 5, 1, '2022-07-07 18:30:00', NULL),
-(2, 1, 4, 1, '2022-07-07 18:30:00', NULL);
+(1, 1, 5, 1, '2022-07-11 05:37:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -802,7 +798,7 @@ ALTER TABLE `stocks`
 -- AUTO_INCREMENT for table `stock_dsr_items`
 --
 ALTER TABLE `stock_dsr_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `stock_has_dsrs`
