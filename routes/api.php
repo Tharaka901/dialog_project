@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PassportAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
+// mobile apis
+Route::get('mobile_login',[PassportAuthController::class,'MobileLogin'])->name('mobile_login');
+Route::get('mobile_get_inventory',[PassportAuthController::class,'MobileGetInventory'])->name('mobile_get_inventory');

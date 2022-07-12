@@ -8,7 +8,6 @@ use App\Http\Controllers\DsrController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Api\PassportAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +54,7 @@ Route::post('get_stock_items',[StockController::class,'GetStockItems']);
 Route::get('transfer_status',[StockController::class,'TransferStatus']);
 
 Route::get('/view_balance',[StockController::class,'ViewBalance']);
-Route::post('/get_stock_items',[StockController::class,'GetStockItemsById'])->name('get_stock_items');
+Route::post('/view_balance',[StockController::class,'GetStockItemsById'])->name('view_balance');
 
 
 //DSR
@@ -71,9 +70,3 @@ Route::get('/complete_dsr',[DsrController::class,'CompleteDsr']);
 //Report
 Route::get('/sales_summery',[ReportController::class,'SalesSummery']);
 Route::get('/collection',[ReportController::class,'Collection']);
-
-
-
-// mobile apis
-Route::get('mobile_login',[PassportAuthController::class,'MobileLogin'])->name('mobile_login');
-Route::get('mobile_get_inventory',[PassportAuthController::class,'MobileGetInventory'])->name('mobile_get_inventory');

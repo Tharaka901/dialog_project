@@ -8,7 +8,7 @@
         <i class="fa fa-undo"></i>
      </div>
      <div class="header-title">
-        <h1>DSR Receive</h1>
+        <h1>DSR Returns</h1>
         <small></small>
      </div>
   </section>

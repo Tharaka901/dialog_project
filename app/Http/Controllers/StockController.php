@@ -103,20 +103,10 @@ public function TransferStatus(){
 
 public function ViewBalance(){
 
-    $all_stock_items = DB::table('items')
-    ->leftjoin('stock_dsr_items', 'stock_dsr_items.item_id', 'items.id')
-    ->leftjoin('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
-    ->select('items.name','items.qty')
-    ->where('items.status','=',1)
-    ->orderBy('items.name','asc')
-    ->paginate(5);
+    $all_stock_items = DB::table('items')->select('items.name','items.qty')->where('items.status','=',1)->orderBy('items.name','asc')
+    ->paginate(50);
 
-    $all_stock_items_total = DB::table('items')
-    ->leftjoin('stock_dsr_items', 'stock_dsr_items.item_id', 'items.id')
-    ->leftjoin('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
-    ->select('items.name','items.qty')
-    ->where('items.status','=',1)
-    ->get();
+    $all_stock_items_total = DB::table('items')->select('items.name','items.qty')->where('items.status','=',1)->get();
 
     $dsrs = DB::table('users')->join('stock_has_dsrs', 'stock_has_dsrs.dsr_id', 'users.id')->select('users.id','users.name')->where('stock_has_dsrs.status','=',1)->where('users.status','=',1)->get();
 
@@ -138,6 +128,7 @@ public function GetStockItemsById(Request $request){
         ->leftjoin('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
         ->select('items.name','items.qty')
         ->where('items.status','=',1)
+        ->whereDate('items.created_at','=',$selected_date)
         ->orderBy('items.name','asc')
         ->paginate(5);
 
@@ -146,47 +137,49 @@ public function GetStockItemsById(Request $request){
         ->leftjoin('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
         ->select('items.name','items.qty')
         ->where('items.status','=',1)
+        ->whereDate('items.created_at','=',$selected_date)
         ->get();
 
-        return redirect()->back()->with(['stockData'=>$dsrs,'itemData'=>$all_stock_items,'itemTotal'=>$all_stock_items_total]);
+        return view('admin.item.view_balance',['stockData'=>$dsrs,'itemData'=>$all_stock_items,'itemTotal'=>$all_stock_items_total]);
 
     }else if($stock_id == 00){
 
       $all_stock_items = DB::table('items')
       ->select('items.name','items.qty')
       ->where('items.status','=',1)
-      ->where('','=',1)
+      ->whereDate('created_at','=',$selected_date)
       ->orderBy('items.name','asc')
       ->paginate(5);
 
       $all_stock_items_total = DB::table('items')
       ->select('items.name','items.qty')
       ->where('items.status','=',1)
-      ->where('','=',1)
+      ->whereDate('created_at','=',$selected_date)
       ->get();
 
-      return redirect()->back()->with(['stockData'=>$dsrs,'itemData'=>$all_stock_items,'itemTotal'=>$all_stock_items_total]);
+      return view('admin.item.view_balance',['stockData'=>$dsrs,'itemData'=>$all_stock_items,'itemTotal'=>$all_stock_items_total]);
 
   }else{
 
      $all_stock_items = DB::table('items')
+     ->select('items.name','items.qty')
      ->leftjoin('stock_dsr_items', 'stock_dsr_items.item_id', 'items.id')
      ->leftjoin('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
-     ->select('items.name','items.qty')
      ->where('items.status','=',1)
      ->where('stock_has_dsrs.dsr_id','=',$stock_id)
-     ->orderBy('items.name','asc')
+     ->whereDate('stock_has_dsrs.created_at','=',$selected_date)
      ->paginate(5);
 
      $all_stock_items_total = DB::table('items')
+     ->select('items.name','items.qty')
      ->leftjoin('stock_dsr_items', 'stock_dsr_items.item_id', 'items.id')
      ->leftjoin('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
-     ->select('items.name','items.qty')
      ->where('items.status','=',1)
+     ->whereDate('stock_has_dsrs.created_at','=',$selected_date)
      ->where('stock_has_dsrs.dsr_id','=',$stock_id)
      ->get();
 
-     return redirect()->back()->with(['stockData'=>$dsrs,'itemData'=>$all_stock_items,'itemTotal'=>$all_stock_items_total]);
+     return view('admin.item.view_balance',['stockData'=>$dsrs,'itemData'=>$all_stock_items,'itemTotal'=>$all_stock_items_total]);
 
  }
 
