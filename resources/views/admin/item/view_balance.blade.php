@@ -25,11 +25,11 @@
                 </div>
             </div>
             <div class="card-body">
-                <form method="post" action="{{ route('get_stock_items') }}">
+                <form method="post" action="{{ route('view_balance') }}">
                     @csrf
                     <div class="position-relative form-group">
                         <label for="fromdate" class="">Select Date</label>
-                        <input name="fromdate" id="date" name="date" placeholder="Date" type="date" class="form-control" required>
+                        <input id="date" name="date" placeholder="Date" type="date" class="form-control" required>
                     </div>
                     <div class="form-group">
                       <label >Stock</label>
@@ -83,6 +83,7 @@
          <?php $count++ ?>
          @endforeach
          @endif
+
 
          @if($itemTotal)
          <?php $sum = 0; ?>
