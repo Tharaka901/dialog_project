@@ -494,54 +494,54 @@ function inventoryTableValues(){
 }
 
 
-function viewStockItems(stock_id){
+// function viewStockItems(stock_id){
 
-  $.ajax({
-    type: 'post',
-    url: "/get_stock_items",
-    dataType: 'json',
-    data: {
-      "id": stock_id
-    },
-    success: function(data) {
+//   $.ajax({
+//     type: 'post',
+//     url: "/get_stock_items",
+//     dataType: 'json',
+//     data: {
+//       "id": stock_id
+//     },
+//     success: function(data) {
 
-     var content = '<div class="table-responsive">'
-     content = content + '<table id="stockItemTable" class="table table-bordered table-striped table-hover">';
-     content = content + '<thead class="back_table_color">';
-     content = content + '<tr class="info">';
-     content = content + '<th>#</th>';
-     content = content + '<th>Item</th>';
-     content = content + '<th class="text-center">Quantity</th>';
-     content = content + '</tr>';
-     content = content + '</thead>';
-     content = content + '<tbody>';
+//      var content = '<div class="table-responsive">'
+//      content = content + '<table id="stockItemTable" class="table table-bordered table-striped table-hover">';
+//      content = content + '<thead class="back_table_color">';
+//      content = content + '<tr class="info">';
+//      content = content + '<th>#</th>';
+//      content = content + '<th>Item</th>';
+//      content = content + '<th class="text-center">Quantity</th>';
+//      content = content + '</tr>';
+//      content = content + '</thead>';
+//      content = content + '<tbody>';
 
-     var count = 1;
-     for (var i = 0; i < data.data.length; i++) {
-      content = content + '<tr>';
-      content = content + '<td>'+count+'</td>';
-      content = content + '<td>'+data.data[i].name+'</td>';
-      content = content + '<td class="text-center">'+data.data[i].qty+'</td>';
-      content = content + '</tr>';
-      count++;
-    }
+//      var count = 1;
+//      for (var i = 0; i < data.data.length; i++) {
+//       content = content + '<tr>';
+//       content = content + '<td>'+count+'</td>';
+//       content = content + '<td>'+data.data[i].name+'</td>';
+//       content = content + '<td class="text-center">'+data.data[i].qty+'</td>';
+//       content = content + '</tr>';
+//       count++;
+//     }
 
-    content = content + '</tbody>';
-    content = content + '</table>';
-    content = content + '</div>';
+//     content = content + '</tbody>';
+//     content = content + '</table>';
+//     content = content + '</div>';
 
-    document.getElementById('stockItemTable').innerHTML = "";
-    document.getElementById('stockItemTable').innerHTML = content;
+//     document.getElementById('stockItemTable').innerHTML = "";
+//     document.getElementById('stockItemTable').innerHTML = content;
 
-    $("#stockItemModal").modal("show");stockItemModal
+//     $("#stockItemModal").modal("show");stockItemModal
 
-  },
-  error: function(error) {
-    alert("error occured " + JSON.stringify(error));
-  }
-});
+//   },
+//   error: function(error) {
+//     alert("error occured " + JSON.stringify(error));
+//   }
+// });
 
-}
+// }
 
 
 ////////////////////////////////////  Inventory end/////////////////////////////////////////////

@@ -65,16 +65,24 @@ class StockController extends Controller
 
 public function DsrReceive(Request $request){
 
-    // $results = DB::select('select sd.id, sd.stock_id, s.stock_name, sd.dsr_id, sd.created_at, u.name from stock_has_dsrs AS sd inner join users AS u on(sd.dsr_id = u.id) inner join stocks AS s on (sd.stock_id = s.id) where sd.status = ?', [1]);
+    // $results = DB::table('stock_has_dsrs')
+    // ->join('users', 'stock_has_dsrs.dsr_id', 'users.id')
+    // ->join('stocks', 'stock_has_dsrs.stock_id', 'stocks.id')
+    // ->select('stock_has_dsrs.id','stock_has_dsrs.stock_id','stock_has_dsrs.created_at','stocks.stock_name','stock_has_dsrs.dsr_id','users.name')
+    // ->where('stock_has_dsrs.status','=',1)
+    // ->orderBy('stock_has_dsrs.id','desc')
+    // ->paginate(5);
 
-    $results = DB::table('stock_has_dsrs')
-    ->join('users', 'stock_has_dsrs.dsr_id', 'users.id')
-    ->join('stocks', 'stock_has_dsrs.stock_id', 'stocks.id')
-    ->select('stock_has_dsrs.id','stock_has_dsrs.stock_id','stock_has_dsrs.created_at','stocks.stock_name','stock_has_dsrs.dsr_id','users.name')
-    ->where('stock_has_dsrs.status','=',1)
-    ->orderBy('stock_has_dsrs.id','desc')
-    ->paginate(5);
-    return view('admin.item.dsr_receive', ['stockData'=>$results]);
+   $results = DB::table('stock_dsr_items')
+   ->join('items', 'stock_dsr_items.item_id', 'items.id')
+   ->join('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
+   ->join('users', 'stock_has_dsrs.dsr_id', 'users.id')
+   ->select('items.name','items.updated_at','stock_dsr_items.qty','users.name as user_name')
+   ->where('items.status','=',1)
+   ->orderBy('items.name','asc')
+   ->paginate(10);
+
+   return view('admin.item.dsr_receive', ['stockData'=>$results]);
 }
 
 
@@ -103,14 +111,19 @@ public function TransferStatus(){
 
 public function ViewBalance(){
 
-    $all_stock_items = DB::table('items')->select('items.name','items.qty')->where('items.status','=',1)->orderBy('items.name','asc')
-    ->paginate(50);
-
-    $all_stock_items_total = DB::table('items')->select('items.name','items.qty')->where('items.status','=',1)->get();
-
     $dsrs = DB::table('users')->join('stock_has_dsrs', 'stock_has_dsrs.dsr_id', 'users.id')->select('users.id','users.name')->where('stock_has_dsrs.status','=',1)->where('users.status','=',1)->get();
 
-    return view('admin.item.view_balance', ['stockData'=>$dsrs,'itemData'=>$all_stock_items,'itemTotal'=>$all_stock_items_total]);
+    $all_stock_items = DB::table('items')->select('name','qty')->where('status','=',1) ->orderBy('name','asc')->paginate(10);
+
+    $all_dsr_items = DB::table('items')
+    ->join('stock_dsr_items', 'stock_dsr_items.item_id', 'items.id')
+    ->join('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
+    ->select('items.name','stock_dsr_items.qty')
+    ->where('items.status','=',1)
+    ->orderBy('items.name','asc')
+    ->paginate(10);
+
+    return view('admin.item.view_balance', ['dsrList'=>$dsrs,'stockData'=>$all_stock_items,'dsrStockData'=>$all_dsr_items]);
 
 }
 
@@ -123,65 +136,40 @@ public function GetStockItemsById(Request $request){
 
     if($stock_id == 0){
 
-        $all_stock_items = DB::table('items')
-        ->leftjoin('stock_dsr_items', 'stock_dsr_items.item_id', 'items.id')
-        ->leftjoin('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
-        ->select('items.name','items.qty')
+        $all_stock_items = DB::table('items')->select('name','qty')->where('status','=',1)->orderBy('name','asc')->paginate(10);
+
+        $all_dsr_items = DB::table('items')
+        ->join('stock_dsr_items', 'stock_dsr_items.item_id', 'items.id')
+        ->join('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
+        ->select('items.name','stock_dsr_items.qty')
         ->where('items.status','=',1)
-        ->whereDate('items.created_at','=',$selected_date)
         ->orderBy('items.name','asc')
-        ->paginate(5);
+        ->paginate(10);
 
-        $all_stock_items_total = DB::table('items')
-        ->leftjoin('stock_dsr_items', 'stock_dsr_items.item_id', 'items.id')
-        ->leftjoin('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
-        ->select('items.name','items.qty')
-        ->where('items.status','=',1)
-        ->whereDate('items.created_at','=',$selected_date)
-        ->get();
-
-        return view('admin.item.view_balance',['stockData'=>$dsrs,'itemData'=>$all_stock_items,'itemTotal'=>$all_stock_items_total]);
+        return view('admin.item.view_balance', ['dsrList'=>$dsrs,'stockData'=>$all_stock_items,'dsrStockData'=>$all_dsr_items]);
 
     }else if($stock_id == 00){
 
-      $all_stock_items = DB::table('items')
-      ->select('items.name','items.qty')
-      ->where('items.status','=',1)
-      ->whereDate('created_at','=',$selected_date)
-      ->orderBy('items.name','asc')
-      ->paginate(5);
+     $all_stock_items = DB::table('items')->select('name','qty')->where('status','=',1)->whereDate('created_at','=',$selected_date)->orderBy('name','asc')->paginate(10);
+     return view('admin.item.view_balance', ['dsrList'=>$dsrs,'stockData'=>$all_stock_items,'dsrStockData'=>[] ]);
 
-      $all_stock_items_total = DB::table('items')
-      ->select('items.name','items.qty')
-      ->where('items.status','=',1)
-      ->whereDate('created_at','=',$selected_date)
-      ->get();
+ }else{
 
-      return view('admin.item.view_balance',['stockData'=>$dsrs,'itemData'=>$all_stock_items,'itemTotal'=>$all_stock_items_total]);
 
-  }else{
+    $all_stock_items = DB::table('items')->select('name','qty')->where('status','=',1)->whereDate('created_at','=',$selected_date)->orderBy('name','asc')->paginate(10);
 
-     $all_stock_items = DB::table('items')
-     ->select('items.name','items.qty')
-     ->leftjoin('stock_dsr_items', 'stock_dsr_items.item_id', 'items.id')
-     ->leftjoin('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
-     ->where('items.status','=',1)
-     ->where('stock_has_dsrs.dsr_id','=',$stock_id)
-     ->whereDate('stock_has_dsrs.created_at','=',$selected_date)
-     ->paginate(5);
+    $all_dsr_items = DB::table('items')
+    ->join('stock_dsr_items', 'stock_dsr_items.item_id', 'items.id')
+    ->join('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
+    ->select('items.name','stock_dsr_items.qty')
+    ->where('items.status','=',1)
+    ->whereDate('stock_dsr_items.created_at','=',$selected_date)
+    ->orderBy('items.name','asc')
+    ->paginate(10);
 
-     $all_stock_items_total = DB::table('items')
-     ->select('items.name','items.qty')
-     ->leftjoin('stock_dsr_items', 'stock_dsr_items.item_id', 'items.id')
-     ->leftjoin('stock_has_dsrs', 'stock_has_dsrs.id', 'stock_dsr_items.stock_dsr_id')
-     ->where('items.status','=',1)
-     ->whereDate('stock_has_dsrs.created_at','=',$selected_date)
-     ->where('stock_has_dsrs.dsr_id','=',$stock_id)
-     ->get();
+    return view('admin.item.view_balance', ['dsrList'=>$dsrs,'stockData'=>$all_stock_items,'dsrStockData'=>$all_dsr_items]);
 
-     return view('admin.item.view_balance',['stockData'=>$dsrs,'itemData'=>$all_stock_items,'itemTotal'=>$all_stock_items_total]);
-
- }
+}
 
 
 
