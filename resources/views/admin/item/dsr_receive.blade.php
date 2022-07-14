@@ -56,7 +56,8 @@
               <th>#</th>
               <th>Date & Time</th>
               <th>Name</th>
-              <th class="text-center">View</th>
+              <th>Item</th>
+              <th>Quantity</th>
            </tr>
         </thead>
         <tbody>
@@ -66,11 +67,10 @@
          @foreach($stockData as $stock)
          <tr>
             <td><?php echo $count ?></td>
-            <td>{{ $stock->created_at }}</td>
+            <td>{{ $stock->updated_at }}</td>
             <td>{{ $stock->name }}</td>
-            <td class="text-center">
-              <button type="button" class="btn btn-add btn-sm text-center" onclick="viewStockItems({{ $stock->id }})"><i class="fa fa-eye"></i></button>
-           </td>
+            <td>{{ $stock->name }}</td>
+            <td>{{ $stock->qty }}</td>
         </tr>
         <?php $count++ ?>
         @endforeach

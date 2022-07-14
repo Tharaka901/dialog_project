@@ -25,17 +25,61 @@ class PassportAuthController extends Controller
              if(Hash::check($request->get('password'), $user->password)){
                 return response()->json(['data' => array('info'=>$user_login,'error'=>null)], 200);
             }else{
-                return response()->json(['data' => array('info'=>[],'error'=>'User name or password is incorrect!') ], 200);   
+                //User name or password is incorrect!
+                return response()->json(['data' => array('info'=>[],'error'=>1) ], 200);   
             }
         }
     }else{
-        return response()->json(['data' => array('info'=>[],'error'=>'Please check your credentials!') ], 401);   
+        // Please check your credentials!
+        return response()->json(['data' => array('info'=>[],'error'=>0) ], 401);   
     }
+}
+
+public function MobileUpdatePassword(Request $request){
+
+   $request->validate([
+       'user_id' => 'required',
+       'email' => 'required',
+       'password' => 'required',
+   ]);
+
+   //get the new password with hash
+   $new_password = HASH::make($request->get('password'));
+
+   $updateUserData = DB::table('users')
+   ->where('id','=',$request->get('user_id'))
+   ->update([
+    'password'=> $new_password
+]);
+
+   $user_data = DB::table('users')->where('email', '=', $request->get('email'))->get();
+
+   if($updateUserData){
+    return response()->json(['data' => array('info'=>$user_data,'error'=>null)], 200);
+}else{
+    // Oops.. Error Occured!
+ return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+}
+
+}
+
+
+public function MobileGetItems(Request $request){
+
+   $item_data = DB::table('items')->where('status', '=', 1)->get();
+
+   if($item_data){
+    return response()->json(['data' => array('info'=>$item_data,'error'=>null)], 200);
+}else{
+    // Oops.. Error Occured!
+ return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+}
+
 }
 
 
 
-public function MobileGetInventory(Request $request){
+public function MobileDsrStockData(Request $request){
 
     $allData = [];
     $results = DB::select('select sd.id, sd.stock_id, s.stock_name, sd.dsr_id, u.name from stock_has_dsrs AS sd inner join users AS u on(sd.dsr_id = u.id) inner join stocks AS s on (sd.stock_id = s.id) where sd.status = ? AND u.id = ?', [1,$request->id]);
@@ -48,7 +92,7 @@ public function MobileGetInventory(Request $request){
         $allData["item_data"] = $items;
     }
 
-    return response()->json(['data' => $allData],200);
+    return response()->json(['data' => array('info'=>$allData,'error'=>null)],200);
 
 }
 
