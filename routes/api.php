@@ -23,5 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 // mobile apis
-Route::get('mobile_login',[PassportAuthController::class,'MobileLogin'])->name('mobile_login');
-Route::get('mobile_get_inventory',[PassportAuthController::class,'MobileGetInventory'])->name('mobile_get_inventory');
+Route::post('mobile_login',[PassportAuthController::class,'MobileLogin'])->name('mobile_login');
+Route::post('mobile_get_inventory',[PassportAuthController::class,'MobileGetInventory'])->name('mobile_get_inventory');
