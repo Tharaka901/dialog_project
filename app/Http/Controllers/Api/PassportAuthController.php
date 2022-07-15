@@ -31,7 +31,7 @@ class PassportAuthController extends Controller
         }
     }else{
         // Please check your credentials!
-        return response()->json(['data' => array('info'=>[],'error'=>0) ], 401);   
+        return response()->json(['data' => array('info'=>[],'error'=>0) ], 200);   
     }
 }
 
