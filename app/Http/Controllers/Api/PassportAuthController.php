@@ -58,7 +58,7 @@ public function MobileUpdatePassword(Request $request){
 
 
 public function MobileGetUserbyId(Request $request){
-    $user_data = DB::table('users')->where('status', '=', $request->get('user_id'))->get();
+    $user_data = DB::table('users')->where('id', '=', $request->get('user_id'))->get();
     if($user_data){
         return response()->json(['data' => array('info'=>$user_data,'error'=>null)], 200);
     }else{
