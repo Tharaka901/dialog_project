@@ -34,6 +34,8 @@ class PassportAuthController extends Controller
 }
 }
 
+
+
 public function MobileUpdatePassword(Request $request){
  $request->validate([
      'user_id' => 'required',
@@ -59,6 +61,7 @@ public function MobileUpdatePassword(Request $request){
 }
 
 
+
 public function MobileGetUserbyId(Request $request){
     $user_data = DB::table('users')->where('id', '=', $request->get('user_id'))->get();
     if($user_data){
@@ -69,6 +72,8 @@ public function MobileGetUserbyId(Request $request){
    }
 }
 
+
+
 public function MobileGetItems(Request $request){
     $item_data = DB::table('items')->where('status', '=', 1)->get();
     if($item_data){
@@ -78,6 +83,8 @@ public function MobileGetItems(Request $request){
        return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
    }
 }
+
+
 
 public function MobileGetItemsById(Request $request){
     $item_data = DB::table('items')->where('id', '=', $request->get('item_id'))->get();
@@ -90,18 +97,21 @@ public function MobileGetItemsById(Request $request){
 }
 
 
+
 public function MobileDsrStockData(Request $request){
 
     $results = DB::table('dsr_stocks')
     ->join('stocks','dsr_stocks.stock_id','stocks.id')
     ->join('users','dsr_stocks.dsr_id','users.id')
-    ->select('dsr_stocks.id','dsr_stocks.dsr_id','stocks.stock_name','stocks.stock_name','users.name')
+    ->select('dsr_stocks.id','dsr_stocks.dsr_id','dsr_stocks.created_at','stocks.stock_name','stocks.stock_name','users.name')
     ->where('dsr_stocks.status','=',0)
     ->where('users.id','=',$request->id)
     ->get();
 
     return $this->MobileDsrStockDataItem($results);
 }
+
+
 
 public function MobileDsrStockDataItem($results){
     $allData = [];
@@ -122,11 +132,12 @@ public function MobileDsrStockDataItem($results){
 
 
     for ($x = 0; $x < count($results); $x++) {
-        $allData[] = (object) ['bulk_id' => $results{$x}->id,'items'=>$itemData[$x]];
+        $allData[] = (object) ['bulk_id' => $results{$x}->id,'bulk_created_at' => $results{$x}->created_at,'items'=>$itemData[$x]];
     }
 
     return response()->json(['data' => array('info'=>$allData,'error'=>null)],200);
 }
+
 
 
 public function MobileAddDsrReturnData(Request $request){
