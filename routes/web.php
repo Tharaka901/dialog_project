@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\DsrController;
+use App\Http\Controllers\DsrReturnController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
@@ -48,8 +49,8 @@ Route::post('/delete_item',[ItemController::class,'DeleteItem'])->name('delete_i
 Route::get('/send_inventry',[StockController::class,'SendInventry']);
 Route::post('/send_item',[StockController::class,'SendItem'])->name('send_item');
 
-Route::get('/dsr_receive',[StockController::class,'DsrReceive']);
-Route::post('get_stock_items',[StockController::class,'GetStockItems']);
+Route::get('/dsr_receive',[DsrReturnController::class,'DsrReturn']);
+Route::post('update_return_items',[DsrReturnController::class,'UpdateReturnItems'])->name('update_return_items');
 
 Route::get('transfer_status',[StockController::class,'TransferStatus']);
 

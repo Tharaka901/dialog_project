@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
 {
-    use HasFactory;
 
-    protected $fillable = [
-        'stock_name',
-        'status'
-    ];
+  protected $fillable = [
+    'stock_name',
+    'status',
+];
+
+use HasFactory;
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 11, 2022 at 12:23 PM
+-- Generation Time: Jul 18, 2022 at 08:28 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -166,6 +166,87 @@ INSERT INTO `dsrs` (`id`, `in_hand`, `cash`, `cheque`, `dsr_user_id`, `status`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `dsr_returns`
+--
+
+CREATE TABLE `dsr_returns` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `dsr_id` double NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `qty` double NOT NULL DEFAULT 0,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `dsr_returns`
+--
+
+INSERT INTO `dsr_returns` (`id`, `dsr_id`, `item_id`, `qty`, `status`, `created_at`, `updated_at`) VALUES
+(1, 3, 2, 50, 0, '2022-07-17 02:44:57', '2022-07-17 02:44:57'),
+(2, 5, 3, 25, 1, '2022-07-17 02:45:29', '2022-07-17 02:45:29');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dsr_stocks`
+--
+
+CREATE TABLE `dsr_stocks` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `stock_id` int(11) NOT NULL,
+  `dsr_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `dsr_stocks`
+--
+
+INSERT INTO `dsr_stocks` (`id`, `stock_id`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 0, '2022-07-16 09:05:26', '2022-07-16 09:05:26'),
+(2, 1, 1, 0, '2022-07-16 09:11:45', '2022-07-16 09:11:45'),
+(3, 1, 3, 0, '2022-07-18 03:37:38', '2022-07-18 03:37:38'),
+(4, 1, 3, 0, '2022-07-18 03:38:10', '2022-07-18 03:38:10');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dsr_stock_items`
+--
+
+CREATE TABLE `dsr_stock_items` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `dsr_stock_id` double NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `qty` double NOT NULL DEFAULT 0,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `dsr_stock_items`
+--
+
+INSERT INTO `dsr_stock_items` (`id`, `dsr_stock_id`, `item_id`, `qty`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 10, 1, '2022-07-16 09:05:26', '2022-07-16 09:05:26'),
+(2, 1, 2, 5, 1, '2022-07-16 09:05:26', '2022-07-16 09:05:26'),
+(3, 2, 6, 8, 1, '2022-07-16 09:11:46', '2022-07-16 09:11:46'),
+(4, 2, 5, 3, 1, '2022-07-16 09:11:46', '2022-07-16 09:11:46'),
+(5, 2, 4, 10, 1, '2022-07-16 09:11:46', '2022-07-16 09:11:46'),
+(6, 3, 3, 20, 1, '2022-07-18 03:37:38', '2022-07-18 03:37:38'),
+(7, 3, 4, 10, 1, '2022-07-18 03:37:38', '2022-07-18 03:37:38'),
+(8, 3, 5, 5, 1, '2022-07-18 03:37:38', '2022-07-18 03:37:38'),
+(9, 4, 2, 5, 1, '2022-07-18 03:38:10', '2022-07-18 03:38:10'),
+(10, 4, 3, 10, 1, '2022-07-18 03:38:10', '2022-07-18 03:38:10');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `failed_jobs`
 --
 
@@ -201,12 +282,12 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `name`, `purchasing_price`, `selling_price`, `qty`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Internet Card 49', 45, 49, 975, 1, '2022-07-04 07:08:20', '2022-07-04 07:08:20'),
-(2, 'Internet Card 99', 90, 100, 990, 1, '2022-07-04 07:13:04', '2022-07-04 07:13:04'),
-(3, 'Internet Card 199', 180, 199, 495, 1, '2022-07-04 07:26:10', '2022-07-04 07:26:10'),
-(4, 'Internet Card 249', 230, 250, 485, 1, '2022-07-04 07:26:53', '2022-07-04 07:26:53'),
-(5, 'Dialog Tv', 4500, 5000, 200, 1, '2022-07-04 07:27:24', '2022-07-04 07:27:24'),
-(6, 'Dialog Broadband EDIT', 800, 990, 590, 1, '2022-07-04 07:28:06', '2022-07-04 07:28:06');
+(1, 'Internet Card 49', 45, 49, 950, 1, '2022-07-04 07:08:20', '2022-07-04 07:08:20'),
+(2, 'Internet Card 99', 90, 100, 950, 1, '2022-07-04 07:13:04', '2022-07-04 07:13:04'),
+(3, 'Internet Card 199', 180, 199, 585, 1, '2022-07-04 07:26:10', '2022-07-04 07:26:10'),
+(4, 'Internet Card 249', 230, 250, 415, 1, '2022-07-04 07:26:53', '2022-07-04 07:26:53'),
+(5, 'Dialog Tv', 4500, 5000, 132, 1, '2022-07-04 07:27:24', '2022-07-04 07:27:24'),
+(6, 'Dialog Broadband EDIT', 800, 990, 532, 1, '2022-07-04 07:28:06', '2022-07-04 07:28:06');
 
 -- --------------------------------------------------------
 
@@ -279,7 +360,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (86, '2022_07_05_095611_create_dsrs_table', 1),
 (87, '2022_07_08_080439_create_stocks_table', 1),
 (88, '2022_07_08_102458_stock_dsr_items', 1),
-(89, '2022_07_08_102458_stock_has_dsr', 1);
+(89, '2022_07_08_102458_stock_has_dsr', 1),
+(90, '2022_07_16_070115_create_stocks_table', 6),
+(91, '2022_07_16_070851_create_dsr_stocks_table', 7),
+(92, '2022_07_16_071653_create_dsr_stock_items_table', 7),
+(93, '2022_07_17_074459_create_dsr_returns_table', 8);
 
 -- --------------------------------------------------------
 
@@ -481,53 +566,6 @@ INSERT INTO `stocks` (`id`, `stock_name`, `status`, `created_at`, `updated_at`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `stock_dsr_items`
---
-
-CREATE TABLE `stock_dsr_items` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `qty` double NOT NULL DEFAULT 0,
-  `stock_dsr_id` double NOT NULL,
-  `status` int(11) NOT NULL DEFAULT 1,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `stock_dsr_items`
---
-
-INSERT INTO `stock_dsr_items` (`id`, `item_id`, `qty`, `stock_dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 5, 1, 1, '2022-07-11 05:37:52', NULL),
-(2, 6, 10, 1, 1, '2022-07-11 05:37:52', NULL),
-(3, 3, 5, 1, 1, '2022-07-11 05:37:52', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stock_has_dsrs`
---
-
-CREATE TABLE `stock_has_dsrs` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `stock_id` int(11) NOT NULL,
-  `dsr_id` int(11) NOT NULL,
-  `status` int(11) NOT NULL DEFAULT 1,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `stock_has_dsrs`
---
-
-INSERT INTO `stock_has_dsrs` (`id`, `stock_id`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 5, 1, '2022-07-11 05:37:52', NULL);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
@@ -551,7 +589,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `nic`, `contact`, `route`, `password`, `profile_photo_path`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'rehan peter', 'rehan@gmail.com', '256465186418', '0489411846', 'Panadura', '$2y$10$WhA9uQF599EF9Fi.wx93TuMsMutlQKtpJTRiDUZArDt/sKUsEqOm.', 'upload/user_images/1656933319.jpg', 1, NULL, '2022-07-04 05:45:19', '2022-07-04 05:45:19'),
+(1, 'rehan peter', 'rehan@gmail.com', '256465186418', '0489411846', 'Panadura', '$2y$10$h4VP3PW92cZ32CJJdtn/x.jUisKLNztlyarTv0QjOp1cLhXSm3grm', 'upload/user_images/1656933319.jpg', 1, NULL, '2022-07-04 05:45:19', '2022-07-04 05:45:19'),
 (2, 'erandaka', 'erandaka@gmail.com', '123489494986', '0756486186', 'Malabe', '$2y$10$wSy7ivlrjVSCfECerhNKZuhw0VhEYxWmOXnNjFiigcsh8ojy4AjS2', 'upload/user_images/1656933369.jpg', 1, NULL, '2022-07-04 05:46:09', '2022-07-04 05:46:09'),
 (3, 'Kasun Dimantha', 'kasun@gmail.com', '516486516486', '4646848948', 'Colombo', '$2y$10$GIOFmb0xaPO1nJQZA0IkvO1ATJ46D/..AKOUzCSBFFF.WIu.2K09G', 'upload/user_images/1656933403.jpg', 1, NULL, '2022-07-04 05:46:43', '2022-07-04 05:46:43'),
 (4, 'Harsha Dilshan edit', 'harsha@gmail.com', '123', '546', 'route name edit', '$2y$10$3aZTsF53qj7j7oHEkoh5qulKO3b.7kUM4rImSwDB0rO1qVvWLPlD2', 'upload/user_images/1656934822.png', 1, NULL, '2022-07-04 05:47:25', '2022-07-04 05:47:25'),
@@ -595,6 +633,24 @@ ALTER TABLE `directbankings`
 -- Indexes for table `dsrs`
 --
 ALTER TABLE `dsrs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `dsr_returns`
+--
+ALTER TABLE `dsr_returns`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `dsr_stocks`
+--
+ALTER TABLE `dsr_stocks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `dsr_stock_items`
+--
+ALTER TABLE `dsr_stock_items`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -683,18 +739,6 @@ ALTER TABLE `stocks`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `stock_dsr_items`
---
-ALTER TABLE `stock_dsr_items`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `stock_has_dsrs`
---
-ALTER TABLE `stock_has_dsrs`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -741,6 +785,24 @@ ALTER TABLE `dsrs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `dsr_returns`
+--
+ALTER TABLE `dsr_returns`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `dsr_stocks`
+--
+ALTER TABLE `dsr_stocks`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `dsr_stock_items`
+--
+ALTER TABLE `dsr_stock_items`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -756,7 +818,7 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -793,18 +855,6 @@ ALTER TABLE `sales`
 --
 ALTER TABLE `stocks`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `stock_dsr_items`
---
-ALTER TABLE `stock_dsr_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `stock_has_dsrs`
---
-ALTER TABLE `stock_has_dsrs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`

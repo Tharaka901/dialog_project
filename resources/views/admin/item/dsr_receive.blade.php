@@ -58,30 +58,34 @@
               <th>Name</th>
               <th>Item</th>
               <th>Quantity</th>
+              <th class="text-center">Approve</th>
            </tr>
         </thead>
         <tbody>
 
-         @if($stockData)
+         @if($returnData)
          <?php $count = 1; ?>
-         @foreach($stockData as $stock)
+         @foreach($returnData as $return)
          <tr>
             <td><?php echo $count ?></td>
-            <td>{{ $stock->updated_at }}</td>
-            <td>{{ $stock->name }}</td>
-            <td>{{ $stock->name }}</td>
-            <td>{{ $stock->qty }}</td>
-        </tr>
-        <?php $count++ ?>
-        @endforeach
-        @endif
+            <td>{{ $return->created_at }}</td>
+            <td>{{ $return->user_name }}</td>
+            <td>{{ $return->name }}</td>
+            <td>{{ $return->qty }}</td>
+            <td class="text-center">
+               <button type="button" class="btn btn-add btn-sm" onclick="approveQty({{ $return->return_id }},{{ $return->item_id }},{{ $return->qty }})"><i class="fa fa-pencil"></i></button>
+            </td>
+         </tr>
+         <?php $count++ ?>
+         @endforeach
+         @endif
 
-     </tbody>
-  </table>
+      </tbody>
+   </table>
 </div>
 
 <div class="d-flex justify-content-center">
- <div>{!! $stockData->links() !!}</div>
+ <div>{!! $returnData->links() !!}</div>
 </div>
 
 </div>
@@ -92,28 +96,6 @@
 
 </section>
 <!-- /.content -->
-</div>
-
-
-<!-- User Modal1 -->
-<div class="modal fade" id="stockItemModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-     <div class="modal-content">
-        <div class="modal-header modal-header-primary">
-           <h3><i class="fa fa-eye m-r-5"></i> View Stock Items</h3>
-           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        </div>
-        <div class="modal-body">
-           <div class="row">
-              <div class="col-md-12">
-
-               <div id="stockItemTable"></div>
-
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
 </div>
 
 @endsection

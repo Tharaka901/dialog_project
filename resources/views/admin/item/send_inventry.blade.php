@@ -66,7 +66,8 @@
            <th style="display: none;">#</th>
            <th>Item Name</th>
            <th style="width: 150px">Qty</th>
-           <th>Balance Stock</th>
+           <th class="text-center">Balance Stock</th>
+           <th class="text-center">Remove</th>
         </tr>
      </thead>
      <tbody>

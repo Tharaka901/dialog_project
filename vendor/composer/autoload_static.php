@@ -620,6 +620,8 @@ class ComposerStaticInitdd9eca7f3353e704fd87eb783bc5986b
         'App\\Models\\Credit' => __DIR__ . '/../..' . '/app/Models/Credit.php',
         'App\\Models\\CreditCollection' => __DIR__ . '/../..' . '/app/Models/CreditCollection.php',
         'App\\Models\\Dsr' => __DIR__ . '/../..' . '/app/Models/Dsr.php',
+        'App\\Models\\DsrStock' => __DIR__ . '/../..' . '/app/Models/DsrStock.php',
+        'App\\Models\\DsrStockItem' => __DIR__ . '/../..' . '/app/Models/DsrStockItem.php',
         'App\\Models\\Item' => __DIR__ . '/../..' . '/app/Models/Item.php',
         'App\\Models\\RetailerReturn' => __DIR__ . '/../..' . '/app/Models/RetailerReturn.php',
         'App\\Models\\Sale' => __DIR__ . '/../..' . '/app/Models/Sale.php',

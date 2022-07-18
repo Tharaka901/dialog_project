@@ -30,6 +30,8 @@ return array(
     'App\\Models\\Credit' => $baseDir . '/app/Models/Credit.php',
     'App\\Models\\CreditCollection' => $baseDir . '/app/Models/CreditCollection.php',
     'App\\Models\\Dsr' => $baseDir . '/app/Models/Dsr.php',
+    'App\\Models\\DsrStock' => $baseDir . '/app/Models/DsrStock.php',
+    'App\\Models\\DsrStockItem' => $baseDir . '/app/Models/DsrStockItem.php',
     'App\\Models\\Item' => $baseDir . '/app/Models/Item.php',
     'App\\Models\\RetailerReturn' => $baseDir . '/app/Models/RetailerReturn.php',
     'App\\Models\\Sale' => $baseDir . '/app/Models/Sale.php',

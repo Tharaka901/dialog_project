@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\DsrReturn;
+use App\Models\Item;
 use DB;
 
 class PassportAuthController extends Controller
@@ -89,16 +91,54 @@ public function MobileGetItemsById(Request $request){
 
 
 public function MobileDsrStockData(Request $request){
+
+    $results = DB::table('dsr_stocks')
+    ->join('stocks','dsr_stocks.stock_id','stocks.id')
+    ->join('users','dsr_stocks.dsr_id','users.id')
+    ->select('dsr_stocks.id','dsr_stocks.dsr_id','stocks.stock_name','stocks.stock_name','users.name')
+    ->where('dsr_stocks.status','=',0)
+    ->where('users.id','=',$request->id)
+    ->get();
+
+    return $this->MobileDsrStockDataItem($results);
+}
+
+public function MobileDsrStockDataItem($results){
     $allData = [];
-    $results = DB::select('select sd.id, sd.stock_id, s.stock_name, sd.dsr_id, u.name from stock_has_dsrs AS sd inner join users AS u on(sd.dsr_id = u.id) inner join stocks AS s on (sd.stock_id = s.id) where sd.status = ? AND u.id = ?', [1,$request->id]);
-    $allData["stock_data"] = $results;
+    $itemData = [];
+
+
     foreach($results as $data){
-        $items = DB::select('select sdi.item_id, sdi.qty  FROM stock_has_dsrs AS sd
-            INNER JOIN stock_dsr_items AS sdi ON (sd.id = sdi.stock_dsr_id) INNER JOIN items AS i ON (sdi.item_id = i.id) 
-            WHERE sd.status = ? AND sdi.stock_dsr_id= ?', [1, $data->id]);
-        $allData["item_data"] = $items;
+        $items = DB::table('dsr_stocks')
+        ->join('dsr_stock_items','dsr_stocks.id','dsr_stock_items.dsr_stock_id')
+        ->join('items','dsr_stock_items.item_id','items.id')
+        ->select('dsr_stock_items.id','dsr_stock_items.item_id','items.name','dsr_stock_items.qty')
+        ->where('dsr_stocks.status','=',0)
+        ->where('dsr_stock_items.dsr_stock_id','=',$data->id)
+        ->get();
+
+        array_push($itemData, $items);
     }
+
+
+    for ($x = 0; $x < count($results); $x++) {
+        $allData[] = (object) ['bulk_id' => $results{$x}->id,'items'=>$itemData[$x]];
+    }
+
     return response()->json(['data' => array('info'=>$allData,'error'=>null)],200);
+}
+
+
+public function MobileAddDsrReturnData(Request $request){
+
+   $dsr_return = new DsrReturn;
+   $dsr_return->dsr_id = $request->get('dsr_id');
+   $dsr_return->item_id = $request->get('item_id');
+   $dsr_return->qty = $request->get('qty');
+   $dsr_return->status = 0;
+   $dsr_return->save();
+
+   return response()->json(['data' => array('info'=>$dsr_return,'error'=>null)],200);
 }
 
 

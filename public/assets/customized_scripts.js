@@ -420,7 +420,8 @@ $("#txtItem").change(function(){
             "<td style='display: none;'>"+data.data[i].id+"</td>"+
             "<td>"+data.data[i].name+"</td>"+
             "<td><input type='number' class='form-control' placeholder='Qty' required min='0'></td>"+
-            "<td>"+data.data[i].qty+"</td>"+
+            "<td class='text-center'>"+data.data[i].qty+"</td>"+
+            "<td class='text-center'><button type='button' class='btn btn-danger' onclick='removeRow(this)'><i class='fa fa-trash'></i></button></td>"+
             "</tr>");
          }else{
           swal_warning("Item Exist!");
@@ -436,6 +437,10 @@ $("#txtItem").change(function(){
   }
 
 });
+
+function removeRow(thisval) {
+  $(thisval).closest("tr").remove();
+}
 
 
 $("#btnSenditems").click(function() {
@@ -494,54 +499,29 @@ function inventoryTableValues(){
 }
 
 
-// function viewStockItems(stock_id){
+function approveQty(return_id,item_id,qty){
 
-//   $.ajax({
-//     type: 'post',
-//     url: "/get_stock_items",
-//     dataType: 'json',
-//     data: {
-//       "id": stock_id
-//     },
-//     success: function(data) {
+  $.ajax({
+    type: 'post',
+    url: "update_return_items",
+    dataType: 'json',
+    data: {
+      "id": return_id,"item_id": item_id,"qty": qty
+    },
+    success: function(data) {
 
-//      var content = '<div class="table-responsive">'
-//      content = content + '<table id="stockItemTable" class="table table-bordered table-striped table-hover">';
-//      content = content + '<thead class="back_table_color">';
-//      content = content + '<tr class="info">';
-//      content = content + '<th>#</th>';
-//      content = content + '<th>Item</th>';
-//      content = content + '<th class="text-center">Quantity</th>';
-//      content = content + '</tr>';
-//      content = content + '</thead>';
-//      content = content + '<tbody>';
+      swal_success("Data Updated Successfully!!");
+      setTimeout(function() {
+        location.reload();
+      }, 1300);
 
-//      var count = 1;
-//      for (var i = 0; i < data.data.length; i++) {
-//       content = content + '<tr>';
-//       content = content + '<td>'+count+'</td>';
-//       content = content + '<td>'+data.data[i].name+'</td>';
-//       content = content + '<td class="text-center">'+data.data[i].qty+'</td>';
-//       content = content + '</tr>';
-//       count++;
-//     }
+    },
+    error: function(error) {
+      alert("error occured " + JSON.stringify(error));
+    }
+  });
 
-//     content = content + '</tbody>';
-//     content = content + '</table>';
-//     content = content + '</div>';
-
-//     document.getElementById('stockItemTable').innerHTML = "";
-//     document.getElementById('stockItemTable').innerHTML = content;
-
-//     $("#stockItemModal").modal("show");stockItemModal
-
-//   },
-//   error: function(error) {
-//     alert("error occured " + JSON.stringify(error));
-//   }
-// });
-
-// }
+}
 
 
 ////////////////////////////////////  Inventory end/////////////////////////////////////////////

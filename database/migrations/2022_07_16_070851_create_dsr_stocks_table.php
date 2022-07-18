@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('stocks', function (Blueprint $table) {
+        Schema::create('dsr_stocks', function (Blueprint $table) {
             $table->id();
-            $table->string("stock_name",50);
+            $table->integer("stock_id");
+            $table->integer("dsr_id");
             $table->integer("status")->default("1");
             $table->timestamps();
         });
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stocks');
+        Schema::dropIfExists('dsr_stocks');
     }
 };

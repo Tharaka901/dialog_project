@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('stock_dsr_items', function (Blueprint $table) {
-            $table->id();
-            $table->integer("item_id");
-            $table->double("qty")->default(0);
-            $table->double("stock_dsr_id");
-            $table->integer("status")->default("1");
-            $table->timestamps();
-        });
+        Schema::create('stocks', function (Blueprint $table) {
+           $table->id();
+           $table->string("stock_name",50);
+           $table->integer("status")->default("1");
+           $table->timestamps();
+       });
     }
 
     /**
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stock_dsr_items');
+        Schema::dropIfExists('stocks');
     }
 };
