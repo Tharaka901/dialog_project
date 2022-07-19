@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 18, 2022 at 08:28 AM
+-- Generation Time: Jul 19, 2022 at 06:25 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -197,6 +197,7 @@ CREATE TABLE `dsr_stocks` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `stock_id` int(11) NOT NULL,
   `dsr_id` int(11) NOT NULL,
+  `total` double NOT NULL DEFAULT 0,
   `status` int(11) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -206,11 +207,10 @@ CREATE TABLE `dsr_stocks` (
 -- Dumping data for table `dsr_stocks`
 --
 
-INSERT INTO `dsr_stocks` (`id`, `stock_id`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 0, '2022-07-16 09:05:26', '2022-07-16 09:05:26'),
-(2, 1, 1, 0, '2022-07-16 09:11:45', '2022-07-16 09:11:45'),
-(3, 1, 3, 0, '2022-07-18 03:37:38', '2022-07-18 03:37:38'),
-(4, 1, 3, 0, '2022-07-18 03:38:10', '2022-07-18 03:38:10');
+INSERT INTO `dsr_stocks` (`id`, `stock_id`, `dsr_id`, `total`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 30, 1, '2022-07-18 08:00:44', '2022-07-18 08:00:44'),
+(2, 1, 2, 20, 1, '2022-07-18 08:01:16', '2022-07-18 08:01:16'),
+(3, 1, 2, 15, 1, '2022-07-18 12:23:30', '2022-07-18 12:23:30');
 
 -- --------------------------------------------------------
 
@@ -233,16 +233,14 @@ CREATE TABLE `dsr_stock_items` (
 --
 
 INSERT INTO `dsr_stock_items` (`id`, `dsr_stock_id`, `item_id`, `qty`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 10, 1, '2022-07-16 09:05:26', '2022-07-16 09:05:26'),
-(2, 1, 2, 5, 1, '2022-07-16 09:05:26', '2022-07-16 09:05:26'),
-(3, 2, 6, 8, 1, '2022-07-16 09:11:46', '2022-07-16 09:11:46'),
-(4, 2, 5, 3, 1, '2022-07-16 09:11:46', '2022-07-16 09:11:46'),
-(5, 2, 4, 10, 1, '2022-07-16 09:11:46', '2022-07-16 09:11:46'),
-(6, 3, 3, 20, 1, '2022-07-18 03:37:38', '2022-07-18 03:37:38'),
-(7, 3, 4, 10, 1, '2022-07-18 03:37:38', '2022-07-18 03:37:38'),
-(8, 3, 5, 5, 1, '2022-07-18 03:37:38', '2022-07-18 03:37:38'),
-(9, 4, 2, 5, 1, '2022-07-18 03:38:10', '2022-07-18 03:38:10'),
-(10, 4, 3, 10, 1, '2022-07-18 03:38:10', '2022-07-18 03:38:10');
+(1, 1, 1, 5, 1, '2022-07-18 08:00:44', '2022-07-18 08:00:44'),
+(2, 1, 2, 10, 1, '2022-07-18 08:00:44', '2022-07-18 08:00:44'),
+(3, 1, 3, 15, 1, '2022-07-18 08:00:44', '2022-07-18 08:00:44'),
+(4, 2, 6, 2, 1, '2022-07-18 08:01:16', '2022-07-18 08:01:16'),
+(5, 2, 5, 3, 1, '2022-07-18 08:01:16', '2022-07-18 08:01:16'),
+(6, 2, 4, 15, 1, '2022-07-18 08:01:16', '2022-07-18 08:01:16'),
+(7, 3, 3, 5, 1, '2022-07-18 12:23:30', '2022-07-18 12:23:30'),
+(8, 3, 4, 10, 1, '2022-07-18 12:23:30', '2022-07-18 12:23:30');
 
 -- --------------------------------------------------------
 
@@ -282,12 +280,12 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `name`, `purchasing_price`, `selling_price`, `qty`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Internet Card 49', 45, 49, 950, 1, '2022-07-04 07:08:20', '2022-07-04 07:08:20'),
-(2, 'Internet Card 99', 90, 100, 950, 1, '2022-07-04 07:13:04', '2022-07-04 07:13:04'),
-(3, 'Internet Card 199', 180, 199, 585, 1, '2022-07-04 07:26:10', '2022-07-04 07:26:10'),
-(4, 'Internet Card 249', 230, 250, 415, 1, '2022-07-04 07:26:53', '2022-07-04 07:26:53'),
-(5, 'Dialog Tv', 4500, 5000, 132, 1, '2022-07-04 07:27:24', '2022-07-04 07:27:24'),
-(6, 'Dialog Broadband EDIT', 800, 990, 532, 1, '2022-07-04 07:28:06', '2022-07-04 07:28:06');
+(1, 'Internet Card 49', 45, 49, 945, 1, '2022-07-04 07:08:20', '2022-07-04 07:08:20'),
+(2, 'Internet Card 99', 90, 100, 935, 1, '2022-07-04 07:13:04', '2022-07-04 07:13:04'),
+(3, 'Internet Card 199', 180, 199, 550, 1, '2022-07-04 07:26:10', '2022-07-04 07:26:10'),
+(4, 'Internet Card 249', 230, 250, 390, 1, '2022-07-04 07:26:53', '2022-07-04 07:26:53'),
+(5, 'Dialog Tv', 4500, 5000, 127, 1, '2022-07-04 07:27:24', '2022-07-04 07:27:24'),
+(6, 'Dialog Broadband EDIT', 800, 990, 530, 1, '2022-07-04 07:28:06', '2022-07-04 07:28:06');
 
 -- --------------------------------------------------------
 
@@ -364,7 +362,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (90, '2022_07_16_070115_create_stocks_table', 6),
 (91, '2022_07_16_070851_create_dsr_stocks_table', 7),
 (92, '2022_07_16_071653_create_dsr_stock_items_table', 7),
-(93, '2022_07_17_074459_create_dsr_returns_table', 8);
+(93, '2022_07_17_074459_create_dsr_returns_table', 8),
+(94, '2022_07_18_075251_create_dsr_stocks_table', 9);
 
 -- --------------------------------------------------------
 
@@ -794,13 +793,13 @@ ALTER TABLE `dsr_returns`
 -- AUTO_INCREMENT for table `dsr_stocks`
 --
 ALTER TABLE `dsr_stocks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `dsr_stock_items`
 --
 ALTER TABLE `dsr_stock_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -818,7 +817,7 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
