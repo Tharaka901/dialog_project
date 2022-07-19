@@ -524,4 +524,38 @@ function approveQty(return_id,item_id,qty){
 }
 
 
+function viewTransferItems(stock_id){
+
+  $.ajax({
+    type: 'post',
+    url: "view_transfer_items",
+    dataType: 'json',
+    data: {
+      "id": stock_id
+    },
+    beforeSend: function() {
+      $("#transfer_status_table tbody").remove();
+    },
+    success: function(data) {
+
+      var count = 1;
+      for (var i = 0; i < data.length; i++) {
+       $("#transfer_status_table").append("<tr><td>"+count+"</td>"+
+        "<td>"+data[i].name+"</td>"+
+        "<td>"+data[i].qty+"</td>"+
+        "</tr>");
+       count++;
+     }
+
+     $("#transferItemModal").modal("show");
+
+   },
+   error: function(error) {
+    alert("error occured " + JSON.stringify(error));
+  }
+});
+
+}
+
+
 ////////////////////////////////////  Inventory end/////////////////////////////////////////////

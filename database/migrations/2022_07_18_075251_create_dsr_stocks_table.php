@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer("stock_id");
             $table->integer("dsr_id");
+            $table->double("total")->default(0);
             $table->integer("status")->default("1");
             $table->timestamps();
         });

@@ -53,9 +53,10 @@ Route::get('/dsr_receive',[DsrReturnController::class,'DsrReturn']);
 Route::post('update_return_items',[DsrReturnController::class,'UpdateReturnItems'])->name('update_return_items');
 
 Route::get('transfer_status',[StockController::class,'TransferStatus']);
+Route::post('view_transfer_items',[StockController::class,'viewTransferItems']);
 
-Route::get('/view_balance',[StockController::class,'ViewBalance']);
-Route::post('/view_balance',[StockController::class,'GetStockItemsById'])->name('view_balance');
+Route::get('/view_balance',[StockController::class,'ViewBalance'])->name('view_balance');
+Route::post('/get_view_balance',[StockController::class,'GetStockItemsById'])->name('get_view_balance');
 
 
 //DSR

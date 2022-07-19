@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form method="post" action="{{ route('view_balance') }}">
+                <form method="post" action="{{ route('get_view_balance') }}">
                     @csrf
                     <div class="position-relative form-group">
                         <label for="fromdate" class="">Select Date</label>
@@ -45,8 +45,7 @@
                    </select>
                </div>
                <div class="form-group">
-                 <button type="submit" class="btn btn-add"><i class="fa fa-check"></i> View
-                 </button>
+                 <button type="submit" class="btn btn-add"><i class="fa fa-check"></i>View</button>
              </div>
          </form>
      </div>
@@ -73,36 +72,23 @@
          </thead>
          <tbody>
              @if($dsrStockData)
-             <?php $count = 1; $sum1=0;?>
+             <?php $count = 1; $sum=0;?>
              @foreach($dsrStockData as $dsr_items)
-             <tr>
-                <td><?php echo $count ?></td>
-                 <td>{{ $dsr_items->name }}</td>
-                 <td>{{ number_format($dsr_items->item_stock,2) }}</td>
-             </tr>
 
-             <tr>
-                 <td><?php echo $count1 ?></td>
-                 <td>{{ $dsr_items->name }}</td>
-                 <td>{{ number_format($dsr_items->dsr_stock,2) }}</td>
-             </tr>
+             <?php print_r(json_encode($dsr_items)); ?>
 
-             <?php $count1++; $sum1 = $sum1 + $dsr_items->item_stock ?>
              @endforeach
-             @endif
+            @endif
 
-             <tr class="back_table_color">
+            <tr class="back_table_color">
                 <td colspan="2">Total</td>
-                <td colspan="2">{{ number_format($sum1,2) }}</td>
+                <td colspan="2">{{ number_format(10000,2) }}</td>
             </tr>
 
         </tbody>
     </table>
 </div>
 
-<div class="d-flex justify-content-center">
-    <div>{!! $dsrStockData->links() !!}</div>
-</div>
 
 </div>
 </div>
