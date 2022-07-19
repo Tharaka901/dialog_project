@@ -58,7 +58,7 @@
               <th>Name</th>
               <th>Item</th>
               <th>Quantity</th>
-              <th class="text-center">Approve</th>
+              <th class="text-center">Action</th>
            </tr>
         </thead>
         <tbody>
@@ -73,7 +73,8 @@
             <td>{{ $return->name }}</td>
             <td>{{ $return->qty }}</td>
             <td class="text-center">
-               <button type="button" class="btn btn-add btn-sm" onclick="approveQty({{ $return->return_id }},{{ $return->item_id }},{{ $return->qty }})"><i class="fa fa-pencil"></i></button>
+               <button type="button" class="btn btn-add btn-sm" onclick="approveQty({{ $return->return_id }},{{ $return->item_id }},{{ $return->qty }})"><i class="fa fa-check"></i></button>
+               <button type="button" class="btn btn-danger btn-sm" onclick="approveQty({{ $return->return_id }},{{ $return->item_id }},{{ $return->qty }})"><i class="fa fa-close"></i></button>
             </td>
          </tr>
          <?php $count++ ?>

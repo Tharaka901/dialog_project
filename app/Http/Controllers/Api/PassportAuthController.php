@@ -167,22 +167,15 @@ public function MobileUpdateStockStatus(Request $request){
 
 
 public function MobileGetItemCount(Request $request){
+ 
+ $stock_data = DB::table('dsr_stock_items')
+ ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
+ ->select('dsr_stock_id','item_id', DB::raw('count(item_id) as item_count'))
+ ->where('dsr_id', '=', $request->get('dsr_id'))
+ ->groupBy('item_id')
+ ->get();
 
- $stock_data = DB::table('dsr_stocks')->where('dsr_id', '=', $request->get('dsr_id'))->where('status', '=', 1)->get();
-
- $allData = [];
- foreach($stock_data as $stock){
-     $item_data = DB::table('dsr_stock_items')
-     ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
-     ->select('dsr_stock_items.id','dsr_stock_items.item_id','dsr_stock_items.qty')
-     ->where('dsr_stocks.status', '=', 1)
-     ->whereIn('dsr_stock_id', array($stock->id))
-     ->get();
-
-     $allData[] = $item_data;
- }
-
- return response()->json(['data' => array('info'=>$allData,'error'=>null)],200);
+ return response()->json(['data' => array('info'=>$stock_data,'error'=>null)],200);
 }
 
 

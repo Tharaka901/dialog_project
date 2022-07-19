@@ -421,6 +421,7 @@ $("#txtItem").change(function(){
             "<td>"+data.data[i].name+"</td>"+
             "<td><input type='number' class='form-control' placeholder='Qty' required min='0'></td>"+
             "<td class='text-center'>"+data.data[i].qty+"</td>"+
+            "<td class='text-center' style='display:none;'>"+data.data[i].selling_price+"</td>"+
             "<td class='text-center'><button type='button' class='btn btn-danger' onclick='removeRow(this)'><i class='fa fa-trash'></i></button></td>"+
             "</tr>");
          }else{
@@ -492,6 +493,7 @@ function inventoryTableValues(){
     "item_id" : $(tr).find('td:eq(0)').text(),
     "qty" : $(tr).find('td:eq(2)').find('input').val(),
     "bstock" : $(tr).find('td:eq(3)').text(),
+    "sprice" : $(tr).find('td:eq(4)').text(),
   }     
 }); 
  TableData.shift();

@@ -67,6 +67,7 @@
            <th>Item Name</th>
            <th style="width: 150px">Qty</th>
            <th class="text-center">Balance Stock</th>
+           <th class="text-center" style='display:none;'>Selling Price</th>
            <th class="text-center">Remove</th>
         </tr>
      </thead>

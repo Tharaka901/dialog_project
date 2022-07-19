@@ -32,6 +32,8 @@ class DsrReturnController extends Controller
 
      // update stock
     $update_item_qty = DB::table('items')->where('id','=',$request->item_id)->increment('qty', $request->qty);
+    $update_dsr_qty = DB::table('dsr_stock_items')->where('id','=',$request->item_id)->increment('qty', $request->qty);
+
     $update_return_status = DB::table('dsr_returns')->where('id','=',$request->id)->update(['status'=>1]);
 
     return response($update_item_qty);

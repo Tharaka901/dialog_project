@@ -34,7 +34,7 @@
                 <li><a href="{{ asset('/send_inventry') }}">Send Inventory</a></li>
              </ul>
              <ul class="treeview-menu">
-                 <li><a href="{{ asset('/dsr_receive') }}">DSR Receive</a></li>
+                 <li><a href="{{ asset('/dsr_receive') }}">DSR Returns</a></li>
              </ul>
              <ul class="treeview-menu">
                 <li><a href="{{ asset('/transfer_status') }}">Transfer Status</a></li>
