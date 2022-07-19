@@ -15,55 +15,55 @@
     <!-- Main content -->
     <section class="content">
        <div class="row">
-        <div class=" col-sm-4 col-md-4 col-lg-3">
+        <div class=" col-sm-12 col-md-6 col-lg-3">
              <div id="cardbox1">
                 <div class="statistic-box">
                    <i class="fa fa-handshake-o fa-3x"></i>
                    <div class="counter-number pull-right">
-                      <span class="count-number">Rs.1,015,789.00</span>
+                      <span class="count-number" style="font-size: 14px;" >Rs.1,015,789.00</span>
                       <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
                       </span>
                    </div>
-                   <h3> Inhand</h3>
+                   <h5 style="font-size: 14px;">Inhand</h5>
                 </div>
              </div>
           </div>
-          <div class=" col-sm-4 col-md-4 col-lg-3">
+          <div class=" col-sm-12 col-md-6 col-lg-3">
              <div id="cardbox2">
                 <div class="statistic-box">
                    <i class="fa fa-bank fa-3x"></i>
                    <div class="counter-number pull-right">
-                      <span class="count-number">Rs.315,400.00</span>
+                      <span class="count-number" style="font-size: 14px;" >Rs.315,400.00</span>
                       <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
                       </span>
                    </div>
-                   <h3>  Bank</h3>
+                   <h5 style="font-size: 14px;">Bank</h5>
                 </div>
              </div>
           </div>
-          <div class=" col-sm-4 col-md-4 col-lg-3">
+          <div class=" col-sm-12 col-md-6 col-lg-3">
              <div id="cardbox3">
                 <div class="statistic-box">
                    <i class="fa fa-money fa-3x"></i>
                    <div class="counter-number pull-right">
-                      <i class="ti ti-money"></i><span class="count-number">Rs.615,000.00</span>
+                      <i class="ti ti-money"></i><span class="count-number" style="font-size: 14px;" >Rs.615,000.00</span>
                       <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
                       </span>
                    </div>
-                   <h3>  Credit Collection</h3>
+                   <h5 style="font-size: 14px;">Credit Collection</h5>
                 </div>
              </div>
           </div>
-          <div class=" col-sm-4 col-md-4 col-lg-3">
+          <div class=" col-sm-12 col-md-6 col-lg-3">
              <div id="cardbox4">
                 <div class="statistic-box">
                    <i class="fa fa-credit-card fa-3x"></i>
                    <div class="counter-number pull-right">
-                      <span class="count-number">Rs.300,000.00</span>
+                      <span class="count-number" style="font-size: 14px;" >Rs.300,000.00</span>
                       <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
                       </span>
                    </div>
-                   <h3> Credit</h3>
+                   <h5 style="font-size: 14px;"> Credit</h5>
                 </div>
              </div>
           </div>

@@ -31,10 +31,10 @@
                 <li><a href="{{ asset('/item') }}">Item List</a></li>
              </ul>
              <ul class="treeview-menu">
-                <li><a href="{{ asset('/send_inventry') }}">Send Inventry</a></li>
+                <li><a href="{{ asset('/send_inventry') }}">Send Inventory</a></li>
              </ul>
              <ul class="treeview-menu">
-                 <li><a href="{{ asset('/dsr_receive') }}">DSR Returns</a></li>
+                 <li><a href="{{ asset('/dsr_receive') }}">DSR Receive</a></li>
              </ul>
              <ul class="treeview-menu">
                 <li><a href="{{ asset('/transfer_status') }}">Transfer Status</a></li>
@@ -45,16 +45,16 @@
           </li>
           <li class="treeview">
             <a href="#">
-            <i class="fa fa-folder"></i><span>Day Summery</span>
+            <i class="fa fa-folder"></i><span>Day Summary</span>
             <span class="pull-right-container">
             <i class="fa fa-angle-left float-right"></i>
             </span>
             </a>
             <ul class="treeview-menu">
-               <li><a href="{{ asset('/pending_dsr') }}">Pending DSR Summery</a></li>
+               <li><a href="{{ asset('/pending_dsr') }}">Pending DSR Summary</a></li>
             </ul>
             <ul class="treeview-menu">
-                <li><a href="{{ asset('/complete_dsr') }}">Complete DSR Summery</a></li>
+                <li><a href="{{ asset('/complete_dsr') }}">Complete DSR Summary</a></li>
             </ul>
          </li>
          <li class="treeview">
