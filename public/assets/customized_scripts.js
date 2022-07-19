@@ -513,9 +513,9 @@ function approveQty(return_id,item_id,qty){
     success: function(data) {
 
       swal_success("Data Updated Successfully!!");
-      setTimeout(function() {
-        location.reload();
-      }, 1300);
+      // setTimeout(function() {
+      //   location.reload();
+      // }, 1300);
 
     },
     error: function(error) {

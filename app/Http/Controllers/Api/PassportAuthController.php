@@ -172,6 +172,7 @@ public function MobileGetItemCount(Request $request){
  ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
  ->select('dsr_stock_id','item_id', DB::raw('count(item_id) as item_count'), DB::raw('sum(qty) as qty_sum'))
  ->where('dsr_id', '=', $request->get('dsr_id'))
+ ->where('dsr_stocks.status', '=', 1)
  ->groupBy('item_id')
  ->get();
 
