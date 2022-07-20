@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('dsr_returns', function (Blueprint $table) {
             $table->id();
-            $table->double("dsr_id");
+            $table->integer("dsr_stock_id");
+            $table->integer("dsr_id");
             $table->integer("item_id");
             $table->double("qty")->default(0);
             $table->integer("status")->default("1");

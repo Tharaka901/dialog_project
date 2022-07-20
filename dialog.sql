@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2022 at 09:14 AM
+-- Generation Time: Jul 20, 2022 at 02:29 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -171,22 +171,14 @@ INSERT INTO `dsrs` (`id`, `in_hand`, `cash`, `cheque`, `dsr_user_id`, `status`, 
 
 CREATE TABLE `dsr_returns` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `dsr_id` double NOT NULL,
+  `dsr_stock_id` int(11) NOT NULL,
+  `dsr_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `qty` double NOT NULL DEFAULT 0,
   `status` int(11) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `dsr_returns`
---
-
-INSERT INTO `dsr_returns` (`id`, `dsr_id`, `item_id`, `qty`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 4, 20, 0, '2022-07-19 02:50:20', '2022-07-19 02:50:20'),
-(2, 2, 4, 5, 0, '2022-07-19 02:50:56', '2022-07-19 02:50:56'),
-(3, 2, 4, 5, 0, '2022-07-19 03:09:46', '2022-07-19 03:09:46');
 
 -- --------------------------------------------------------
 
@@ -209,7 +201,7 @@ CREATE TABLE `dsr_stocks` (
 --
 
 INSERT INTO `dsr_stocks` (`id`, `stock_id`, `dsr_id`, `total`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1542, 0, '2022-07-19 05:51:18', '2022-07-19 05:51:18'),
+(1, 1, 1, 1542, 1, '2022-07-19 05:51:18', '2022-07-19 05:51:18'),
 (2, 1, 2, 1148, 1, '2022-07-19 05:55:40', '2022-07-19 05:55:40'),
 (3, 1, 2, 25700, 1, '2022-07-19 05:56:21', '2022-07-19 05:56:21');
 
@@ -365,7 +357,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (92, '2022_07_16_071653_create_dsr_stock_items_table', 7),
 (93, '2022_07_17_074459_create_dsr_returns_table', 8),
 (94, '2022_07_18_075251_create_dsr_stocks_table', 9),
-(95, '2022_07_20_064804_create_retailer_returns_table', 10);
+(95, '2022_07_20_064804_create_retailer_returns_table', 10),
+(96, '2022_07_20_122723_create_dsr_returns_table', 11);
 
 -- --------------------------------------------------------
 
@@ -534,7 +527,9 @@ CREATE TABLE `sales` (
 --
 
 INSERT INTO `sales` (`id`, `item_name`, `item_qty`, `item_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'KIT', 1, 10, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23');
+(1, 'KIT', 1, 10, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23'),
+(2, 'Dialog 49', 20, 50, 1, 1, '2022-07-20 02:33:36', '2022-07-20 02:33:36'),
+(3, 'Dialog 199', 10, 200, 1, 1, '2022-07-20 02:33:36', '2022-07-20 02:33:36');
 
 -- --------------------------------------------------------
 
@@ -782,7 +777,7 @@ ALTER TABLE `dsrs`
 -- AUTO_INCREMENT for table `dsr_returns`
 --
 ALTER TABLE `dsr_returns`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `dsr_stocks`
@@ -812,7 +807,7 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -842,7 +837,7 @@ ALTER TABLE `retailer_returns`
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `stocks`
