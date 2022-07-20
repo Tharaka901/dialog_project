@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('retailer_returns', function (Blueprint $table) {
             $table->id();
             $table->string('re_customer_name',100)->nullable();
-            $table->string('re_item_name',100)->nullable();
+            $table->integer('re_item_id');
             $table->double('re_item_qty')->default(0);
             $table->double('re_item_amount')->default(0);
             $table->integer('dsr_id')->default(0);

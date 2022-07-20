@@ -25,12 +25,20 @@
                 </div>
             </div>
             <div class="card-body">
+
                 <form method="post" action="{{ route('get_view_balance') }}">
                     @csrf
+
                     <div class="position-relative form-group">
                         <label for="fromdate" class="">Select Date</label>
                         <input id="date" name="date" placeholder="Date" type="date" class="form-control" required>
                     </div>
+
+                    <div class="position-relative form-group">
+                        <label for="fromdate" class="">Select Time</label>
+                        <input id="time" name="time" placeholder="Date" type="time" class="form-control" required>
+                    </div>
+
                     <div class="form-group">
                       <label >Stock</label>
                       <select class="form-control" id="stock_id" name="stock_id" required>
@@ -44,10 +52,13 @@
                        @endif
                    </select>
                </div>
+
                <div class="form-group">
                  <button type="submit" class="btn btn-add"><i class="fa fa-check"></i>View</button>
              </div>
+
          </form>
+
      </div>
  </div>
 </div>
@@ -71,9 +82,8 @@
              </tr>
          </thead>
          <tbody>
+            <?php $count = 1; $sum=0;?>
              @if($dsrStockData)
-             <?php $count = 1; $sum=0;?>
-
              @foreach($dsrStockData as $dsr_items)
 
              <tr>

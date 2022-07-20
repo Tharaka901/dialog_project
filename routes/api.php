@@ -32,3 +32,4 @@ Route::post('mobile_dsr_stock',[PassportAuthController::class,'MobileDsrStockDat
 Route::post('mobile_add_dsr_return',[PassportAuthController::class,'MobileAddDsrReturnData'])->name('mobile_add_dsr_return');
 Route::post('mobile_update_stock_status',[PassportAuthController::class,'MobileUpdateStockStatus'])->name('mobile_update_stock_status');
 Route::post('mobile_get_item_count',[PassportAuthController::class,'MobileGetItemCount'])->name('mobile_get_item_count');
+Route::post('mobile_dsr_sales',[PassportAuthController::class,'MobileDsrSales'])->name('mobile_dsr_sales');

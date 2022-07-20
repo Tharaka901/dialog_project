@@ -101,6 +101,7 @@ public function ViewBalance(){
 public function GetStockItemsById(Request $request){
 
     $selected_date = $request->get('date');
+    $selected_time = $request->get('time');
     $stock_id = $request->get('stock_id');
 
     $dsrs = DB::table('users')->join('dsr_stocks', 'dsr_stocks.dsr_id', 'users.id')->select('users.id','users.name')->where('dsr_stocks.status','=',1)->where('users.status','=',1)->distinct()->get();
@@ -128,6 +129,10 @@ public function GetStockItemsById(Request $request){
 
     }else{
 
+        $all_dsr_items = DB::table('items')->join('dsr_stock_items', 'dsr_stock_items.item_id', 'items.id')->join('dsr_stocks', 'dsr_stocks.id', 'dsr_stock_items.dsr_stock_id')->select('items.name', DB::raw('sum(dsr_stock_items.qty) as qty'))->where('items.status','=',1)->where('dsr_stocks.dsr_id','=',$stock_id)->groupBy('items.name')->orderBy('items.name','asc')->get();
+        $array = json_decode(json_encode($all_dsr_items), true);
+
+        return view('admin.item.view_balance', ['dsrList'=>$dsrs,'dsrStockData'=>$array]);
 
     }
 
