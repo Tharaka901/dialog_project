@@ -169,34 +169,63 @@ public function MobileUpdateStockStatus(Request $request){
 
 public function MobileGetItemCount(Request $request){
 
-   $stock_data = DB::table('dsr_stock_items')
-   ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
-   ->select('dsr_stock_id','item_id', DB::raw('count(item_id) as item_count'), DB::raw('sum(qty) as qty_sum'))
-   ->where('dsr_id', '=', $request->get('dsr_id'))
-   ->where('dsr_stocks.status', '=', 1)
-   ->groupBy('item_id')
-   ->get();
+  $allData = [];
+  $itemData = [];
 
-   return response()->json(['data' => array('info'=>$stock_data,'error'=>null)],200);
+  $stock_data = DB::table('dsr_stocks')->select('id')->where('dsr_id','=',$request->get('dsr_id'))->where('status', '=', 1)->get();
+
+  foreach($stock_data as $sd){
+    $stock_item_data = DB::table('dsr_stock_items')
+    ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
+    ->select('dsr_stock_id','item_id', DB::raw('sum(qty) as qty_sum'))
+    ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->where('dsr_stocks.id', '=', $sd->id)
+    ->where('dsr_stocks.status', '=', 1)
+    ->groupBy('item_id')
+    ->get();
+
+    array_push($itemData, $stock_item_data);
+
+}
+
+for ($x = 0; $x < count($stock_data); $x++) {
+    $allData[] = (object) ['stock_id' => $stock_data{$x}->id, 'items' => $itemData[$x] ];
+}
+
+return response()->json(['data' => array('info'=>$allData,'error'=>null)],200);
 }
 
 
 
 public function MobileDsrSales(Request $request){
-
-    $saleTable = json_decode($request->get('saleTable'),true);
-
-    foreach($saleTable as $sale){
+    $dsrId = $request->get('dsr_id');
+    $saleItems = $request->get('sale_items');
+    foreach($saleItems as $sale){
         $sales = new Sale([
             'item_name'=>$sale['itemName'],
             'item_qty'=>$sale['itemQty'],
             'item_amount'=>$sale['itemPrice'],
-            'dsr_id'=>$sale['dsr_id'],
+            'dsr_id'=>$dsrId
         ]);
         $sales->save();
     }
+    return response()->json(['data' => array('info'=>$saleItems,'error'=>null)],200);
+}
 
-    return response()->json(['data' => array('info'=>$saleTable,'error'=>null)],200);
+
+public function MobileDsrCredits(Request $request){
+    $dsrId = $request->get('dsr_id');
+    $saleItems = $request->get('sale_items');
+    foreach($saleItems as $sale){
+        $sales = new Sale([
+            'item_name'=>$sale['itemName'],
+            'item_qty'=>$sale['itemQty'],
+            'item_amount'=>$sale['itemPrice'],
+            'dsr_id'=>$dsrId
+        ]);
+        $sales->save();
+    }
+    return response()->json(['data' => array('info'=>$saleItems,'error'=>null)],200);
 }
 
 
