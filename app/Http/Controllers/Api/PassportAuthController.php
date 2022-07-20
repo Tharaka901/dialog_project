@@ -191,7 +191,7 @@ public function MobileDsrSales(Request $request){
             'item_name'=>$sale['itemName'],
             'item_qty'=>$sale['itemQty'],
             'item_amount'=>$sale['itemPrice'],
-            'dsr_id'=>$last_id,
+            'dsr_id'=>$sale['dsr_id'],
         ]);
         $sales->save();
     }
