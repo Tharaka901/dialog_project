@@ -19,50 +19,50 @@ use DB;
 class PassportAuthController extends Controller
 {
 
-   public function MobileLogin(Request $request){
-       $request->validate([
-           'email' => 'required',
-           'password' => 'required',
-       ]);
-       $user_login = DB::table('users')->where('email', '=', $request->get('email'))->get();
-       if(count($user_login) !=0){
-           foreach($user_login as $user){
-             if(Hash::check($request->get('password'), $user->password)){
-                return response()->json(['data' => array('info'=>$user_login,'error'=>null)], 200);
-            }else{
+ public function MobileLogin(Request $request){
+     $request->validate([
+         'email' => 'required',
+         'password' => 'required',
+     ]);
+     $user_login = DB::table('users')->where('email', '=', $request->get('email'))->get();
+     if(count($user_login) !=0){
+         foreach($user_login as $user){
+           if(Hash::check($request->get('password'), $user->password)){
+            return response()->json(['data' => array('info'=>$user_login,'error'=>null)], 200);
+        }else{
                 //User name or password is incorrect!
-                return response()->json(['data' => array('info'=>[],'error'=>1) ], 200);   
-            }
+            return response()->json(['data' => array('info'=>[],'error'=>1) ], 200);   
         }
-    }else{
-        // Please check your credentials!
-        return response()->json(['data' => array('info'=>[],'error'=>0) ], 200);   
     }
+}else{
+        // Please check your credentials!
+    return response()->json(['data' => array('info'=>[],'error'=>0) ], 200);   
+}
 }
 
 
 
 public function MobileUpdatePassword(Request $request){
-   $request->validate([
-       'user_id' => 'required',
-       'email' => 'required',
-       'password' => 'required',
-   ]);
+ $request->validate([
+     'user_id' => 'required',
+     'email' => 'required',
+     'password' => 'required',
+ ]);
    //get the new password with hash
-   $new_password = HASH::make($request->get('password'));
+ $new_password = HASH::make($request->get('password'));
 
-   $updateUserData = DB::table('users')
-   ->where('id','=',$request->get('user_id'))
-   ->update([
+ $updateUserData = DB::table('users')
+ ->where('id','=',$request->get('user_id'))
+ ->update([
     'password'=> $new_password
 ]);
 
-   $user_data = DB::table('users')->where('email', '=', $request->get('email'))->get();
-   if($updateUserData){
+ $user_data = DB::table('users')->where('email', '=', $request->get('email'))->get();
+ if($updateUserData){
     return response()->json(['data' => array('info'=>$user_data,'error'=>null)], 200);
 }else{
     // Oops.. Error Occured!
- return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
 }
 }
 
@@ -74,8 +74,8 @@ public function MobileGetUserbyId(Request $request){
         return response()->json(['data' => array('info'=>$user_data,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
@@ -86,8 +86,8 @@ public function MobileGetItems(Request $request){
         return response()->json(['data' => array('info'=>$item_data,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
@@ -98,8 +98,8 @@ public function MobileGetItemsById(Request $request){
         return response()->json(['data' => array('info'=>$item_data,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
@@ -119,12 +119,12 @@ public function MobileDsrStockData(Request $request){
 
 
 public function MobileGetDsrStockIds(Request $request){
- $allData = [];
- $itemData = [];
+   $allData = [];
+   $itemData = [];
 
- $stock_data = DB::table('dsr_stocks')->select('id')->where('dsr_id','=',$request->get('dsr_id'))->where('status', '=', 1)->get();
+   $stock_data = DB::table('dsr_stocks')->select('id')->where('dsr_id','=',$request->get('dsr_id'))->where('status', '=', 1)->get();
 
- foreach($stock_data as $sd){
+   foreach($stock_data as $sd){
     $stock_item_data = DB::table('dsr_stock_items')
     ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
     ->select('qty')
@@ -174,15 +174,15 @@ public function MobileDsrStockDataItem($results){
 
 public function MobileAddDsrReturnData(Request $request){
 
- $dsr_return = new DsrReturn;
- $dsr_return->dsr_stock_id = $request->get('dsr_stock_id');
- $dsr_return->dsr_id = $request->get('dsr_id');
- $dsr_return->item_id = $request->get('item_id');
- $dsr_return->qty = $request->get('qty');
- $dsr_return->status = 0;
- $dsr_return->save();
+   $dsr_return = new DsrReturn;
+   $dsr_return->dsr_stock_id = $request->get('dsr_stock_id');
+   $dsr_return->dsr_id = $request->get('dsr_id');
+   $dsr_return->item_id = $request->get('item_id');
+   $dsr_return->qty = $request->get('qty');
+   $dsr_return->status = 0;
+   $dsr_return->save();
 
- if($dsr_return){
+   if($dsr_return){
     return response()->json(['data' => array('info'=>$dsr_return,'error'=>null)],200);
 }else{
     return response()->json(['data' => array('info'=>[],'error'=>null)],401);
@@ -316,15 +316,14 @@ public function MobileDsrBankings(Request $request){
     $dsrId = $request->get('dsr_id');
     $retilerItems = $request->get('retilers');
 
-    foreach($retilerItems as $reit){
-        $retailers = new RetailerReturn([
-            're_customer_name'=>$reit['reCustomerName'],
-            're_item_id'=>$reit['reitemId'],
-            're_item_qty'=>$reit['reQuantity'],
-            're_item_amount'=>$reit['reAmount'],
-            'dsr_id'=>$dsrId,
+    foreach($bankingTable as $banking){
+        $bankings = new banking([
+            'bank_name'=>$banking['bank'],
+            'bank_ref_no'=>$banking['refno'],
+            'bank_amount'=>$banking['amount'],
+            'dsr_id'=>$last_id,
         ]);
-        $retailers->save();
+        $bankings->save();
     }
 
     return response()->json(['data' => array('info'=>$retilerItems,'error'=>null)],200);
