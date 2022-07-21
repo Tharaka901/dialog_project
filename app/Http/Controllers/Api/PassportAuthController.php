@@ -198,6 +198,7 @@ public function MobileGetDsrReturnData(Request $request){
     ->where('status','=',0)
     ->where('dsr_id','=',$request->get('dsr_id'))
     ->where('dsr_stock_id','=',$request->get('dsr_stock_id'))
+    ->where('item_id','=',$request->get('item_id'))
     ->groupBy('item_id')
     ->get();
 
@@ -266,12 +267,67 @@ public function MobileDsrCredits(Request $request){
         $credits = new Credit([
             'credit_customer_name'=>$credit['customerName'],
             'credit_amount'=>$credit['amount'],
-            'dsr_id'=>$last_id,
+            'dsr_id'=>$dsrId,
         ]);
         $credits->save();
     }
 
-    return response()->json(['data' => array('info'=>$saleItems,'error'=>null)],200);
+    return response()->json(['data' => array('info'=>$creditItems,'error'=>null)],200);
+}
+
+
+public function MobileDsrCreditcollections(Request $request){
+    $dsrId = $request->get('dsr_id');
+    $creditCollectionItems = $request->get('creditcollections');
+
+    foreach($creditCollectionItems as $cc){
+        $credit_collections = new CreditCollection([
+            'credit_collection_customer_name'=>$cc['ccName'],
+            'credit_collection_amount'=>$cc['ccAmount'],
+            'dsr_id'=>$dsrId,
+        ]);
+        $credit_collections->save();
+    }
+
+    return response()->json(['data' => array('info'=>$creditCollectionItems,'error'=>null)],200);
+}
+
+
+public function MobileDsrRetialers(Request $request){
+    $dsrId = $request->get('dsr_id');
+    $retilerItems = $request->get('retilers');
+
+    foreach($retilerItems as $reit){
+        $retailers = new RetailerReturn([
+            're_customer_name'=>$reit['reCustomerName'],
+            're_item_id'=>$reit['reitemId'],
+            're_item_qty'=>$reit['reQuantity'],
+            're_item_amount'=>$reit['reAmount'],
+            'dsr_id'=>$dsrId,
+        ]);
+        $retailers->save();
+    }
+
+    return response()->json(['data' => array('info'=>$retilerItems,'error'=>null)],200);
+}
+
+
+public function MobileDsrBankings(Request $request){
+    $dsrId = $request->get('dsr_id');
+    $retilerItems = $request->get('retilers');
+
+    foreach($retilerItems as $reit){
+        $retailers = new RetailerReturn([
+            're_customer_name'=>$reit['reCustomerName'],
+            're_item_id'=>$reit['reitemId'],
+            're_item_qty'=>$reit['reQuantity'],
+            're_item_amount'=>$reit['reAmount'],
+            'dsr_id'=>$dsrId,
+        ]);
+        $retailers->save();
+    }
+
+    return response()->json(['data' => array('info'=>$retilerItems,'error'=>null)],200);
 }
 
 

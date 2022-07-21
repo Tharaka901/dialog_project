@@ -36,3 +36,6 @@ Route::post('mobile_update_stock_status',[PassportAuthController::class,'MobileU
 Route::post('mobile_get_item_count',[PassportAuthController::class,'MobileGetItemCount'])->name('mobile_get_item_count');
 Route::post('mobile_dsr_sales',[PassportAuthController::class,'MobileDsrSales'])->name('mobile_dsr_sales');
 Route::post('mobile_dsr_credits',[PassportAuthController::class,'MobileDsrCredits'])->name('mobile_dsr_credits');
+Route::post('mobile_dsr_creditcollections',[PassportAuthController::class,'MobileDsrCreditcollections'])->name('mobile_dsr_creditcollections');
+Route::post('mobile_dsr_retialers',[PassportAuthController::class,'MobileDsrRetialers'])->name('mobile_dsr_retialers');
+Route::post('mobile_dsr_bankings',[PassportAuthController::class,'MobileDsrBankings'])->name('mobile_dsr_bankings');
