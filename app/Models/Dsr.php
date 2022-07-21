@@ -14,6 +14,8 @@ class Dsr extends Model
         'in_hand',
         'cash',
         'cheque',
+        'dsr_user_id',
+        'created_at',
         'status',
     ];
 }
