@@ -170,6 +170,7 @@ public function MobileDsrStockDataItem($results){
 public function MobileAddDsrReturnData(Request $request){
 
    $dsr_return = new DsrReturn;
+   $dsr_return->dsr_stock_id = $request->get('dsr_stock_id');
    $dsr_return->dsr_id = $request->get('dsr_id');
    $dsr_return->item_id = $request->get('item_id');
    $dsr_return->qty = $request->get('qty');
