@@ -28,6 +28,7 @@ Route::post('mobile_update_password',[PassportAuthController::class,'MobileUpdat
 Route::post('mobile_get_userbyId',[PassportAuthController::class,'MobileGetUserbyId'])->name('mobile_get_userbyId');
 Route::post('mobile_getItems',[PassportAuthController::class,'MobileGetItems'])->name('mobile_getItems');
 Route::post('mobile_getItems_byId',[PassportAuthController::class,'MobileGetItemsById'])->name('mobile_getItems_byId');
+Route::post('mobile_getItems_bydsrId',[PassportAuthController::class,'MobileGetItemsByDsrId'])->name('mobile_getItems_bydsrId');
 Route::post('mobile_dsr_stock',[PassportAuthController::class,'MobileDsrStockData'])->name('mobile_dsr_stock');
 Route::post('mobile_get_dsr_stockIds',[PassportAuthController::class,'MobileGetDsrStockIds'])->name('mobile_get_dsr_stockIds');
 Route::post('mobile_add_dsr_return',[PassportAuthController::class,'MobileAddDsrReturnData'])->name('mobile_add_dsr_return');

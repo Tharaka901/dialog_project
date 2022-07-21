@@ -104,6 +104,28 @@ public function MobileGetItemsById(Request $request){
 }
 
 
+public function MobileGetItemsByDsrId(Request $request){
+
+    $item_data = DB::table('dsr_stock_items')
+    ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
+    ->join('items','dsr_stock_items.item_id','items.id')
+    ->select('items.id', 'items.name')
+    ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->where('dsr_stocks.status', '=', 1)
+    ->groupBy('items.id')
+    ->orderBy('items.name')
+    ->get();
+
+
+    if($item_data){
+        return response()->json(['data' => array('info'=>$item_data,'error'=>null)], 200);
+    }else{
+    // Oops.. Error Occured!
+     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+ }
+}
+
+
 
 public function MobileDsrStockData(Request $request){
 
