@@ -382,7 +382,6 @@ public function MobileDsrInhands(Request $request){
         'cash' => $request->get('cash'),
         'cheque' => $request->get('cheque'),
         'dsr_user_id' => $request->get('dsr_id'),
-        'created_at' => $request->get('date'),
     ]);
     $inhand->save();
 
