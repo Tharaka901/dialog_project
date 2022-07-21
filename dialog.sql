@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 21, 2022 at 11:36 AM
+-- Generation Time: Jul 21, 2022 at 01:59 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -66,7 +66,8 @@ CREATE TABLE `bankings` (
 --
 
 INSERT INTO `bankings` (`id`, `bank_name`, `bank_ref_no`, `bank_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Sampath', '123456789', 9, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23');
+(2, 'sampath', '123456789', 2500, 4, 1, '2022-07-21 04:10:22', '2022-07-21 04:10:22'),
+(3, 'commercial', '789456', 1237, 4, 1, '2022-07-21 04:10:22', '2022-07-21 04:10:22');
 
 -- --------------------------------------------------------
 
@@ -139,7 +140,8 @@ CREATE TABLE `directbankings` (
 --
 
 INSERT INTO `directbankings` (`id`, `direct_bank_customer_name`, `direct_bank_name`, `direct_bank_ref_no`, `direct_bank_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Viduranga', 'Commercial', '987654321', 10, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23');
+(1, 'sampath', 'commercail', '123456789', 2500, 4, 1, '2022-07-21 04:18:45', '2022-07-21 04:18:45'),
+(2, 'nuwan', 'NDB', '789132741', 159753, 4, 1, '2022-07-21 04:18:46', '2022-07-21 04:18:46');
 
 -- --------------------------------------------------------
 
@@ -163,7 +165,7 @@ CREATE TABLE `dsrs` (
 --
 
 INSERT INTO `dsrs` (`id`, `in_hand`, `cash`, `cheque`, `dsr_user_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 7, 3, 4, 1, 1, '2022-07-05 21:43:23', '2022-07-05 21:43:23');
+(2, 300, 100, 200, 4, 1, '2022-07-05 21:43:23', '2022-07-21 04:34:44');
 
 -- --------------------------------------------------------
 
@@ -187,7 +189,7 @@ CREATE TABLE `dsr_returns` (
 --
 
 INSERT INTO `dsr_returns` (`id`, `dsr_stock_id`, `dsr_id`, `item_id`, `qty`, `status`, `created_at`, `updated_at`) VALUES
-(1, 4, 4, 3, 3, 0, '2022-07-20 22:25:13', '2022-07-20 22:25:13'),
+(1, 4, 4, 3, 3, 2, '2022-07-20 22:25:13', '2022-07-20 22:25:13'),
 (9, 4, 4, 3, 5, 0, '2022-07-20 22:25:13', '2022-07-20 22:25:13');
 
 -- --------------------------------------------------------
@@ -212,10 +214,11 @@ CREATE TABLE `dsr_stocks` (
 
 INSERT INTO `dsr_stocks` (`id`, `stock_id`, `dsr_id`, `total`, `status`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 4960, 2, '2022-07-21 03:49:20', '2022-07-21 03:49:20'),
-(2, 1, 3, 5165, 0, '2022-07-21 03:50:17', '2022-07-21 03:50:17'),
+(2, 1, 3, 5165, 1, '2022-07-21 03:50:17', '2022-07-21 03:50:17'),
 (3, 1, 4, 7925, 1, '2022-07-21 03:50:49', '2022-07-21 03:50:49'),
 (4, 1, 4, 11492, 1, '2022-07-21 03:52:00', '2022-07-21 03:52:00'),
-(5, 1, 5, 800, 0, '2022-07-21 04:59:58', '2022-07-21 04:59:58');
+(5, 1, 5, 800, 1, '2022-07-21 04:59:58', '2022-07-21 04:59:58'),
+(6, 1, 5, 500, 1, '2022-07-21 11:36:08', '2022-07-21 11:36:08');
 
 -- --------------------------------------------------------
 
@@ -248,7 +251,8 @@ INSERT INTO `dsr_stock_items` (`id`, `dsr_stock_id`, `item_id`, `qty`, `status`,
 (8, 3, 6, 7, 1, '2022-07-21 03:50:49', '2022-07-21 03:50:49'),
 (9, 4, 3, 5, 1, '2022-07-21 03:52:00', '2022-07-21 03:52:00'),
 (10, 4, 6, 10, 1, '2022-07-21 03:52:00', '2022-07-21 03:52:00'),
-(11, 5, 2, 8, 1, '2022-07-21 04:59:58', '2022-07-21 04:59:58');
+(11, 5, 2, 8, 1, '2022-07-21 04:59:58', '2022-07-21 04:59:58'),
+(12, 6, 2, 5, 1, '2022-07-21 11:36:08', '2022-07-21 11:36:08');
 
 -- --------------------------------------------------------
 
@@ -289,7 +293,7 @@ CREATE TABLE `items` (
 
 INSERT INTO `items` (`id`, `name`, `purchasing_price`, `selling_price`, `qty`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Internet Card 49', 45, 49, 900, 1, '2022-07-04 07:08:20', '2022-07-04 07:08:20'),
-(2, 'Internet Card 99', 90, 100, 890, 1, '2022-07-04 07:13:04', '2022-07-04 07:13:04'),
+(2, 'Internet Card 99', 90, 100, 885, 1, '2022-07-04 07:13:04', '2022-07-04 07:13:04'),
 (3, 'Internet Card 199', 180, 199, 525, 1, '2022-07-04 07:26:10', '2022-07-04 07:26:10'),
 (4, 'Internet Card 249', 230, 250, 386, 1, '2022-07-04 07:26:53', '2022-07-04 07:26:53'),
 (5, 'Dialog Tv', 4500, 5000, 620, 1, '2022-07-04 07:27:24', '2022-07-04 07:27:24'),
@@ -763,7 +767,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `bankings`
 --
 ALTER TABLE `bankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `credits`
@@ -781,13 +785,13 @@ ALTER TABLE `credit_collections`
 -- AUTO_INCREMENT for table `directbankings`
 --
 ALTER TABLE `directbankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `dsrs`
 --
 ALTER TABLE `dsrs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `dsr_returns`
@@ -799,13 +803,13 @@ ALTER TABLE `dsr_returns`
 -- AUTO_INCREMENT for table `dsr_stocks`
 --
 ALTER TABLE `dsr_stocks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `dsr_stock_items`
 --
 ALTER TABLE `dsr_stock_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`

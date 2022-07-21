@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use DB;
+use Alert;
 
 class DsrReturnController extends Controller
 {
@@ -37,10 +38,20 @@ class DsrReturnController extends Controller
     $update_dsr_qty = DB::table('dsr_stock_items')->where('item_id','=',$request->item_id)->where('dsr_stock_id','=',$request->dsr_stock_id)->decrement('qty', $request->qty);
 
 
-    // update return table status
+    // update return table status as 1
     $update_return_status = DB::table('dsr_returns')->where('id','=',$request->id)->update(['status'=>1]);
 
     return response($update_item_qty);
+
+}
+
+public function RollBackReturnItems(Request $request){
+
+    // update return table status as 2
+    $update_return_status = DB::table('dsr_returns')->where('id','=',$request->id)->update(['status'=>2]);
+
+    Alert::success('Success!!', 'Stock Rejected successfully!');
+    return redirect()->back();
 
 }
 

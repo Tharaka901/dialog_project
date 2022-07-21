@@ -51,6 +51,7 @@ Route::post('/send_item',[StockController::class,'SendItem'])->name('send_item')
 
 Route::get('/dsr_receive',[DsrReturnController::class,'DsrReturn']);
 Route::post('update_return_items',[DsrReturnController::class,'UpdateReturnItems'])->name('update_return_items');
+Route::get('rolling_return_items/{id}',[DsrReturnController::class,'RollBackReturnItems'])->name('rolling_return_items');
 
 Route::get('transfer_status',[StockController::class,'TransferStatus']);
 Route::post('view_transfer_items',[StockController::class,'viewTransferItems']);
