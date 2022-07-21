@@ -9,6 +9,11 @@ use App\Models\User;
 use App\Models\DsrReturn;
 use App\Models\Item;
 use App\Models\Sale;
+use App\Models\Credit;
+use App\Models\CreditCollection;
+use App\Models\RetailerReturn;
+use App\Models\banking;
+use App\Models\directbanking;
 use DB;
 
 class PassportAuthController extends Controller
@@ -177,7 +182,31 @@ public function MobileAddDsrReturnData(Request $request){
  $dsr_return->status = 0;
  $dsr_return->save();
 
- return response()->json(['data' => array('info'=>$dsr_return,'error'=>null)],200);
+ if($dsr_return){
+    return response()->json(['data' => array('info'=>$dsr_return,'error'=>null)],200);
+}else{
+    return response()->json(['data' => array('info'=>[],'error'=>null)],401);
+}
+
+}
+
+
+public function MobileGetDsrReturnData(Request $request){
+
+    $dsr_return = DB::table('dsr_returns')
+    ->select('id','item_id',DB::raw('sum(qty) as qty_sum'))
+    ->where('status','=',0)
+    ->where('dsr_id','=',$request->get('dsr_id'))
+    ->where('dsr_stock_id','=',$request->get('dsr_stock_id'))
+    ->groupBy('item_id')
+    ->get();
+
+    if($dsr_return){
+        return response()->json(['data' => array('info'=>$dsr_return,'error'=>null)],200);
+    }else{
+        return response()->json(['data' => array('info'=>[],'error'=>null)],401);
+    }
+
 }
 
 
@@ -196,22 +225,22 @@ public function MobileUpdateStockStatus(Request $request){
 
 public function MobileGetItemCount(Request $request){
 
- $stock_item_data = DB::table('dsr_stock_items')
- ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
- ->select('item_id', DB::raw('sum(qty) as qty_sum'))
- ->where('dsr_id', '=', $request->get('dsr_id'))
- ->where('dsr_stocks.status', '=', 1)
- ->groupBy('item_id')
- ->get();
+    $stock_item_data = DB::table('dsr_stock_items')
+    ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
+    ->select('item_id', DB::raw('sum(qty) as qty_sum'))
+    ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->where('dsr_stocks.status', '=', 1)
+    ->groupBy('item_id')
+    ->get();
 
- return response()->json(['data' => array('info'=>$stock_item_data,'error'=>null)],200);
+    return response()->json(['data' => array('info'=>$stock_item_data,'error'=>null)],200);
 }
 
 
 
 public function MobileDsrSales(Request $request){
     $dsrId = $request->get('dsr_id');
-    $saleItems = $request->get('sale_items');
+    $saleItems = $request->get('sales');
     foreach($saleItems as $sale){
         $sales = new Sale([
             'item_name'=>$sale['itemName'],
@@ -220,6 +249,10 @@ public function MobileDsrSales(Request $request){
             'dsr_id'=>$dsrId
         ]);
         $sales->save();
+
+          // update dsr stock (-)
+        $update_dsr_qty = DB::table('dsr_stock_items')->where('item_id','=',$sale['itemId'])->where('dsr_stock_id','=',$sale['dsrStockId'])->decrement('qty', $sale['itemQty']);
+
     }
     return response()->json(['data' => array('info'=>$saleItems,'error'=>null)],200);
 }
@@ -227,16 +260,17 @@ public function MobileDsrSales(Request $request){
 
 public function MobileDsrCredits(Request $request){
     $dsrId = $request->get('dsr_id');
-    $saleItems = $request->get('sale_items');
-    foreach($saleItems as $sale){
-        $sales = new Sale([
-            'item_name'=>$sale['itemName'],
-            'item_qty'=>$sale['itemQty'],
-            'item_amount'=>$sale['itemPrice'],
-            'dsr_id'=>$dsrId
+    $creditItems = $request->get('credits');
+
+    foreach($creditItems as $credit){
+        $credits = new Credit([
+            'credit_customer_name'=>$credit['customerName'],
+            'credit_amount'=>$credit['amount'],
+            'dsr_id'=>$last_id,
         ]);
-        $sales->save();
+        $credits->save();
     }
+
     return response()->json(['data' => array('info'=>$saleItems,'error'=>null)],200);
 }
 
