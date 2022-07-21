@@ -266,7 +266,7 @@ public function MobileDsrSales(Request $request){
     $saleItems = $request->get('sales');
     foreach($saleItems as $sale){
         $sales = new Sale([
-            'item_id'=>$sale['item_id'],
+            'item_id'=>$sale['itemId'],
             'item_name'=>$sale['itemName'],
             'item_qty'=>$sale['itemQty'],
             'item_amount'=>$sale['itemPrice'],
