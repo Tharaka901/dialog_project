@@ -498,7 +498,7 @@ if(count($csum)==0){
     DB::insert('insert into pending_sum (dsr_id, date,inhand_sum) values (?,?,?)', array($request->get('dsr_id'), $todayDate, floatval($request->get('cash')) + floatval($request->get('cheque'))));
 }else{
         // update
-    DB::update('update pending_sum set inhand_sum = inhand_sum + ? where dsr_id = ? and date = ?', array(floatval($request->get('cash')) + floatval($request->get('cheque')),$request->get('dsr_id'),$todayDate));
+    DB::update('update pending_sum set inhand_sum = ? where dsr_id = ? and date = ?', array(floatval($request->get('cash')) + floatval($request->get('cheque')),$request->get('dsr_id'),$todayDate));
 }
 
 $array = (object) ['cash' => $request->get('cash'),'cheque' => $request->get('cheque')];
