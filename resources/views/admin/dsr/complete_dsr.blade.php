@@ -84,15 +84,15 @@
 
                                     <tr>
                                        <td><?php echo $count ?></td>
-                                       <td>{{ $dd->created_at }}</td>
+                                       <td>{{ $dd->date }}</td>
                                        <td>{{ $dd->name }}</td>
-                                       <td>Rs. <?php echo number_format($dd->item_amount) ?></td>
-                                       <td>Rs. <?php echo number_format($dd->in_hand) ?></td>
-                                       <td>Rs. <?php echo number_format($dd->bank_amount) ?></td>
-                                       <td>Rs. <?php echo number_format($dd->direct_bank_amount) ?></td>
-                                       <td>Rs. <?php echo number_format($dd->credit_amount) ?></td>
-                                       <td>Rs. <?php echo number_format($dd->re_item_amount) ?></td>
-                                       <td>Rs. <?php echo number_format($dd->credit_collection_amount) ?></td>
+                                       <td>Rs. {{ number_format($dd->sales_sum,2)  }}</td>
+                                       <td>Rs. {{ number_format($dd->inhand_sum,2)  }}</td>
+                                       <td>Rs. {{ number_format($dd->banking_sum,2)  }}</td>
+                                       <td>Rs. {{ number_format($dd->direct_banking_sum,2)  }}</td>
+                                       <td>Rs. {{ number_format($dd->credit_sum,2)  }}</td>
+                                       <td>Rs. {{ number_format($dd->credit_collection_sum,2)  }}</td>
+                                       <td>Rs. {{ number_format($dd->retialer_sum ,2) }}</td>
                                     </tr>
                                     <?php $count++ ?>
 
@@ -102,16 +102,13 @@
                               </table>
                            </div>
 
-                           <div class="d-flex justify-content-center">
-                             <div>{!! $dsrData->links() !!}</div>
-                          </div>
 
-                       </div>
-                    </div>
-                 </div>
-              </div>
-           </section>
-           <!-- /.content -->
-        </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </section>
+            <!-- /.content -->
+         </div>
 
-        @endsection
+         @endsection

@@ -25,7 +25,8 @@ class DsrController extends Controller
         $pdsr = DB::table('pending_sum')
         ->join('users', 'pending_sum.dsr_id', 'users.id')
         ->select('pending_sum.id','pending_sum.dsr_id','users.name','date','inhand_sum','sales_sum','credit_sum','credit_collection_sum','banking_sum','direct_banking_sum','retialer_sum')
-        ->where('date', '=', $todayDate)->get();
+        ->where('date', '=', $todayDate)
+        ->where('pending_sum.status', '=', 0)->get();
 
         return view('admin.dsr.pending_dsr',["dsrData"=>$pdsr]);
     }
@@ -94,23 +95,23 @@ class DsrController extends Controller
 
     public function ApproveDsr(Request $request){
 
-       $inHandTable = json_decode($request->get('inHandTable'),true);
-       $saleTable = json_decode($request->get('saleTable'),true);
-       $creditTable = json_decode($request->get('creditTable'),true);
-       $creditCollectionTable = json_decode($request->get('creditCollectionTable'),true);
-       $retailerTable = json_decode($request->get('retailerTable'),true);
-       $bankingTable = json_decode($request->get('bankingTable'),true);
-       $directBankingTable = json_decode($request->get('directBankingTable'),true);
+     $inHandTable = json_decode($request->get('inHandTable'),true);
+     $saleTable = json_decode($request->get('saleTable'),true);
+     $creditTable = json_decode($request->get('creditTable'),true);
+     $creditCollectionTable = json_decode($request->get('creditCollectionTable'),true);
+     $retailerTable = json_decode($request->get('retailerTable'),true);
+     $bankingTable = json_decode($request->get('bankingTable'),true);
+     $directBankingTable = json_decode($request->get('directBankingTable'),true);
 
 
-       foreach($inHandTable as $inhand){
+     foreach($inHandTable as $inhand){
         $dsr = DB::table('dsrs')
         ->where('id','=',$inhand['id'])
         ->update([
-         'in_hand' => floatval($inhand['cash']) + floatval($inhand['cheque']),
-         'cash' => $inhand['cash'],
-         'cheque' => $inhand['cheque'],
-     ]);
+           'in_hand' => floatval($inhand['cash']) + floatval($inhand['cheque']),
+           'cash' => $inhand['cash'],
+           'cheque' => $inhand['cheque'],
+       ]);
     }
 
 
@@ -118,23 +119,23 @@ class DsrController extends Controller
         $sale = DB::table('sales')
         ->where('id','=',$sale['id'])
         ->update([
-         'item_name'=>$sale['itemName'],
-         'item_qty'=>$sale['itemQty'],
-         'item_amount'=>$sale['itemPrice'],
+           'item_name'=>$sale['itemName'],
+           'item_qty'=>$sale['itemQty'],
+           'item_amount'=>$sale['itemPrice'],
            // 'status'=>2,
-     ]);
+       ]);
     }
 
     foreach($creditTable as $credit){
-     $credit = DB::table('credits')
-     ->where('id','=',$credit['id'])
-     ->update([
+       $credit = DB::table('credits')
+       ->where('id','=',$credit['id'])
+       ->update([
         'credit_customer_name'=>$credit['customerName'],
         'credit_amount'=>$credit['amount'],
     ]);
- }
+   }
 
- foreach($creditCollectionTable as $cc){
+   foreach($creditCollectionTable as $cc){
     $creditcol = DB::table('credit_collections')
     ->where('id','=',$cc['id'])
     ->update([
@@ -144,9 +145,9 @@ class DsrController extends Controller
 }
 
 foreach($retailerTable as $retailer){
-   $retailers = DB::table('retailer_returns')
-   ->where('id','=',$retailer['id'])
-   ->update([
+ $retailers = DB::table('retailer_returns')
+ ->where('id','=',$retailer['id'])
+ ->update([
     're_customer_name'=>$retailer['reCustomerName'],
     're_item_id'=>$retailer['reitemId'],
     're_item_qty'=>$retailer['reQuantity'],
@@ -169,11 +170,11 @@ foreach($directBankingTable as $db){
     $direct_bankings = DB::table('directbankings')
     ->where('id','=',$db['id'])
     ->update([
-       'direct_bank_customer_name'=>$db['customerName'],
-       'direct_bank_name'=>$db['bank'],
-       'direct_bank_ref_no'=>$db['refno'],
-       'direct_bank_amount'=>$db['amount'],
-   ]);
+     'direct_bank_customer_name'=>$db['customerName'],
+     'direct_bank_name'=>$db['bank'],
+     'direct_bank_ref_no'=>$db['refno'],
+     'direct_bank_amount'=>$db['amount'],
+ ]);
 }
 
 $updateItemData = DB::table('pending_sum')
@@ -191,21 +192,15 @@ return response($inHandTable);
 
 public function CompleteDsr(){
 
- $viewTable = DB::table('dsrs')
- ->join('sales', 'dsrs.id', '=', 'sales.dsr_id')
- ->join('credits', 'dsrs.id', '=', 'credits.dsr_id')
- ->join('credit_collections', 'dsrs.id', '=', 'credit_collections.dsr_id')
- ->join('retailer_returns', 'dsrs.id', '=', 'retailer_returns.dsr_id')
- ->join('bankings', 'dsrs.id', '=', 'bankings.dsr_id')
- ->join('directbankings', 'dsrs.id', '=', 'directbankings.dsr_id')
- ->join('users', 'dsrs.id', '=', 'users.id')
- ->select('dsrs.id','dsrs.created_at','dsrs.in_hand','dsrs.cash','dsrs.cheque','sales.item_amount','bankings.bank_amount','directbankings.direct_bank_amount','credits.credit_amount','retailer_returns.re_item_amount','credit_collections.credit_collection_amount','users.name')
- ->where('dsrs.status', '=', 2)
- ->orderBy('dsrs.id','desc')
- ->groupBy('dsrs.id')
- ->paginate(1);
+ $todayDate = date('Y-m-d');
 
- return view('admin.dsr.complete_dsr',["dsrData"=>$viewTable]);
+ $pdsr = DB::table('pending_sum')
+ ->join('users', 'pending_sum.dsr_id', 'users.id')
+ ->select('pending_sum.id','pending_sum.dsr_id','users.name','date','inhand_sum','sales_sum','credit_sum','credit_collection_sum','banking_sum','direct_banking_sum','retialer_sum')
+ ->where('date', '=', $todayDate)
+ ->where('pending_sum.status', '=', 1)->get();
+
+ return view('admin.dsr.complete_dsr',["dsrData"=>$pdsr]);
 }
 
 
