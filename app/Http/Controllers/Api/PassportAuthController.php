@@ -384,7 +384,7 @@ public function MobileDsrRetialers(Request $request){
         $retailerSum += floatval($reit['reQuantity']) * floatval($reit['reAmount']);
 
           // update dsr stock (+)
-        $update_item_qty = DB::table('items')->where('id','=',$reit['reitemId'])->decrement('qty', $reit['reQuantity']);
+        $update_item_qty = DB::table('items')->where('id','=',$reit['reitemId'])->increment('qty', $reit['reQuantity']);
     }
 
     // check if there is data in pending sum table for dsr today
