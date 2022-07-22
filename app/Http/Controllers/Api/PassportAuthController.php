@@ -532,7 +532,7 @@ public function MobileGetSaleSumery(Request $request){
 
  $sale_summery_items = DB::table('sales')
  ->select('item_id','item_qty as qty','item_amount as sub_total')
- ->whereDate('created_at', '=', date($request->get('date')))
+ ->whereDate('created_at', '=', $request->get('date'))
  ->where('dsr_id', '=', $request->get('dsr_id'))
  ->get();
 
@@ -544,6 +544,102 @@ public function MobileGetSaleSumery(Request $request){
  return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
 }
 }
+
+
+
+public function MobileGetInhandSumery(Request $request){
+
+    $inhand_summery_items = DB::table('dsrs')
+    ->select('in_hand','cash','cheque')
+    ->whereDate('created_at', '=', $request->get('date'))
+    ->where('dsr_user_id', '=', $request->get('dsr_id'))
+    ->get();
+
+
+    if($inhand_summery_items){
+        return response()->json(['data' => array('info'=>$inhand_summery_items,'error'=>null)], 200);
+    }else{
+    // Oops.. Error Occured!
+     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+ }
+}
+
+
+
+public function MobileGetBankingSumery(Request $request){
+
+    $bank_summery_items = DB::table('bankings')
+    ->select('bank_name','bank_ref_no','bank_amount')
+    ->whereDate('created_at', '=', $request->get('date'))
+    ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->get();
+
+
+    if($bank_summery_items){
+        return response()->json(['data' => array('info'=>$bank_summery_items,'error'=>null)], 200);
+    }else{
+    // Oops.. Error Occured!
+     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+ }
+}
+
+
+public function MobileGetDirectBankingSumery(Request $request){
+
+    $dbank_summery_items = DB::table('directbankings')
+    ->select('direct_bank_customer_name','direct_bank_name','direct_bank_ref_no','direct_bank_amount')
+    ->whereDate('created_at', '=', $request->get('date'))
+    ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->get();
+
+
+    if($dbank_summery_items){
+        return response()->json(['data' => array('info'=>$dbank_summery_items,'error'=>null)], 200);
+    }else{
+    // Oops.. Error Occured!
+     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+ }
+}
+
+
+
+public function MobileGetCreditSumery(Request $request){
+
+    $credit_summery_items = DB::table('credits')
+    ->select('credit_customer_name','credit_amount')
+    ->whereDate('created_at', '=', $request->get('date'))
+    ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->get();
+
+
+    if($credit_summery_items){
+        return response()->json(['data' => array('info'=>$credit_summery_items,'error'=>null)], 200);
+    }else{
+    // Oops.. Error Occured!
+     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+ }
+}
+
+
+
+public function MobileGetCreditColSumery(Request $request){
+
+    $credit_summery_items = DB::table('credit_collections')
+    ->select('credit_collection_customer_name','credit_collection_amount')
+    ->whereDate('created_at', '=', $request->get('date'))
+    ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->get();
+
+
+    if($credit_summery_items){
+        return response()->json(['data' => array('info'=>$credit_summery_items,'error'=>null)], 200);
+    }else{
+    // Oops.. Error Occured!
+     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+ }
+}
+
+
 
 
 
