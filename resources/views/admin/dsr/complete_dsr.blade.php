@@ -91,8 +91,8 @@
                                        <td>Rs. {{ number_format($dd->banking_sum,2)  }}</td>
                                        <td>Rs. {{ number_format($dd->direct_banking_sum,2)  }}</td>
                                        <td>Rs. {{ number_format($dd->credit_sum,2)  }}</td>
-                                       <td>Rs. {{ number_format($dd->credit_collection_sum,2)  }}</td>
                                        <td>Rs. {{ number_format($dd->retialer_sum ,2) }}</td>
+                                       <td>Rs. {{ number_format($dd->credit_collection_sum,2)  }}</td>
                                     </tr>
                                     <?php $count++ ?>
 
