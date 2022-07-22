@@ -270,6 +270,7 @@ public function MobileGetItemCount(Request $request){
 public function MobileDsrSales(Request $request){
     $dsrId = $request->get('dsr_id');
     $saleItems = $request->get('sales');
+    date_default_timezone_set("Asia/colombo");
     $todayDate = date('Y-m-d');
     $saleSum = 0;
 
@@ -308,6 +309,7 @@ public function MobileDsrSales(Request $request){
 public function MobileDsrCredits(Request $request){
     $dsrId = $request->get('dsr_id');
     $creditItems = $request->get('credits');
+    date_default_timezone_set("Asia/colombo");
     $todayDate = date('Y-m-d');
     $creditSum = 0;
 
@@ -339,6 +341,7 @@ public function MobileDsrCredits(Request $request){
 public function MobileDsrCreditcollections(Request $request){
     $dsrId = $request->get('dsr_id');
     $creditCollectionItems = $request->get('creditcollections');
+    date_default_timezone_set("Asia/colombo");
     $todayDate = date('Y-m-d');
     $creditColSum = 0;
 
@@ -370,6 +373,7 @@ public function MobileDsrCreditcollections(Request $request){
 public function MobileDsrRetialers(Request $request){
     $dsrId = $request->get('dsr_id');
     $retilerItems = $request->get('retilers');
+    date_default_timezone_set("Asia/colombo");
     $todayDate = date('Y-m-d');
     $retailerSum = 0;
 
@@ -406,6 +410,7 @@ public function MobileDsrRetialers(Request $request){
 public function MobileDsrBankings(Request $request){
     $dsrId = $request->get('dsr_id');
     $bankingItems = $request->get('bankings');
+    date_default_timezone_set("Asia/colombo");
     $todayDate = date('Y-m-d');
     $bankingSum = 0;
 
@@ -438,6 +443,7 @@ public function MobileDsrBankings(Request $request){
 public function MobileDsrDirectBankings(Request $request){
     $dsrId = $request->get('dsr_id');
     $dbankingItems = $request->get('dbankings');
+    date_default_timezone_set("Asia/colombo");
     $todayDate = date('Y-m-d');
     $dbankingSum = 0;
 
@@ -470,6 +476,7 @@ public function MobileDsrDirectBankings(Request $request){
 
 public function MobileDsrInhands(Request $request){
 
+    date_default_timezone_set("Asia/colombo");
     $todayDate = date('Y-m-d');
     $inhandSum = 0;
 
