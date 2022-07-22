@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 21, 2022 at 01:59 PM
+-- Generation Time: Jul 22, 2022 at 04:48 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -66,8 +66,12 @@ CREATE TABLE `bankings` (
 --
 
 INSERT INTO `bankings` (`id`, `bank_name`, `bank_ref_no`, `bank_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(2, 'sampath', '123456789', 2500, 4, 1, '2022-07-21 04:10:22', '2022-07-21 04:10:22'),
-(3, 'commercial', '789456', 1237, 4, 1, '2022-07-21 04:10:22', '2022-07-21 04:10:22');
+(1, 'commercial', '123', 50, 4, 1, '2022-07-22 06:26:12', '2022-07-22 06:26:12'),
+(2, 'sampath', '456', 60, 4, 1, '2022-07-22 06:26:12', '2022-07-22 06:26:12'),
+(3, 'ndb', '789', 90, 4, 1, '2022-07-22 06:28:30', '2022-07-22 06:28:30'),
+(4, 'pan', '7412', 40, 4, 1, '2022-07-22 06:28:30', '2022-07-22 06:28:30'),
+(5, 'BOC', '447852', 1237, 4, 1, '2022-07-22 06:29:00', '2022-07-22 06:29:00'),
+(6, 'peoples', '125', 753, 4, 1, '2022-07-22 06:29:00', '2022-07-22 06:29:00');
 
 -- --------------------------------------------------------
 
@@ -90,8 +94,18 @@ CREATE TABLE `credits` (
 --
 
 INSERT INTO `credits` (`id`, `credit_customer_name`, `credit_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'charith', 15, 4, 1, '2022-07-21 02:44:05', '2022-07-21 02:44:05'),
-(2, 'madushan', 5, 4, 1, '2022-07-21 02:44:05', '2022-07-21 02:44:05');
+(1, 'charith', 15, 2, 1, '2022-07-22 00:42:51', '2022-07-22 00:42:51'),
+(2, 'madushan', 5, 2, 1, '2022-07-22 00:42:51', '2022-07-22 00:42:51'),
+(3, 'madushan', 5, 4, 1, '2022-07-22 00:43:01', '2022-07-22 00:43:01'),
+(4, 'dinesh', 6, 4, 1, '2022-07-22 00:43:01', '2022-07-22 00:43:01'),
+(5, 'kasun', 7, 4, 1, '2022-07-22 00:43:30', '2022-07-22 00:43:30'),
+(6, 'tharindu', 8, 4, 1, '2022-07-22 00:43:30', '2022-07-22 00:43:30'),
+(7, 'thimira', 9, 4, 1, '2022-07-22 00:44:29', '2022-07-22 00:44:29'),
+(8, 'danapala', 10, 4, 1, '2022-07-22 00:44:29', '2022-07-22 00:44:29'),
+(9, 'kaushan', 11, 4, 1, '2022-07-22 00:44:44', '2022-07-22 00:44:44'),
+(10, 'vijay', 12, 4, 1, '2022-07-22 00:44:44', '2022-07-22 00:44:44'),
+(11, 'charith', 15, 2, 1, '2022-07-22 00:45:01', '2022-07-22 00:45:01'),
+(12, 'madushan', 5, 2, 1, '2022-07-22 00:45:01', '2022-07-22 00:45:01');
 
 -- --------------------------------------------------------
 
@@ -114,8 +128,8 @@ CREATE TABLE `credit_collections` (
 --
 
 INSERT INTO `credit_collections` (`id`, `credit_collection_customer_name`, `credit_collection_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'kasun', 200, 4, 1, '2022-07-21 02:48:59', '2022-07-21 02:48:59'),
-(2, 'harsha', 1500, 4, 1, '2022-07-21 02:48:59', '2022-07-21 02:48:59');
+(1, 'kasun', 100, 4, 1, '2022-07-22 06:17:36', '2022-07-22 06:17:36'),
+(2, 'dimatha', 500, 4, 1, '2022-07-22 06:17:36', '2022-07-22 06:17:36');
 
 -- --------------------------------------------------------
 
@@ -140,8 +154,10 @@ CREATE TABLE `directbankings` (
 --
 
 INSERT INTO `directbankings` (`id`, `direct_bank_customer_name`, `direct_bank_name`, `direct_bank_ref_no`, `direct_bank_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'sampath', 'commercail', '123456789', 2500, 4, 1, '2022-07-21 04:18:45', '2022-07-21 04:18:45'),
-(2, 'nuwan', 'NDB', '789132741', 159753, 4, 1, '2022-07-21 04:18:46', '2022-07-21 04:18:46');
+(1, 'kamal', 'Sampath', '12', 100, 4, 1, '2022-07-22 06:29:25', '2022-07-22 06:29:25'),
+(2, 'nuwan', 'NDB', '789132741', 159753, 4, 1, '2022-07-22 06:29:25', '2022-07-22 06:29:25'),
+(3, 'nuwan', 'NDB', '789132741', 159753, 4, 1, '2022-07-22 06:30:06', '2022-07-22 06:30:06'),
+(4, 'nuwan', 'NDB', '789132741', 159753, 4, 1, '2022-07-22 06:30:06', '2022-07-22 06:30:06');
 
 -- --------------------------------------------------------
 
@@ -165,7 +181,8 @@ CREATE TABLE `dsrs` (
 --
 
 INSERT INTO `dsrs` (`id`, `in_hand`, `cash`, `cheque`, `dsr_user_id`, `status`, `created_at`, `updated_at`) VALUES
-(2, 300, 100, 200, 4, 1, '2022-07-05 21:43:23', '2022-07-21 04:34:44');
+(1, 1300, 450, 850, 2, 1, '2022-07-22 06:34:21', '2022-07-22 06:34:21'),
+(2, 1200, 400, 800, 4, 2, '2022-07-22 06:53:47', '2022-07-22 06:53:47');
 
 -- --------------------------------------------------------
 
@@ -218,7 +235,9 @@ INSERT INTO `dsr_stocks` (`id`, `stock_id`, `dsr_id`, `total`, `status`, `create
 (3, 1, 4, 7925, 1, '2022-07-21 03:50:49', '2022-07-21 03:50:49'),
 (4, 1, 4, 11492, 1, '2022-07-21 03:52:00', '2022-07-21 03:52:00'),
 (5, 1, 5, 800, 1, '2022-07-21 04:59:58', '2022-07-21 04:59:58'),
-(6, 1, 5, 500, 1, '2022-07-21 11:36:08', '2022-07-21 11:36:08');
+(6, 1, 5, 500, 1, '2022-07-21 11:36:08', '2022-07-21 11:36:08'),
+(7, 1, 1, 24440, 1, '2022-07-21 18:01:59', '2022-07-21 18:01:59'),
+(8, 1, 1, 32786, 1, '2022-07-21 18:02:37', '2022-07-21 18:02:37');
 
 -- --------------------------------------------------------
 
@@ -252,7 +271,17 @@ INSERT INTO `dsr_stock_items` (`id`, `dsr_stock_id`, `item_id`, `qty`, `status`,
 (9, 4, 3, 5, 1, '2022-07-21 03:52:00', '2022-07-21 03:52:00'),
 (10, 4, 6, 10, 1, '2022-07-21 03:52:00', '2022-07-21 03:52:00'),
 (11, 5, 2, 8, 1, '2022-07-21 04:59:58', '2022-07-21 04:59:58'),
-(12, 6, 2, 5, 1, '2022-07-21 11:36:08', '2022-07-21 11:36:08');
+(12, 6, 2, 5, 1, '2022-07-21 11:36:08', '2022-07-21 11:36:08'),
+(13, 7, 1, 20, 1, '2022-07-21 18:01:59', '2022-07-21 18:01:59'),
+(14, 7, 2, 30, 1, '2022-07-21 18:01:59', '2022-07-21 18:01:59'),
+(15, 7, 3, 40, 1, '2022-07-21 18:01:59', '2022-07-21 18:01:59'),
+(16, 7, 4, 50, 1, '2022-07-21 18:01:59', '2022-07-21 18:01:59'),
+(17, 8, 1, 1, 1, '2022-07-21 18:02:37', '2022-07-21 18:02:37'),
+(18, 8, 2, 2, 1, '2022-07-21 18:02:37', '2022-07-21 18:02:37'),
+(19, 8, 3, 3, 1, '2022-07-21 18:02:37', '2022-07-21 18:02:37'),
+(20, 8, 4, 4, 1, '2022-07-21 18:02:37', '2022-07-21 18:02:37'),
+(21, 8, 5, 5, 1, '2022-07-21 18:02:37', '2022-07-21 18:02:37'),
+(22, 8, 6, 6, 1, '2022-07-21 18:02:37', '2022-07-21 18:02:37');
 
 -- --------------------------------------------------------
 
@@ -292,12 +321,12 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `name`, `purchasing_price`, `selling_price`, `qty`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Internet Card 49', 45, 49, 900, 1, '2022-07-04 07:08:20', '2022-07-04 07:08:20'),
-(2, 'Internet Card 99', 90, 100, 885, 1, '2022-07-04 07:13:04', '2022-07-04 07:13:04'),
-(3, 'Internet Card 199', 180, 199, 525, 1, '2022-07-04 07:26:10', '2022-07-04 07:26:10'),
-(4, 'Internet Card 249', 230, 250, 386, 1, '2022-07-04 07:26:53', '2022-07-04 07:26:53'),
-(5, 'Dialog Tv', 4500, 5000, 620, 1, '2022-07-04 07:27:24', '2022-07-04 07:27:24'),
-(6, 'Dialog Broadband EDIT', 800, 990, 700, 1, '2022-07-04 07:28:06', '2022-07-04 07:28:06');
+(1, 'Internet Card 49', 45, 49, 879, 1, '2022-07-04 07:08:20', '2022-07-04 07:08:20'),
+(2, 'Internet Card 99', 90, 100, 853, 1, '2022-07-04 07:13:04', '2022-07-04 07:13:04'),
+(3, 'Internet Card 199', 180, 199, 457, 1, '2022-07-04 07:26:10', '2022-07-04 07:26:10'),
+(4, 'Internet Card 249', 230, 250, 282, 1, '2022-07-04 07:26:53', '2022-07-04 07:26:53'),
+(5, 'Dialog Tv', 4500, 5000, 615, 1, '2022-07-04 07:27:24', '2022-07-04 07:27:24'),
+(6, 'Dialog Broadband EDIT', 800, 990, 694, 1, '2022-07-04 07:28:06', '2022-07-04 07:28:06');
 
 -- --------------------------------------------------------
 
@@ -378,7 +407,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (94, '2022_07_18_075251_create_dsr_stocks_table', 9),
 (95, '2022_07_20_064804_create_retailer_returns_table', 10),
 (96, '2022_07_20_122723_create_dsr_returns_table', 11),
-(97, '2022_07_21_052109_create_sales_table', 12);
+(97, '2022_07_21_052109_create_sales_table', 12),
+(98, '2022_07_22_102932_create_pending_sum_table', 13),
+(99, '2022_07_22_112247_create_pending_sum_table', 14);
 
 -- --------------------------------------------------------
 
@@ -492,6 +523,36 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pending_sum`
+--
+
+CREATE TABLE `pending_sum` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `dsr_id` int(11) NOT NULL,
+  `date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `inhand_sum` double NOT NULL DEFAULT 0,
+  `sales_sum` double NOT NULL DEFAULT 0,
+  `credit_sum` double NOT NULL DEFAULT 0,
+  `credit_collection_sum` double NOT NULL DEFAULT 0,
+  `banking_sum` double NOT NULL DEFAULT 0,
+  `direct_banking_sum` double NOT NULL DEFAULT 0,
+  `retialer_sum` double NOT NULL DEFAULT 0,
+  `status` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pending_sum`
+--
+
+INSERT INTO `pending_sum` (`id`, `dsr_id`, `date`, `inhand_sum`, `sales_sum`, `credit_sum`, `credit_collection_sum`, `banking_sum`, `direct_banking_sum`, `retialer_sum`, `status`, `created_at`, `updated_at`) VALUES
+(1, 2, '2022-07-22', 1200, 6000, 40, 0, 0, 0, 0, 0, NULL, NULL),
+(2, 4, '2022-07-22', 1800, 0, 20, 700, 11211, 324506, 15975, 0, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `personal_access_tokens`
 --
 
@@ -530,8 +591,11 @@ CREATE TABLE `retailer_returns` (
 --
 
 INSERT INTO `retailer_returns` (`id`, `re_customer_name`, `re_item_id`, `re_item_qty`, `re_item_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'kasun', 3, 25, 199, 4, 1, '2022-07-21 03:03:27', '2022-07-21 03:03:27'),
-(2, 'dimatha', 4, 50, 220, 4, 1, '2022-07-21 03:03:27', '2022-07-21 03:03:27');
+(1, 'kasun', 4, 5, 25, 4, 1, '2022-07-21 21:43:23', '2022-07-21 03:03:27'),
+(2, 'dimatha', 4, 2, 24, 4, 1, '2022-07-21 21:43:23', '2022-07-21 03:03:27'),
+(3, 'taraka', 4, 3, 36, 4, 1, '2022-07-22 06:20:34', '2022-07-22 06:20:34'),
+(4, 'gayan', 4, 4, 48, 4, 1, '2022-07-22 06:21:43', '2022-07-22 06:21:43'),
+(5, 'nuwan', 4, 6, 36, 4, 1, '2022-07-22 06:21:43', '2022-07-22 06:21:43');
 
 -- --------------------------------------------------------
 
@@ -550,6 +614,16 @@ CREATE TABLE `sales` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`id`, `item_id`, `item_name`, `item_qty`, `item_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Dialog', 21, 52, 2, 1, '2022-07-22 00:33:57', '2022-07-22 00:33:57'),
+(2, 2, 'Dialog', 11, 210, 2, 1, '2022-07-22 00:33:57', '2022-07-22 00:33:57'),
+(3, 1, 'Dialog', 22, 100, 2, 1, '2022-07-22 00:33:59', '2022-07-22 00:33:59'),
+(4, 2, 'Dialog', 12, 250, 2, 1, '2022-07-22 00:33:59', '2022-07-22 00:33:59');
 
 -- --------------------------------------------------------
 
@@ -722,6 +796,12 @@ ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
 
 --
+-- Indexes for table `pending_sum`
+--
+ALTER TABLE `pending_sum`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
@@ -767,25 +847,25 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `bankings`
 --
 ALTER TABLE `bankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `credits`
 --
 ALTER TABLE `credits`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `credit_collections`
 --
 ALTER TABLE `credit_collections`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `directbankings`
 --
 ALTER TABLE `directbankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `dsrs`
@@ -803,13 +883,13 @@ ALTER TABLE `dsr_returns`
 -- AUTO_INCREMENT for table `dsr_stocks`
 --
 ALTER TABLE `dsr_stocks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `dsr_stock_items`
 --
 ALTER TABLE `dsr_stock_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -827,7 +907,7 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -842,6 +922,12 @@ ALTER TABLE `oauth_personal_access_clients`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `pending_sum`
+--
+ALTER TABLE `pending_sum`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
@@ -851,13 +937,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `retailer_returns`
 --
 ALTER TABLE `retailer_returns`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `stocks`
