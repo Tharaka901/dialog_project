@@ -508,6 +508,24 @@ return response()->json(['data' => array('info'=>$array,'error'=>null)],200);
 
 
 
+public function MobileDsrSumery(Request $request){
+
+ $pdsr = DB::table('pending_sum')
+ ->join('users', 'pending_sum.dsr_id', 'users.id')
+ ->select('pending_sum.id','pending_sum.dsr_id','users.name','date','inhand_sum','sales_sum','credit_sum','credit_collection_sum','banking_sum','direct_banking_sum','retialer_sum')
+ ->where('date', '=', $request->get('date'))
+ ->where('pending_sum.dsr_id', '=', $request->get('dsr_id'))
+ ->get();
+
+
+ if($pdsr){
+    return response()->json(['data' => array('info'=>$pdsr,'error'=>null)], 200);
+}else{
+    // Oops.. Error Occured!
+ return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+}
+}
+
 
 
 }
