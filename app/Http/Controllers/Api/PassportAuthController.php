@@ -291,7 +291,7 @@ public function MobileDsrSales(Request $request){
     }
 
     // check if there is data in pending sum table for dsr today
-    $psum = DB::table('pending_sum')->select('dsr_id','date')->where('date', '=', $todayDate)->get();
+    $psum = DB::table('pending_sum')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
 
     if(count($psum)==0){
         // insert
