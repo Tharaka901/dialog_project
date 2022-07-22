@@ -103,6 +103,7 @@ public function GetStockItemsById(Request $request){
     $selected_date = $request->get('date');
     $selected_time = $request->get('time');
     $stock_id = $request->get('stock_id');
+    $array = [];
 
     $dsrs = DB::table('users')->join('dsr_stocks', 'dsr_stocks.dsr_id', 'users.id')->select('users.id','users.name')->where('dsr_stocks.status','=',1)->where('users.status','=',1)->distinct()->get();
 
@@ -112,11 +113,23 @@ public function GetStockItemsById(Request $request){
 
         $all_dsr_items = DB::table('items')->join('dsr_stock_items', 'dsr_stock_items.item_id', 'items.id')->join('dsr_stocks', 'dsr_stocks.id', 'dsr_stock_items.dsr_stock_id')->select('items.name',DB::raw('sum(dsr_stock_items.qty) as qty'))->where('items.status','=',1)->groupBy('items.id')->orderBy('items.name','asc')->get();
 
-        for ($i=0; $i < count($all_dsr_items); $i++) { 
-            $all_stock_items->push(array("name"=>$all_dsr_items[$i]->name,"qty"=>$all_dsr_items[$i]->qty));
-        }
 
-        $array = json_decode(json_encode($all_stock_items), true);
+        for ($i=0; $i < count($all_dsr_items); $i++) { 
+
+            $itemName = $all_dsr_items[$i]->name;
+            $itemPrice = floatval($all_dsr_items[$i]->qty);
+
+            for ($j=0; $j < count($all_stock_items); $j++) { 
+                if(isset($all_stock_items[$j]->name)){
+                    if($itemName == $all_stock_items[$j]->name){
+                        $itemPrice = $itemPrice + floatval($all_stock_items[$j]->qty);
+                    }
+                }
+            }
+            // $all_stock_items->push(array("name"=>$all_dsr_items[$i]->name,"qty"=>$itemPrice));
+            $aaa = array("name"=>$all_dsr_items[$i]->name,"qty"=>$itemPrice);
+            $array[] = json_decode(json_encode($aaa), true);
+        }
 
         return view('admin.item.view_balance', ['dsrList'=>$dsrs,'dsrStockData'=>$array,'selected_date'=>$selected_date,'selected_time'=>$selected_time,'stock_name'=>$stock_id]);
 
@@ -132,7 +145,13 @@ public function GetStockItemsById(Request $request){
         $all_dsr_items = DB::table('items')->join('dsr_stock_items', 'dsr_stock_items.item_id', 'items.id')->join('dsr_stocks', 'dsr_stocks.id', 'dsr_stock_items.dsr_stock_id')->select('items.name', DB::raw('sum(dsr_stock_items.qty) as qty'))->where('items.status','=',1)->where('dsr_stocks.dsr_id','=',$stock_id)->groupBy('items.name')->orderBy('items.name','asc')->get();
         $array = json_decode(json_encode($all_dsr_items), true);
 
-        return view('admin.item.view_balance', ['dsrList'=>$dsrs,'dsrStockData'=>$array,'selected_date'=>$selected_date,'selected_time'=>$selected_time,'stock_name'=>$stock_id]);
+        $dsr_name = DB::table('users')->join('dsr_stocks', 'dsr_stocks.dsr_id', 'users.id')->select('users.id','users.name')->where('dsr_stocks.dsr_id','=',$stock_id)->get();
+        $name = "";
+        foreach($dsr_name as $dsr){
+            $name = $dsr->name;
+        }
+
+        return view('admin.item.view_balance', ['dsrList'=>$dsrs,'dsrStockData'=>$array,'selected_date'=>$selected_date,'selected_time'=>$selected_time,'stock_name'=>$name]);
     }
 
 
