@@ -113,6 +113,7 @@ public function MobileGetItemsByDsrId(Request $request){
     ->select('items.id', 'items.name')
     ->where('dsr_id', '=', $request->get('dsr_id'))
     ->where('dsr_stocks.status', '=', 1)
+    ->where('dsr_stock_items.qty', '!=', 0)
     ->groupBy('items.id')
     ->orderBy('items.name')
     ->get();
