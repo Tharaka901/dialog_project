@@ -528,6 +528,25 @@ public function MobileDsrSumery(Request $request){
 
 
 
+public function MobileGetSaleSumery(Request $request){
+
+ $sale_summery_items = DB::table('sales')
+ ->select('item_id','item_qty as qty','item_amount as sub_total')
+ ->whereDate('created_at', '=', $request->get('date'))
+ ->where('dsr_id', '=', $request->get('dsr_id'))
+ ->get();
+
+
+ if($sale_summery_items){
+    return response()->json(['data' => array('info'=>$sale_summery_items,'error'=>null)], 200);
+}else{
+    // Oops.. Error Occured!
+ return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+}
+}
+
+
+
 }
 
 

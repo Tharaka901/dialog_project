@@ -44,3 +44,4 @@ Route::post('mobile_dsr_bankings',[PassportAuthController::class,'MobileDsrBanki
 Route::post('mobile_dsr_direct_bankings',[PassportAuthController::class,'MobileDsrDirectBankings'])->name('mobile_dsr_direct_bankings');
 Route::post('mobile_dsr_inhands',[PassportAuthController::class,'MobileDsrInhands'])->name('mobile_dsr_inhands');
 Route::post('mobile_dsr_summery',[PassportAuthController::class,'MobileDsrSumery'])->name('mobile_dsr_summery');
+Route::post('mobile_get_sale_summery',[PassportAuthController::class,'MobileGetSaleSumery'])->name('mobile_get_sale_summery');
