@@ -2,55 +2,55 @@
 @section('admin')
 
 <div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <section class="content-header">
-     <div class="header-icon">
-        <i class="fa fa-bar-chart"></i>
-     </div>
-     <div class="header-title">
-        <h1>Pending DSR Summery </h1>
-        <small></small>
-     </div>
-  </section>
-  <!-- Main content -->
-  <section class="content">
-     <div class="row">
-       <div class="col-md-3">
-         <div class="position-relative form-group"><label
-          for="search" class="">Search</label><input
-          name="search"
-          placeholder="Search" type="text" class="form-control">
-       </div>
+ <!-- Content Header (Page header) -->
+ <section class="content-header">
+    <div class="header-icon">
+       <i class="fa fa-bar-chart"></i>
     </div>
-    <div class="col-md-3">
+    <div class="header-title">
+       <h1>Pending DSR Summery </h1>
+       <small></small>
+    </div>
+ </section>
+ <!-- Main content -->
+ <section class="content">
+    <div class="row">
+     <div class="col-md-3">
       <div class="position-relative form-group"><label
-       for="fromdate" class="">From</label><input
-       name="fromdate" id="fromdate" placeholder="Date"
-       type="date" class="form-control">
-    </div>
- </div>
- <div class="col-md-3">
+        for="search" class="">Search</label><input
+        name="search"
+        placeholder="Search" type="text" class="form-control">
+     </div>
+  </div>
+  <div class="col-md-3">
    <div class="position-relative form-group"><label
-    for="todate" class="">To</label><input
-    name="todate" id="todate" placeholder="Date"
-    type="date" class="form-control">
- </div>
+     for="fromdate" class="">From</label><input
+     name="fromdate" id="fromdate" placeholder="Date"
+     type="date" class="form-control">
+  </div>
+</div>
+<div class="col-md-3">
+   <div class="position-relative form-group"><label
+     for="todate" class="">To</label><input
+     name="todate" id="todate" placeholder="Date"
+     type="date" class="form-control">
+  </div>
 </div>
 
 <!-- running time -->
 <div class="col-lg-12 pinpin">
-  <div class="card lobicard" id="lobicard-custom-control" data-sortable="true">
-    <div class="card-header">
-      <div class="card-title custom_title">
-         <a href="#"> <h4>Pending DSR Details</h4></a>
-      </div>
+ <div class="card lobicard" id="lobicard-custom-control" data-sortable="true">
+  <div class="card-header">
+   <div class="card-title custom_title">
+      <a href="#"> <h4>Pending DSR Details</h4></a>
    </div>
-   <div class="card-body">
+</div>
+<div class="card-body">
 
-    <div class="table-responsive">
-     <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
-        <thead class="back_table_color">
-           <tr class="info">
+  <div class="table-responsive">
+    <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
+       <thead class="back_table_color">
+          <tr class="info">
             <th>#</th>
             <th>Date</th>
             <th>Name</th>
@@ -72,17 +72,17 @@
 
          <tr>
             <td><?php echo $count ?></td>
-            <td>{{ $dd->created_at }}</td>
+            <td>{{ $dd->date }}</td>
             <td>{{ $dd->name }}</td>
-            <td>Rs. <?php echo number_format($dd->salesum) ?></td>
-            <td>Rs. <?php echo number_format($dd->in_hand) ?></td>
-            <td>Rs. <?php echo number_format($dd->banksum) ?></td>
-            <td>Rs. <?php echo number_format($dd->dbsum) ?></td>
-            <td>Rs. <?php echo number_format($dd->csum) ?></td>
-            <td>Rs. <?php echo number_format($dd->resum) ?></td>
-            <td>Rs. <?php echo number_format($dd->ccsum) ?></td>
+            <td>Rs. {{ number_format($dd->sales_sum,2)  }}</td>
+            <td>Rs. {{ number_format($dd->inhand_sum,2)  }}</td>
+            <td>Rs. {{ number_format($dd->banking_sum,2)  }}</td>
+            <td>Rs. {{ number_format($dd->direct_banking_sum,2)  }}</td>
+            <td>Rs. {{ number_format($dd->credit_sum,2)  }}</td>
+            <td>Rs. {{ number_format($dd->credit_collection_sum,2)  }}</td>
+            <td>Rs. {{ number_format($dd->retialer_sum ,2) }}</td>
             <td class="text-center">
-               <button type="button" class="btn btn-add btn-sm" onclick="viewDsr({{$dd->id}});"><i class="fa fa-pencil"></i></button>
+               <button type="button" class="btn btn-add btn-sm" onclick="viewDsr({{ $dd->id  }},{{ $dd->dsr_id  }});"><i class="fa fa-pencil"></i></button>
             </td>
          </tr>
          <?php $count++ ?>
@@ -93,10 +93,8 @@
       </tbody>
    </table>
 
-   <div class="d-flex justify-content-center">
-     <div>{!! $dsrData->links() !!}</div>
-  </div>
-  
+
+
 </div>
 </div>
 </div>
@@ -107,19 +105,19 @@
 <!-- Modal1 -->
 <div class="modal fade" id="dsrModal" tabindex="-1" role="dialog">
    <div class="modal-xl modal-dialog">
-     <div class="modal-content">
-        <div class="modal-header modal-header-primary">
-           <h3><i class="fa fa-plus m-r-5"></i> Approve Form</h3>
-           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        </div>
-        <div class="modal-body">
-           <div class="row">
-              <div class="col-md-12">
+    <div class="modal-content">
+       <div class="modal-header modal-header-primary">
+          <h3><i class="fa fa-plus m-r-5"></i> Approve Form</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+       </div>
+       <div class="modal-body">
+          <div class="row">
+             <div class="col-md-12">
 
                <form class="mt-3" method="post" id="dsrSave">
 
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item">
+                   <li class="nav-item">
                      <a class="nav-link active" id="contact-tab" data-toggle="tab" href="#sales" role="tab" aria-controls="contact" aria-selected="false">Sales</a>
                   </li>
                   <li class="nav-item">
@@ -129,22 +127,23 @@
                      <a class="nav-link" id="home-tab" data-toggle="tab" href="#credit" role="tab" aria-controls="home" aria-selected="true">Credit</a>
                   </li>
                   <li class="nav-item">
-                   <a class="nav-link" id="profile-tab" data-toggle="tab" href="#credit_collection" role="tab" aria-controls="profile" aria-selected="false">Credit Collection</a>
-                </li>
-                <li class="nav-item">
-                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#ret_return" role="tab" aria-controls="contact" aria-selected="false">Retailer Return</a>
-                </li>
-                <li class="nav-item">
-                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#banking" role="tab" aria-controls="contact" aria-selected="false">Banking</a>
-                </li>
-                <li class="nav-item">
-                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#direct_banking" role="tab" aria-controls="contact" aria-selected="false">Direct Banking</a>
-                </li>
-             </ul>
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#credit_collection" role="tab" aria-controls="profile" aria-selected="false">Credit Collection</a>
+                 </li>
+                 <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#ret_return" role="tab" aria-controls="contact" aria-selected="false">Retailer Return</a>
+                 </li>
+                 <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#banking" role="tab" aria-controls="contact" aria-selected="false">Banking</a>
+                 </li>
+                 <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#direct_banking" role="tab" aria-controls="contact" aria-selected="false">Direct Banking</a>
+                 </li>
+              </ul>
 
-             <div class="tab-content" id="myTabContent">
+              <div class="tab-content" id="myTabContent">
 
                <input type="hidden" value="0" id="txt_drs_id">
+               <input type="hidden" value="0" id="txt_pending_sum_id">
                <div class="tab-pane fade show active" id="sales" role="tabpanel" aria-labelledby="contact-tab">
                 <!--  <div class="mt-3">
                   <div class="form-group">
@@ -162,21 +161,22 @@
                </div> -->
 
                <div class="table-responsive mt-3">
-                 <table id="salesTable" class="table table-bordered table-striped table-hover">
-                    <thead class="back_table_color">
-                       <tr class="info">
-                          <th>#</th>
-                          <th>Item Name</th>
-                          <th>Quantity</th>
-                          <th>Amount</th>
-                       </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                 </table>
-              </div>
+                <table id="salesTable" class="table table-bordered table-striped table-hover">
+                   <thead class="back_table_color">
+                      <tr class="info">
+                         <th>#</th>
+                         <th style="display:none">">Item Id</th>
+                         <th>Item Name</th>
+                         <th>Quantity</th>
+                         <th>Amount</th>
+                      </tr>
+                   </thead>
+                   <tbody>
+                   </tbody>
+                </table>
+             </div>
 
-              <div class="float-right">
+             <div class="float-right">
                <div class="input-group mb-3 group-end text-end">
                   <a class="btn btn-add btnNext text-white">Next</a>
                </div>
@@ -200,21 +200,22 @@
          </div> -->
 
          <div class="table-responsive mt-3">
-           <table id="inHandTable" class="table table-bordered table-striped table-hover">
-              <thead class="back_table_color">
-                 <tr class="info">
-                    <th>#</th>
-                    <th>In-Hand</th>
-                    <th>Cash</th>
-                    <th>Cheque</th>
-                 </tr>
-              </thead>
-              <tbody>
-              </tbody>
-           </table>
-        </div>
+          <table id="inHandTable" class="table table-bordered table-striped table-hover">
+             <thead class="back_table_color">
+                <tr class="info">
+                   <th>#</th>
+                   <th style='display:none;'>Id</th>
+                   <th>In-Hand</th>
+                   <th>Cash</th>
+                   <th>Cheque</th>
+                </tr>
+             </thead>
+             <tbody>
+             </tbody>
+          </table>
+       </div>
 
-        <div class="float-right">
+       <div class="float-right">
          <div class="input-group mb-3 group-end">
             <a class="btn btn-danger btnPrevious text-white">Previous</a>
             <a class="btn btn-add btnNext text-white">Next</a>
@@ -235,25 +236,26 @@
     </div> -->
 
     <div class="table-responsive mt-3">
-     <table id="creditTable" class="table table-bordered table-striped table-hover">
-        <thead class="back_table_color">
-           <tr class="info">
-              <th>#</th>
-              <th>Customer Name</th>
-              <th>Amount</th>
-           </tr>
-        </thead>
-        <tbody>
-        </tbody>
-     </table>
-  </div>
+       <table id="creditTable" class="table table-bordered table-striped table-hover">
+          <thead class="back_table_color">
+             <tr class="info">
+                <th>#</th>
+                <th style="display: none">id</th>
+                <th>Customer Name</th>
+                <th>Amount</th>
+             </tr>
+          </thead>
+          <tbody>
+          </tbody>
+       </table>
+    </div>
 
-  <div class="float-right">
-   <div class="input-group mb-3 group-end">
-      <a class="btn btn-danger btnPrevious text-white">Previous</a>
-      <a class="btn btn-add btnNext text-white">Next</a>
+    <div class="float-right">
+      <div class="input-group mb-3 group-end">
+         <a class="btn btn-danger btnPrevious text-white">Previous</a>
+         <a class="btn btn-add btnNext text-white">Next</a>
+      </div>
    </div>
-</div>
 </div>
 
 <div class="tab-pane fade" id="credit_collection" role="tabpanel" aria-labelledby="profile-tab">
@@ -269,20 +271,21 @@
  </div> -->
 
  <div class="table-responsive mt-3">
-  <table id="creditCollectionTable" class="table table-bordered table-striped table-hover">
-     <thead class="back_table_color">
-        <tr class="info">
-           <th>#</th>
-           <th>Customer Name</th>
-           <th>Amount</th>
-        </tr>
-     </thead>
-     <tbody>
-     </tbody>
-  </table>
-</div>
+    <table id="creditCollectionTable" class="table table-bordered table-striped table-hover">
+       <thead class="back_table_color">
+          <tr class="info">
+             <th>#</th>
+             <th style='display:none'>id</th>
+             <th>Customer Name</th>
+             <th>Amount</th>
+          </tr>
+       </thead>
+       <tbody>
+       </tbody>
+    </table>
+ </div>
 
-<div class="float-right">
+ <div class="float-right">
    <div class="input-group mb-3 group-end">
       <a class="btn btn-danger btnPrevious text-white">Previous</a>
       <a class="btn btn-add btnNext text-white">Next</a>
@@ -307,19 +310,21 @@
 </div> -->
 
 <div class="table-responsive mt-3">
- <table id="retailerTable" class="table table-bordered table-striped table-hover">
-    <thead class="back_table_color">
-       <tr class="info">
-          <th>#</th>
-          <th>Customer Name</th>
-          <th>Item Name</th>
-          <th>Quantity</th>
-          <th>Amount</th>
-       </tr>
-    </thead>
-    <tbody>
-    </tbody>
- </table>
+  <table id="retailerTable" class="table table-bordered table-striped table-hover">
+     <thead class="back_table_color">
+        <tr class="info">
+           <th>#</th>
+           <th style='display:none'>id</th>
+           <th>Customer Name</th>
+           <th style='display:none'>Item Id</th>
+           <th>Item Name</th>
+           <th>Quantity</th>
+           <th>Amount</th>
+        </tr>
+     </thead>
+     <tbody>
+     </tbody>
+  </table>
 </div>
 
 <div class="float-right">
@@ -347,18 +352,19 @@
 </div> -->
 
 <div class="table-responsive mt-3">
- <table id="bankTable" class="table table-bordered table-striped table-hover">
-    <thead class="back_table_color">
-       <tr class="info">
-          <th>#</th>
-          <th>Bank Name</th>
-          <th>Ref #</th>
-          <th>Amount</th>
-       </tr>
-    </thead>
-    <tbody>
-    </tbody>
- </table>
+  <table id="bankTable" class="table table-bordered table-striped table-hover">
+     <thead class="back_table_color">
+        <tr class="info">
+           <th>#</th>
+           <th style='display:none;'>id</th>
+           <th>Bank Name</th>
+           <th>Ref #</th>
+           <th>Amount</th>
+        </tr>
+     </thead>
+     <tbody>
+     </tbody>
+  </table>
 </div>
 
 <div class="float-right">
@@ -390,19 +396,20 @@
 </div> -->
 
 <div class="table-responsive mt-3">
- <table id="directBankTable" class="table table-bordered table-striped table-hover">
-    <thead class="back_table_color">
-       <tr class="info">
-          <th>#</th>
-          <th>Customer Name</th>
-          <th>Bank Name</th>
-          <th>Ref #</th>
-          <th>Amount</th>
-       </tr>
-    </thead>
-    <tbody>
-    </tbody>
- </table>
+  <table id="directBankTable" class="table table-bordered table-striped table-hover">
+     <thead class="back_table_color">
+        <tr class="info">
+           <th>#</th>
+           <th style='display:none;'>id</th>
+           <th>Customer Name</th>
+           <th>Bank Name</th>
+           <th>Ref #</th>
+           <th>Amount</th>
+        </tr>
+     </thead>
+     <tbody>
+     </tbody>
+  </table>
 </div>
 
 <div class="float-right">

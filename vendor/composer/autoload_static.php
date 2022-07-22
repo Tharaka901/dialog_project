@@ -628,6 +628,7 @@ class ComposerStaticInitdd9eca7f3353e704fd87eb783bc5986b
         'App\\Models\\RetailerReturn' => __DIR__ . '/../..' . '/app/Models/RetailerReturn.php',
         'App\\Models\\Sale' => __DIR__ . '/../..' . '/app/Models/Sale.php',
         'App\\Models\\Stock' => __DIR__ . '/../..' . '/app/Models/Stock.php',
+        'App\\Models\\Sums' => __DIR__ . '/../..' . '/app/Models/Sums.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\banking' => __DIR__ . '/../..' . '/app/Models/banking.php',
         'App\\Models\\directbanking' => __DIR__ . '/../..' . '/app/Models/directbanking.php',

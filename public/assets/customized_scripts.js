@@ -139,8 +139,9 @@ $('.btnPrevious').click(function() {
 });
 
 
-function viewDsr(dsr_id){
+function viewDsr(psum_id,dsr_id){
   $("#txt_drs_id").val(dsr_id);
+  $("#txt_pending_sum_id").val(psum_id);
 
   $.ajax({
     type: 'post',
@@ -152,7 +153,7 @@ function viewDsr(dsr_id){
     success: function(data) {
 
       $("#salesTable tbody").empty();
-      $("#inHandTable tbody").empty();
+      $("#creditTable tbody").empty();
       $("#creditTable tbody").empty();
       $("#creditCollectionTable tbody").empty();
       $("#retailerTable tbody").empty();
@@ -169,6 +170,7 @@ function viewDsr(dsr_id){
 
       for (var i = 0; i < data.saleData.length; i++) {
         $("#salesTable tbody").append("<tr><td>"+salecount+"</td>"+
+          "<td style='display:none;'>"+data.saleData[i].id+"</td>"+
           "<td><input type='text' class='form-control' value="+data.saleData[i].item_name+"></td>"+
           "<td><input type='text' class='form-control' value="+data.saleData[i].item_qty+"></td>"+
           "<td><input type='text' class='form-control' value="+data.saleData[i].item_amount+"></td>"+
@@ -178,6 +180,7 @@ function viewDsr(dsr_id){
 
       for (var i = 0; i < data.inhandData.length; i++) {
         $("#inHandTable tbody").append("<tr><td>"+inhandcount+"</td>"+
+          "<td style='display:none;'>"+data.inhandData[i].id+"</td>"+
           "<td><input type='text' class='form-control' value="+data.inhandData[i].in_hand+"></td>"+
           "<td><input type='text' class='form-control' value="+data.inhandData[i].cash+"></td>"+
           "<td><input type='text' class='form-control' value="+data.inhandData[i].cheque+"></td>"+
@@ -187,6 +190,7 @@ function viewDsr(dsr_id){
 
       for (var i = 0; i < data.creditData.length; i++) {
         $("#creditTable tbody").append("<tr><td>"+creditcount+"</td>"+
+          "<td style='display: none'>"+data.creditData[i].id+"</td>"+
           "<td><input type='text' class='form-control' value="+data.creditData[i].credit_customer_name+"></td>"+
           "<td><input type='text' class='form-control' value="+data.creditData[i].credit_amount+"></td>"+
           "</tr>");
@@ -195,6 +199,7 @@ function viewDsr(dsr_id){
 
       for (var i = 0; i < data.creditcolData.length; i++) {
         $("#creditCollectionTable tbody").append("<tr><td>"+creditcolcount+"</td>"+
+          "<td style='display:none'>"+data.creditcolData[i].id+"</td>"+
           "<td><input type='text' class='form-control' value="+data.creditcolData[i].credit_collection_customer_name+"></td>"+
           "<td><input type='text' class='form-control' value="+data.creditcolData[i].credit_collection_amount+"></td>"+
           "</tr>");
@@ -203,8 +208,10 @@ function viewDsr(dsr_id){
 
       for (var i = 0; i < data.reData.length; i++) {
         $("#retailerTable tbody").append("<tr><td>"+recount+"</td>"+
+          "<td style='display:none'>"+data.reData[i].id+"</td>"+
           "<td><input type='text' class='form-control' value="+data.reData[i].re_customer_name+"></td>"+
-          "<td><input type='text' class='form-control' value="+data.reData[i].re_item_name+"></td>"+
+          "<td style='display:none'>"+data.reData[i].re_item_id+"</td>"+
+          "<td><input type='text' class='form-control' value="+data.reData[i].name+"></td>"+
           "<td><input type='text' class='form-control' value="+data.reData[i].re_item_qty+"></td>"+
           "<td><input type='text' class='form-control' value="+data.reData[i].re_item_amount+"></td>"+
           "</tr>");
@@ -213,6 +220,7 @@ function viewDsr(dsr_id){
 
       for (var i = 0; i < data.bankData.length; i++) {
         $("#bankTable tbody").append("<tr><td>"+bankcount+"</td>"+
+          "<td style='display:none;'>"+data.bankData[i].id+"</td>"+
           "<td><input type='text' class='form-control' value="+data.bankData[i].bank_name+"></td>"+
           "<td><input type='text' class='form-control' value="+data.bankData[i].bank_ref_no+"></td>"+
           "<td><input type='text' class='form-control' value="+data.bankData[i].bank_amount+"></td>"+
@@ -222,6 +230,7 @@ function viewDsr(dsr_id){
 
       for (var i = 0; i < data.directbankData.length; i++) {
         $("#directBankTable tbody").append("<tr><td>"+directbankcount+"</td>"+
+          "<td style='display:none;'>"+data.directbankData[i].id+"</td>"+
           "<td><input type='text' class='form-control' value="+data.directbankData[i].direct_bank_customer_name+"></td>"+
           "<td><input type='text' class='form-control' value="+data.directbankData[i].direct_bank_name+"></td>"+
           "<td><input type='text' class='form-control' value="+data.directbankData[i].direct_bank_ref_no+"></td>"+
@@ -244,6 +253,7 @@ function viewDsr(dsr_id){
 $("#btnDsrApprove").click(function() {
 
   var dsr_id =$("#txt_drs_id").val();
+  var psum_id = $("#txt_pending_sum_id").val();
   var saleTable = JSON.stringify(saleTableValues());
   var inHandTable = JSON.stringify(inHandTableValues());
   var creditTable = JSON.stringify(creditTableValues());
@@ -251,6 +261,7 @@ $("#btnDsrApprove").click(function() {
   var retailerTable = JSON.stringify(retailerTableValues());
   var bankingTable = JSON.stringify(bankingTableValues());
   var directBankingTable = JSON.stringify(directBankingTableValues());
+
 
   $.ajax({
     type: 'post',
@@ -265,12 +276,13 @@ $("#btnDsrApprove").click(function() {
       "bankingTable": bankingTable,
       "directBankingTable": directBankingTable,
       "id": dsr_id,
+      "pending_sum_id": psum_id,
     },
     success: function(data) {
 
      swal_success("Dsr Approved Successfully");
      $("#dsrModal").modal("hide");
-     location.reload();
+     // location.reload();
 
    },
    error: function(error) {
@@ -287,9 +299,10 @@ function saleTableValues(){
  var TableData = new Array();
  $('#salesTable tr').each(function(row, tr){
   TableData[row]={
-    "itemName" : $(tr).find('td:eq(1)').find('input').val(),
-    "itemQty" : $(tr).find('td:eq(2)').find('input').val(),
-    "itemPrice" : $(tr).find('td:eq(3)').find('input').val()
+    "id" : $(tr).find('td:eq(1)').text(),
+    "itemName" : $(tr).find('td:eq(2)').find('input').val(),
+    "itemQty" : $(tr).find('td:eq(3)').find('input').val(),
+    "itemPrice" : $(tr).find('td:eq(4)').find('input').val()
   }     
 }); 
  TableData.shift();
@@ -301,9 +314,10 @@ function inHandTableValues(){
  var TableData = new Array();
  $('#inHandTable tr').each(function(row, tr){
   TableData[row]={
-    "inHand" : $(tr).find('td:eq(1)').find('input').val(),
-    "cash" : $(tr).find('td:eq(2)').find('input').val(),
-    "cheque" : $(tr).find('td:eq(3)').find('input').val()
+    "id" : $(tr).find('td:eq(1)').text(),
+    "inHand" : $(tr).find('td:eq(2)').find('input').val(),
+    "cash" : $(tr).find('td:eq(3)').find('input').val(),
+    "cheque" : $(tr).find('td:eq(4)').find('input').val()
   }     
 }); 
  TableData.shift();
@@ -315,8 +329,9 @@ function creditTableValues(){
  var TableData = new Array();
  $('#creditTable tr').each(function(row, tr){
   TableData[row]={
-    "customerName" : $(tr).find('td:eq(1)').find('input').val(),
-    "amount" : $(tr).find('td:eq(2)').find('input').val(),
+    "id" : $(tr).find('td:eq(1)').text(),
+    "customerName" : $(tr).find('td:eq(2)').find('input').val(),
+    "amount" : $(tr).find('td:eq(3)').find('input').val(),
   }     
 }); 
  TableData.shift();
@@ -328,8 +343,9 @@ function creditCollectionTableValues(){
  var TableData = new Array();
  $('#creditCollectionTable tr').each(function(row, tr){
   TableData[row]={
-    "ccName" : $(tr).find('td:eq(1)').find('input').val(),
-    "ccAmount" : $(tr).find('td:eq(2)').find('input').val(),
+    "id" : $(tr).find('td:eq(1)').text(),
+    "ccName" : $(tr).find('td:eq(2)').find('input').val(),
+    "ccAmount" : $(tr).find('td:eq(3)').find('input').val(),
   }     
 }); 
  TableData.shift();
@@ -342,10 +358,11 @@ function retailerTableValues(){
  var TableData = new Array();
  $('#retailerTable tr').each(function(row, tr){
   TableData[row]={
-    "reCustomerName" : $(tr).find('td:eq(1)').find('input').val(),
-    "reitemName" : $(tr).find('td:eq(2)').find('input').val(),
-    "reQuantity" : $(tr).find('td:eq(3)').find('input').val(),
-    "reAmount" : $(tr).find('td:eq(4)').find('input').val(),
+    "id" : $(tr).find('td:eq(1)').text(),
+    "reCustomerName" : $(tr).find('td:eq(2)').find('input').val(),
+    "reitemId" : $(tr).find('td:eq(3)').text(),
+    "reQuantity" : $(tr).find('td:eq(5)').find('input').val(),
+    "reAmount" : $(tr).find('td:eq(6)').find('input').val(),
   }     
 }); 
  TableData.shift();
@@ -357,9 +374,10 @@ function bankingTableValues(){
  var TableData = new Array();
  $('#bankTable tr').each(function(row, tr){
   TableData[row]={
-    "bank" : $(tr).find('td:eq(1)').find('input').val(),
-    "refno" : $(tr).find('td:eq(2)').find('input').val(),
-    "amount" : $(tr).find('td:eq(3)').find('input').val(),
+    "id" : $(tr).find('td:eq(1)').text(),
+    "bank" : $(tr).find('td:eq(2)').find('input').val(),
+    "refno" : $(tr).find('td:eq(3)').find('input').val(),
+    "amount" : $(tr).find('td:eq(4)').find('input').val(),
   }     
 }); 
  TableData.shift();
@@ -371,10 +389,11 @@ function directBankingTableValues(){
  var TableData = new Array();
  $('#directBankTable tr').each(function(row, tr){
   TableData[row]={
-    "customerName" : $(tr).find('td:eq(1)').find('input').val(),
-    "bank" : $(tr).find('td:eq(2)').find('input').val(),
-    "refno" : $(tr).find('td:eq(3)').find('input').val(),
-    "amount" : $(tr).find('td:eq(4)').find('input').val(),
+    "id" : $(tr).find('td:eq(1)').text(),
+    "customerName" : $(tr).find('td:eq(2)').find('input').val(),
+    "bank" : $(tr).find('td:eq(3)').find('input').val(),
+    "refno" : $(tr).find('td:eq(4)').find('input').val(),
+    "amount" : $(tr).find('td:eq(5)').find('input').val(),
   }     
 }); 
  TableData.shift();

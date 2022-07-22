@@ -38,6 +38,7 @@ return array(
     'App\\Models\\RetailerReturn' => $baseDir . '/app/Models/RetailerReturn.php',
     'App\\Models\\Sale' => $baseDir . '/app/Models/Sale.php',
     'App\\Models\\Stock' => $baseDir . '/app/Models/Stock.php',
+    'App\\Models\\Sums' => $baseDir . '/app/Models/Sums.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Models\\banking' => $baseDir . '/app/Models/banking.php',
     'App\\Models\\directbanking' => $baseDir . '/app/Models/directbanking.php',
