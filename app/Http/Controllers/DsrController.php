@@ -176,11 +176,11 @@ foreach($directBankingTable as $db){
    ]);
 }
 
-// $updateItemData = DB::table('pending_sum')
-// ->where('id','=',$request->get('pending_sum_id'))
-// ->update([
-//     'status'=>1,
-// ]);
+$updateItemData = DB::table('pending_sum')
+->where('id','=',$request->get('pending_sum_id'))
+->update([
+    'status'=>1,
+]);
 
 return response($inHandTable);
 

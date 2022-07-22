@@ -282,7 +282,9 @@ $("#btnDsrApprove").click(function() {
 
      swal_success("Dsr Approved Successfully");
      $("#dsrModal").modal("hide");
-     // location.reload();
+     setTimeout(function() {
+      location.reload();
+    }, 1300);
 
    },
    error: function(error) {
