@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2022 at 04:48 PM
+-- Generation Time: Jul 23, 2022 at 07:00 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -66,12 +66,8 @@ CREATE TABLE `bankings` (
 --
 
 INSERT INTO `bankings` (`id`, `bank_name`, `bank_ref_no`, `bank_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'commercial', '123', 50, 4, 1, '2022-07-22 06:26:12', '2022-07-22 06:26:12'),
-(2, 'sampath', '456', 60, 4, 1, '2022-07-22 06:26:12', '2022-07-22 06:26:12'),
-(3, 'ndb', '789', 90, 4, 1, '2022-07-22 06:28:30', '2022-07-22 06:28:30'),
-(4, 'pan', '7412', 40, 4, 1, '2022-07-22 06:28:30', '2022-07-22 06:28:30'),
-(5, 'BOC', '447852', 1237, 4, 1, '2022-07-22 06:29:00', '2022-07-22 06:29:00'),
-(6, 'peoples', '125', 753, 4, 1, '2022-07-22 06:29:00', '2022-07-22 06:29:00');
+(1, 'sampath', '123456789', 2500, 2, 1, '2022-07-23 16:46:54', '2022-07-23 16:46:54'),
+(2, 'commercial', '789456', 1237, 2, 1, '2022-07-23 16:46:54', '2022-07-23 16:46:54');
 
 -- --------------------------------------------------------
 
@@ -94,18 +90,10 @@ CREATE TABLE `credits` (
 --
 
 INSERT INTO `credits` (`id`, `credit_customer_name`, `credit_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'charith', 15, 2, 1, '2022-07-22 00:42:51', '2022-07-22 00:42:51'),
-(2, 'madushan', 5, 2, 1, '2022-07-22 00:42:51', '2022-07-22 00:42:51'),
-(3, 'madushan', 5, 4, 1, '2022-07-22 00:43:01', '2022-07-22 00:43:01'),
-(4, 'dinesh', 6, 4, 1, '2022-07-22 00:43:01', '2022-07-22 00:43:01'),
-(5, 'kasun', 7, 4, 1, '2022-07-22 00:43:30', '2022-07-22 00:43:30'),
-(6, 'tharindu', 8, 4, 1, '2022-07-22 00:43:30', '2022-07-22 00:43:30'),
-(7, 'thimira', 9, 4, 1, '2022-07-22 00:44:29', '2022-07-22 00:44:29'),
-(8, 'danapala', 10, 4, 1, '2022-07-22 00:44:29', '2022-07-22 00:44:29'),
-(9, 'kaushan', 11, 4, 1, '2022-07-22 00:44:44', '2022-07-22 00:44:44'),
-(10, 'vijay', 12, 4, 1, '2022-07-22 00:44:44', '2022-07-22 00:44:44'),
-(11, 'charith', 15, 2, 1, '2022-07-22 00:45:01', '2022-07-22 00:45:01'),
-(12, 'madushan', 5, 2, 1, '2022-07-22 00:45:01', '2022-07-22 00:45:01');
+(1, 'charith', 15, 2, 1, '2022-07-23 16:34:49', '2022-07-23 16:34:49'),
+(2, 'madushan', 5, 2, 1, '2022-07-23 16:34:49', '2022-07-23 16:34:49'),
+(3, 'charith', 15, 2, 1, '2022-07-23 16:45:43', '2022-07-23 16:45:43'),
+(4, 'madushan', 5, 2, 1, '2022-07-23 16:45:43', '2022-07-23 16:45:43');
 
 -- --------------------------------------------------------
 
@@ -128,8 +116,10 @@ CREATE TABLE `credit_collections` (
 --
 
 INSERT INTO `credit_collections` (`id`, `credit_collection_customer_name`, `credit_collection_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'kasun', 100, 4, 1, '2022-07-22 06:17:36', '2022-07-22 06:17:36'),
-(2, 'dimatha', 500, 4, 1, '2022-07-22 06:17:36', '2022-07-22 06:17:36');
+(1, 'kasun', 200, 2, 1, '2022-07-23 16:35:11', '2022-07-23 16:35:11'),
+(2, 'dimatha', 500, 2, 1, '2022-07-23 16:35:11', '2022-07-23 16:35:11'),
+(3, 'kasun', 200, 2, 1, '2022-07-23 16:45:34', '2022-07-23 16:45:34'),
+(4, 'dimatha', 500, 2, 1, '2022-07-23 16:45:35', '2022-07-23 16:45:35');
 
 -- --------------------------------------------------------
 
@@ -148,16 +138,6 @@ CREATE TABLE `directbankings` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `directbankings`
---
-
-INSERT INTO `directbankings` (`id`, `direct_bank_customer_name`, `direct_bank_name`, `direct_bank_ref_no`, `direct_bank_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'kamal', 'Sampath', '12', 100, 4, 1, '2022-07-22 06:29:25', '2022-07-22 06:29:25'),
-(2, 'nuwan', 'NDB', '789132741', 159753, 4, 1, '2022-07-22 06:29:25', '2022-07-22 06:29:25'),
-(3, 'nuwan', 'NDB', '789132741', 159753, 4, 1, '2022-07-22 06:30:06', '2022-07-22 06:30:06'),
-(4, 'nuwan', 'NDB', '789132741', 159753, 4, 1, '2022-07-22 06:30:06', '2022-07-22 06:30:06');
 
 -- --------------------------------------------------------
 
@@ -181,8 +161,10 @@ CREATE TABLE `dsrs` (
 --
 
 INSERT INTO `dsrs` (`id`, `in_hand`, `cash`, `cheque`, `dsr_user_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1300, 450, 850, 2, 1, '2022-07-22 06:34:21', '2022-07-22 06:34:21'),
-(2, 1200, 400, 800, 4, 2, '2022-07-22 06:53:47', '2022-07-22 06:53:47');
+(1, 1600, 550, 1050, 2, 1, '2022-07-22 06:34:21', '2022-07-22 06:34:21'),
+(2, 1200, 400, 800, 4, 2, '2022-07-22 06:53:47', '2022-07-22 06:53:47'),
+(3, 300, 100, 200, 3, 1, '2022-07-22 13:10:58', '2022-07-22 13:10:58'),
+(4, 600, 200, 400, 2, 1, '2022-07-23 16:45:56', '2022-07-23 16:45:56');
 
 -- --------------------------------------------------------
 
@@ -409,7 +391,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (96, '2022_07_20_122723_create_dsr_returns_table', 11),
 (97, '2022_07_21_052109_create_sales_table', 12),
 (98, '2022_07_22_102932_create_pending_sum_table', 13),
-(99, '2022_07_22_112247_create_pending_sum_table', 14);
+(99, '2022_07_22_112247_create_pending_sum_table', 14),
+(100, '2022_07_22_130126_create_pending_sum_table', 15),
+(101, '2022_07_23_155503_create_dsr_status_table', 15),
+(102, '2022_07_23_160554_create_pending_sum_status_table', 16);
 
 -- --------------------------------------------------------
 
@@ -547,8 +532,36 @@ CREATE TABLE `pending_sum` (
 --
 
 INSERT INTO `pending_sum` (`id`, `dsr_id`, `date`, `inhand_sum`, `sales_sum`, `credit_sum`, `credit_collection_sum`, `banking_sum`, `direct_banking_sum`, `retialer_sum`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, '2022-07-22', 1200, 6000, 40, 0, 0, 0, 0, 0, NULL, NULL),
-(2, 4, '2022-07-22', 1800, 0, 20, 700, 11211, 324506, 15975, 0, NULL, NULL);
+(1, 2, '2022-07-23', 300, 3000, 40, 1400, 3737, 0, 0, 0, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pending_sum_status`
+--
+
+CREATE TABLE `pending_sum_status` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `dsr_id` int(11) NOT NULL,
+  `date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `inhand_sum` int(11) NOT NULL DEFAULT 0,
+  `sales_sum` int(11) NOT NULL DEFAULT 0,
+  `credit_sum` int(11) NOT NULL DEFAULT 0,
+  `credit_collection_sum` int(11) NOT NULL DEFAULT 0,
+  `banking_sum` int(11) NOT NULL DEFAULT 0,
+  `direct_banking_sum` int(11) NOT NULL DEFAULT 0,
+  `retialer_sum` int(11) NOT NULL DEFAULT 0,
+  `status` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pending_sum_status`
+--
+
+INSERT INTO `pending_sum_status` (`id`, `dsr_id`, `date`, `inhand_sum`, `sales_sum`, `credit_sum`, `credit_collection_sum`, `banking_sum`, `direct_banking_sum`, `retialer_sum`, `status`, `created_at`, `updated_at`) VALUES
+(1, 2, '2022-07-23', 1, 0, 1, 1, 1, 0, 0, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -586,17 +599,6 @@ CREATE TABLE `retailer_returns` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `retailer_returns`
---
-
-INSERT INTO `retailer_returns` (`id`, `re_customer_name`, `re_item_id`, `re_item_qty`, `re_item_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'kasun', 4, 5, 25, 4, 1, '2022-07-21 21:43:23', '2022-07-21 03:03:27'),
-(2, 'dimatha', 4, 2, 24, 4, 1, '2022-07-21 21:43:23', '2022-07-21 03:03:27'),
-(3, 'taraka', 4, 3, 36, 4, 1, '2022-07-22 06:20:34', '2022-07-22 06:20:34'),
-(4, 'gayan', 4, 4, 48, 4, 1, '2022-07-22 06:21:43', '2022-07-22 06:21:43'),
-(5, 'nuwan', 4, 6, 36, 4, 1, '2022-07-22 06:21:43', '2022-07-22 06:21:43');
-
 -- --------------------------------------------------------
 
 --
@@ -620,10 +622,8 @@ CREATE TABLE `sales` (
 --
 
 INSERT INTO `sales` (`id`, `item_id`, `item_name`, `item_qty`, `item_amount`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Dialog', 21, 52, 2, 1, '2022-07-22 00:33:57', '2022-07-22 00:33:57'),
-(2, 2, 'Dialog', 11, 210, 2, 1, '2022-07-22 00:33:57', '2022-07-22 00:33:57'),
-(3, 1, 'Dialog', 22, 100, 2, 1, '2022-07-22 00:33:59', '2022-07-22 00:33:59'),
-(4, 2, 'Dialog', 12, 250, 2, 1, '2022-07-22 00:33:59', '2022-07-22 00:33:59');
+(1, 1, 'Dialog 49', 20, 50, 2, 1, '2022-07-23 16:34:40', '2022-07-23 16:34:40'),
+(2, 2, 'Dialog 199', 10, 200, 2, 1, '2022-07-23 16:34:40', '2022-07-23 16:34:40');
 
 -- --------------------------------------------------------
 
@@ -802,6 +802,12 @@ ALTER TABLE `pending_sum`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `pending_sum_status`
+--
+ALTER TABLE `pending_sum_status`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
@@ -847,31 +853,31 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `bankings`
 --
 ALTER TABLE `bankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `credits`
 --
 ALTER TABLE `credits`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `credit_collections`
 --
 ALTER TABLE `credit_collections`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `directbankings`
 --
 ALTER TABLE `directbankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `dsrs`
 --
 ALTER TABLE `dsrs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `dsr_returns`
@@ -907,7 +913,7 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -925,7 +931,13 @@ ALTER TABLE `oauth_personal_access_clients`
 -- AUTO_INCREMENT for table `pending_sum`
 --
 ALTER TABLE `pending_sum`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `pending_sum_status`
+--
+ALTER TABLE `pending_sum_status`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -937,13 +949,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `retailer_returns`
 --
 ALTER TABLE `retailer_returns`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `stocks`
