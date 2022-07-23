@@ -21,50 +21,50 @@ use DB;
 class PassportAuthController extends Controller
 {
 
-   public function MobileLogin(Request $request){
-       $request->validate([
-           'email' => 'required',
-           'password' => 'required',
-       ]);
-       $user_login = DB::table('users')->where('email', '=', $request->get('email'))->get();
-       if(count($user_login) !=0){
-           foreach($user_login as $user){
-             if(Hash::check($request->get('password'), $user->password)){
-                return response()->json(['data' => array('info'=>$user_login,'error'=>null)], 200);
-            }else{
+ public function MobileLogin(Request $request){
+     $request->validate([
+         'email' => 'required',
+         'password' => 'required',
+     ]);
+     $user_login = DB::table('users')->where('email', '=', $request->get('email'))->get();
+     if(count($user_login) !=0){
+         foreach($user_login as $user){
+           if(Hash::check($request->get('password'), $user->password)){
+            return response()->json(['data' => array('info'=>$user_login,'error'=>null)], 200);
+        }else{
                 //User name or password is incorrect!
-                return response()->json(['data' => array('info'=>[],'error'=>1) ], 200);   
-            }
+            return response()->json(['data' => array('info'=>[],'error'=>1) ], 200);   
         }
-    }else{
-        // Please check your credentials!
-        return response()->json(['data' => array('info'=>[],'error'=>0) ], 200);   
     }
+}else{
+        // Please check your credentials!
+    return response()->json(['data' => array('info'=>[],'error'=>0) ], 200);   
+}
 }
 
 
 
 public function MobileUpdatePassword(Request $request){
-   $request->validate([
-       'user_id' => 'required',
-       'email' => 'required',
-       'password' => 'required',
-   ]);
+ $request->validate([
+     'user_id' => 'required',
+     'email' => 'required',
+     'password' => 'required',
+ ]);
    //get the new password with hash
-   $new_password = HASH::make($request->get('password'));
+ $new_password = HASH::make($request->get('password'));
 
-   $updateUserData = DB::table('users')
-   ->where('id','=',$request->get('user_id'))
-   ->update([
+ $updateUserData = DB::table('users')
+ ->where('id','=',$request->get('user_id'))
+ ->update([
     'password'=> $new_password
 ]);
 
-   $user_data = DB::table('users')->where('email', '=', $request->get('email'))->get();
-   if($updateUserData){
+ $user_data = DB::table('users')->where('email', '=', $request->get('email'))->get();
+ if($updateUserData){
     return response()->json(['data' => array('info'=>$user_data,'error'=>null)], 200);
 }else{
     // Oops.. Error Occured!
- return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
 }
 }
 
@@ -76,8 +76,8 @@ public function MobileGetUserbyId(Request $request){
         return response()->json(['data' => array('info'=>$user_data,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
@@ -88,8 +88,8 @@ public function MobileGetItems(Request $request){
         return response()->json(['data' => array('info'=>$item_data,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
@@ -100,8 +100,8 @@ public function MobileGetItemsById(Request $request){
         return response()->json(['data' => array('info'=>$item_data,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
@@ -123,8 +123,8 @@ public function MobileGetItemsByDsrId(Request $request){
         return response()->json(['data' => array('info'=>$item_data,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
@@ -170,12 +170,12 @@ public function MobileDsrStockDataItem($results){
 
 
 public function MobileGetDsrStockIds(Request $request){
- $allData = [];
- $itemData = [];
+   $allData = [];
+   $itemData = [];
 
- $stock_data = DB::table('dsr_stocks')->select('id')->where('dsr_id','=',$request->get('dsr_id'))->where('status', '=', 1)->get();
+   $stock_data = DB::table('dsr_stocks')->select('id')->where('dsr_id','=',$request->get('dsr_id'))->where('status', '=', 1)->get();
 
- foreach($stock_data as $sd){
+   foreach($stock_data as $sd){
     $stock_item_data = DB::table('dsr_stock_items')
     ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
     ->select('qty')
@@ -202,15 +202,15 @@ return response()->json(['data' => array('info'=>$allData,'error'=>null)],200);
 
 public function MobileAddDsrReturnData(Request $request){
 
- $dsr_return = new DsrReturn;
- $dsr_return->dsr_stock_id = $request->get('dsr_stock_id');
- $dsr_return->dsr_id = $request->get('dsr_id');
- $dsr_return->item_id = $request->get('item_id');
- $dsr_return->qty = $request->get('qty');
- $dsr_return->status = 0;
- $dsr_return->save();
+   $dsr_return = new DsrReturn;
+   $dsr_return->dsr_stock_id = $request->get('dsr_stock_id');
+   $dsr_return->dsr_id = $request->get('dsr_id');
+   $dsr_return->item_id = $request->get('item_id');
+   $dsr_return->qty = $request->get('qty');
+   $dsr_return->status = 0;
+   $dsr_return->save();
 
- if($dsr_return){
+   if($dsr_return){
     return response()->json(['data' => array('info'=>$dsr_return,'error'=>null)],200);
 }else{
     return response()->json(['data' => array('info'=>[],'error'=>null)],401);
@@ -293,6 +293,7 @@ public function MobileDsrSales(Request $request){
 
     // check if there is data in pending sum table for dsr today
     $psum = DB::table('pending_sum')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
+    $pstatus = DB::table('pending_sum_status')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
 
     if(count($psum)==0){
         // insert
@@ -300,6 +301,14 @@ public function MobileDsrSales(Request $request){
     }else{
         // update
         DB::update('update pending_sum set sales_sum = sales_sum + ? where dsr_id = ? and date = ?', array($saleSum,$dsrId,$todayDate));
+    }
+
+    if(count($pstatus)==0){
+        // insert
+        DB::insert('insert into pending_sum_status (dsr_id, date,sales_sum) values (?,?,?)', array($dsrId, $todayDate, 1));
+    }else{
+        // update
+        DB::update('update pending_sum_status set sales_sum = ? where dsr_id = ? and date = ?', array(1,$dsrId,$todayDate));
     }
 
     return response()->json(['data' => array('info'=>$saleItems,'error'=>null)],200);
@@ -325,6 +334,7 @@ public function MobileDsrCredits(Request $request){
 
     // check if there is data in pending sum table for dsr today
     $csum = DB::table('pending_sum')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
+    $pstatus = DB::table('pending_sum_status')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
 
     if(count($csum)==0){
         // insert
@@ -334,7 +344,15 @@ public function MobileDsrCredits(Request $request){
         DB::update('update pending_sum set credit_sum = credit_sum + ? where dsr_id = ? and date = ?', array($creditSum,$dsrId,$todayDate));
     }
 
-    return response()->json(['data' => array('info'=>$creditItems,'error'=>null)],200);
+    if(count($pstatus)==0){
+        // insert
+        DB::insert('insert into pending_sum_status (dsr_id, date,credit_sum) values (?,?,?)', array($dsrId, $todayDate, 1));
+    }else{
+        // update
+       DB::update('update pending_sum_status set credit_sum = ? where dsr_id = ? and date = ?', array(1,$dsrId,$todayDate));
+   }
+
+   return response()->json(['data' => array('info'=>$creditItems,'error'=>null)],200);
 }
 
 
@@ -357,6 +375,7 @@ public function MobileDsrCreditcollections(Request $request){
 
     // check if there is data in pending sum table for dsr today
     $csum = DB::table('pending_sum')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
+    $pstatus = DB::table('pending_sum_status')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
 
     if(count($csum)==0){
         // insert
@@ -366,7 +385,16 @@ public function MobileDsrCreditcollections(Request $request){
         DB::update('update pending_sum set credit_collection_sum = credit_collection_sum + ? where dsr_id = ? and date = ?', array($creditColSum,$dsrId,$todayDate));
     }
 
-    return response()->json(['data' => array('info'=>$creditCollectionItems,'error'=>null)],200);
+
+    if(count($pstatus)==0){
+        // insert
+        DB::insert('insert into pending_sum_status (dsr_id, date,credit_collection_sum) values (?,?,?)', array($dsrId, $todayDate, 1));
+    }else{
+        // update
+      DB::update('update pending_sum_status set credit_collection_sum = ? where dsr_id = ? and date = ?', array(1,$dsrId,$todayDate));
+  }
+
+  return response()->json(['data' => array('info'=>$creditCollectionItems,'error'=>null)],200);
 }
 
 
@@ -427,6 +455,7 @@ public function MobileDsrBankings(Request $request){
 
      // check if there is data in pending sum table for dsr today
     $csum = DB::table('pending_sum')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
+    $pstatus = DB::table('pending_sum_status')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
 
     if(count($csum)==0){
         // insert
@@ -436,7 +465,16 @@ public function MobileDsrBankings(Request $request){
         DB::update('update pending_sum set banking_sum = banking_sum + ? where dsr_id = ? and date = ?', array($bankingSum,$dsrId,$todayDate));
     }
 
-    return response()->json(['data' => array('info'=>$bankingItems,'error'=>null)],200);
+
+    if(count($pstatus)==0){
+        // insert
+        DB::insert('insert into pending_sum_status (dsr_id, date,banking_sum) values (?,?,?)', array($dsrId, $todayDate, 1));
+    }else{
+        // update
+      DB::update('update pending_sum_status set banking_sum = ? where dsr_id = ? and date = ?', array(1,$dsrId,$todayDate));
+  }
+
+  return response()->json(['data' => array('info'=>$bankingItems,'error'=>null)],200);
 }
 
 
@@ -461,6 +499,7 @@ public function MobileDsrDirectBankings(Request $request){
 
     // check if there is data in pending sum table for dsr today
     $csum = DB::table('pending_sum')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
+    $pstatus = DB::table('pending_sum_status')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
 
     if(count($csum)==0){
         // insert
@@ -470,7 +509,15 @@ public function MobileDsrDirectBankings(Request $request){
         DB::update('update pending_sum set direct_banking_sum = direct_banking_sum + ? where dsr_id = ? and date = ?', array($dbankingSum,$dsrId,$todayDate));
     }
 
-    return response()->json(['data' => array('info'=>$dbankingItems,'error'=>null)],200);
+    if(count($pstatus)==0){
+        // insert
+        DB::insert('insert into pending_sum_status (dsr_id, date,direct_banking_sum) values (?,?,?)', array($dsrId, $todayDate, 1));
+    }else{
+        // update
+      DB::update('update pending_sum_status set direct_banking_sum = ? where dsr_id = ? and date = ?', array(1,$dsrId,$todayDate));
+  }
+
+  return response()->json(['data' => array('info'=>$dbankingItems,'error'=>null)],200);
 }
 
 
@@ -483,14 +530,14 @@ public function MobileDsrInhands(Request $request){
     $check_data = DB::table('dsrs')->select('dsr_user_id','in_hand','cash','cheque')->where('dsrs.dsr_user_id', '=', $request->get('dsr_id'))->whereDate('dsrs.created_at', '=', date($todayDate))->get();
 
     if(count($check_data) == 0){
-     $inhand = new Dsr([
+       $inhand = new Dsr([
         'in_hand' => floatval($request->get('cash')) + floatval($request->get('cheque')),
         'cash' => $request->get('cash'),
         'cheque' => $request->get('cheque'),
         'dsr_user_id' => $request->get('dsr_id'),
     ]);
-     $inhand->save();
- }else{
+       $inhand->save();
+   }else{
 
     DB::update('update dsrs set cash = cash+?, cheque = cheque+?, in_hand = in_hand+? WHERE dsr_user_id =?',array($request->get('cash'),$request->get('cheque'),floatval($request->get('cash')) + floatval($request->get('cheque')),$request->get('dsr_id') ));
 
@@ -499,6 +546,7 @@ public function MobileDsrInhands(Request $request){
 
 // check if there is data in pending sum table for dsr today
 $csum = DB::table('pending_sum')->select('dsr_id','date')->where('dsr_id', '=', $request->get('dsr_id'))->where('date', '=', $todayDate)->get();
+$pstatus = DB::table('pending_sum_status')->select('dsr_id','date')->where('dsr_id', '=', $request->get('dsr_id'))->where('date', '=', $todayDate)->get();
 
 if(count($csum)==0){
         // insert
@@ -506,6 +554,15 @@ if(count($csum)==0){
 }else{
         // update
     DB::update('update pending_sum set inhand_sum = ? where dsr_id = ? and date = ?', array(floatval($request->get('cash')) + floatval($request->get('cheque')),$request->get('dsr_id'),$todayDate));
+}
+
+
+if(count($pstatus)==0){
+        // insert
+    DB::insert('insert into pending_sum_status (dsr_id, date,inhand_sum) values (?,?,?)', array($request->get('dsr_id'), $todayDate, 1));
+}else{
+        // update
+   DB::update('update pending_sum_status set inhand_sum = ? where dsr_id = ? and date = ?', array(1,$request->get('dsr_id'),$todayDate));
 }
 
 $array = (object) ['cash' => $request->get('cash'),'cheque' => $request->get('cheque')];
@@ -517,19 +574,19 @@ return response()->json(['data' => array('info'=>$array,'error'=>null)],200);
 
 public function MobileDsrSumery(Request $request){
 
- $pdsr = DB::table('pending_sum')
- ->join('users', 'pending_sum.dsr_id', 'users.id')
- ->select('pending_sum.id','pending_sum.dsr_id','users.name','date','inhand_sum','sales_sum','credit_sum','credit_collection_sum','banking_sum','direct_banking_sum','retialer_sum')
- ->where('date', '=', $request->get('date'))
- ->where('pending_sum.dsr_id', '=', $request->get('dsr_id'))
- ->get();
+   $pdsr = DB::table('pending_sum')
+   ->join('users', 'pending_sum.dsr_id', 'users.id')
+   ->select('pending_sum.id','pending_sum.dsr_id','users.name','date','inhand_sum','sales_sum','credit_sum','credit_collection_sum','banking_sum','direct_banking_sum','retialer_sum')
+   ->where('date', '=', $request->get('date'))
+   ->where('pending_sum.dsr_id', '=', $request->get('dsr_id'))
+   ->get();
 
 
- if($pdsr){
+   if($pdsr){
     return response()->json(['data' => array('info'=>$pdsr,'error'=>null)], 200);
 }else{
     // Oops.. Error Occured!
- return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
 }
 }
 
@@ -537,19 +594,19 @@ public function MobileDsrSumery(Request $request){
 
 public function MobileGetSaleSumery(Request $request){
 
- $sale_summery_items = DB::table('sales')
- ->select('item_id','item_qty as qty',DB::raw('sum(item_amount) as sub_total'))
- ->whereDate('created_at', '=', $request->get('date'))
- ->where('dsr_id', '=', $request->get('dsr_id'))
- ->groupBy('item_id')
- ->get();
+   $sale_summery_items = DB::table('sales')
+   ->select('item_id','item_qty as qty',DB::raw('sum(item_amount) as sub_total'))
+   ->whereDate('created_at', '=', $request->get('date'))
+   ->where('dsr_id', '=', $request->get('dsr_id'))
+   ->groupBy('item_id')
+   ->get();
 
 
- if($sale_summery_items){
+   if($sale_summery_items){
     return response()->json(['data' => array('info'=>$sale_summery_items,'error'=>null)], 200);
 }else{
     // Oops.. Error Occured!
- return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
 }
 }
 
@@ -568,8 +625,8 @@ public function MobileGetInhandSumery(Request $request){
         return response()->json(['data' => array('info'=>$inhand_summery_items,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
@@ -587,8 +644,8 @@ public function MobileGetBankingSumery(Request $request){
         return response()->json(['data' => array('info'=>$bank_summery_items,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
@@ -605,8 +662,8 @@ public function MobileGetDirectBankingSumery(Request $request){
         return response()->json(['data' => array('info'=>$dbank_summery_items,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
@@ -624,8 +681,8 @@ public function MobileGetCreditSumery(Request $request){
         return response()->json(['data' => array('info'=>$credit_summery_items,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
@@ -643,8 +700,25 @@ public function MobileGetCreditColSumery(Request $request){
         return response()->json(['data' => array('info'=>$credit_summery_items,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
-     return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
- }
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
+}
+
+
+public function MobileGetSumeryStatus(Request $request){
+
+    $summery_details = DB::table('pending_sum_status')
+    ->where('date', '=', $request->get('date'))
+    ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->get();
+
+
+    if($summery_details){
+        return response()->json(['data' => array('info'=>$summery_details,'error'=>null)], 200);
+    }else{
+    // Oops.. Error Occured!
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
 }
 
 
