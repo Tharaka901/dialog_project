@@ -538,9 +538,10 @@ public function MobileDsrSumery(Request $request){
 public function MobileGetSaleSumery(Request $request){
 
  $sale_summery_items = DB::table('sales')
- ->select('item_id','item_qty as qty','item_amount as sub_total')
+ ->select('item_id','item_qty as qty',DB::raw('sum(item_amount) as sub_total'))
  ->whereDate('created_at', '=', $request->get('date'))
  ->where('dsr_id', '=', $request->get('dsr_id'))
+ ->groupBy('item_id')
  ->get();
 
 
