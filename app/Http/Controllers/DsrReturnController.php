@@ -36,6 +36,7 @@ class DsrReturnController extends Controller
 
     $can_deduct = 0;
     $deduct_stock = 0;
+    $deduct_qty = 0;
 
     foreach($return_data as $ids){
         $stock_items_data = DB::table('dsr_stock_items')->join('dsr_stocks' ,'dsr_stock_items.dsr_stock_id' ,'dsr_stocks.id')->select('dsr_stock_items.id','dsr_stock_id','item_id','qty')->where('dsr_stock_items.dsr_stock_id','=',$ids->dsr_stock_id)->where('dsr_stock_items.item_id','=',$request->item_id)->get();
@@ -45,17 +46,18 @@ class DsrReturnController extends Controller
             if($sid->qty >=  $ids->qty){
                 $can_deduct = 1;
                 $deduct_stock = $sid->id;
+                $deduct_qty = $ids->qty;
                 break;
             }
         }
     }
 
-    
+
         // $update_dsr_qty = DB::table('dsr_stock_items')->where('item_id','=',$request->item_id)->where('dsr_stock_id','=',$ids->dsr_stock_id)->decrement('qty', $ids->qty);
 
 
     // update dsr stock (-)
-    $update_dsr_qty = DB::table('dsr_stock_items')->where('id','=',$deduct_stock)->decrement('qty', $ids->qty);
+    $update_dsr_qty = DB::table('dsr_stock_items')->where('id','=',$deduct_stock)->decrement('qty', $deduct_qty);
 
        // update stock (+)
     $update_item_qty = DB::table('items')->where('id','=',$request->item_id)->increment('qty', $request->qty);
@@ -63,7 +65,7 @@ class DsrReturnController extends Controller
     // update return table status as 1
     $update_return_status = DB::table('dsr_returns')->where('id','=',$request->id)->update(['status'=>1]);
 
-    return response("ok");
+    return response($return_data);
 
 }
 
