@@ -73,8 +73,7 @@
             <td>{{ $return->name }}</td>
             <td>{{ $return->qty }}</td>
             <td class="text-center">
-               <button type="button" class="btn btn-add btn-sm" onclick="approveQty({{ $return->return_id }},{{ $return->dsr_stock_id }},{{ $return->item_id }},{{ $return->qty }})"><i class="fa fa-check"></i></button>
-               <!-- button type="button" class="btn btn-danger btn-sm" onclick="rollBackQty({{ $return->return_id }},{{ $return->dsr_stock_id }},{{ $return->item_id }},{{ $return->qty }})"><i class="fa fa-close"></i></button> -->
+               <button type="button" class="btn btn-add btn-sm" onclick="approveQty({{ $return->return_id }},{{ $return->item_id }},{{ $return->qty }})"><i class="fa fa-check"></i></button>
                <a href="{{ url('rolling_return_items/'.$return->return_id) }}" class="btn btn-danger btn-sm"><i class="fa fa-close"></i></a>
             </td>
          </tr>

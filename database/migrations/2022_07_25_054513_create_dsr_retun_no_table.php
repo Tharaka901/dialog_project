@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dsr_returns', function (Blueprint $table) {
+        Schema::create('dsr_retun_no', function (Blueprint $table) {
             $table->id();
-            $table->integer("dsr_stock_id");
-            $table->integer("dsr_id");
-            $table->integer("item_id");
-            $table->double("qty")->default(0);
-            $table->integer("status")->default("1");
+            $table->integer('dsr_return_id');
+            $table->string('dsr_stock_id');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dsr_returns');
+        Schema::dropIfExists('dsr_retun_no');
     }
 };

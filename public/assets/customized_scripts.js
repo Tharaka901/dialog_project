@@ -522,14 +522,14 @@ function inventoryTableValues(){
 }
 
 
-function approveQty(return_id,dsr_stock_id,item_id,qty){
+function approveQty(return_id,item_id,qty){
 
   $.ajax({
     type: 'post',
     url: "update_return_items",
     dataType: 'json',
     data: {
-      "id": return_id,"dsr_stock_id":dsr_stock_id,"item_id": item_id,"qty": qty
+      "id": return_id,"item_id": item_id,"qty": qty
     },
     success: function(data) {
 
