@@ -61,7 +61,7 @@
             <th>Credit</th>
             <th>Retailer Return</th>
             <th>Credit Collection</th>
-            <th>Variation</th>
+            <th>Variance</th>
             <th>Approve</th>
          </tr>
       </thead>

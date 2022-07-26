@@ -241,10 +241,10 @@ function viewDsr(psum_id,dsr_id){
 
 
       var sales = $("#salesTable tbody tr").length;
-      var inhand = $("#inHandTable tbody ").length;
-      var credit = $("#creditTable tbody ").length;
-      var creditCol = $("#creditCollectionTable tbody ").length;
-      var bank = $("#bankTable tbody ").length;
+      var inhand = $("#inHandTable tbody tr").length;
+      var credit = $("#creditTable tbody tr").length;
+      var creditCol = $("#creditCollectionTable tbody tr").length;
+      var bank = $("#bankTable tbody tr").length;
       var dbank = $("#directBankTable tbody tr").length;
 
 
@@ -265,9 +265,6 @@ function viewDsr(psum_id,dsr_id){
 
 
 $("#btnDsrApprove").click(function() {
-
-  alert("ok");
-  return;
 
   var dsr_id =$("#txt_drs_id").val();
   var psum_id = $("#txt_pending_sum_id").val();
