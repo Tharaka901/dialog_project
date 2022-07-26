@@ -260,10 +260,11 @@ public function MobileGetItemCount(Request $request){
 
     $stock_item_data = DB::table('dsr_stock_items')
     ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
-    ->select('item_id', DB::raw('sum(qty) as qty_sum'))
-    ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->leftjoin('dsr_returns','dsr_stock_items.item_id','dsr_returns.item_id')
+    ->select('dsr_stock_items.item_id', DB::raw('sum(dsr_stock_items.qty) as qty_sum'),'dsr_returns.qty as return_qty')
+    ->where('dsr_stocks.dsr_id', '=', $request->get('dsr_id'))
     ->where('dsr_stocks.status', '=', 1)
-    ->groupBy('item_id')
+    ->groupBy('dsr_stock_items.item_id')
     ->get();
 
     return response()->json(['data' => array('info'=>$stock_item_data,'error'=>null)],200);
@@ -742,11 +743,41 @@ public function MobileGetCreditColSumery(Request $request){
 }
 
 
+public function MobileGetRetailerSumery(Request $request){
+
+    $retailer_summery_items = DB::table('retailer_returns')
+    ->select('re_customer_name','re_item_id as item_id','re_item_qty as item_count')
+    ->whereDate('created_at', '=', $request->get('date'))
+    ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->get();
+
+
+    if($retailer_summery_items){
+        return response()->json(['data' => array('info'=>$retailer_summery_items,'error'=>null)], 200);
+    }else{
+    // Oops.. Error Occured!
+       return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
+   }
+}
+
+
 public function MobileGetSumeryStatus(Request $request){
 
     $summery_details = DB::table('pending_sum_status')
-    ->where('date', '=', $request->get('date'))
-    ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->join('retailer_returns','pending_sum_status.dsr_id','retailer_returns.dsr_id')
+    ->select(
+        'pending_sum_status.dsr_id',
+        'pending_sum_status.date',
+        'inhand_sum',
+        'sales_sum',
+        'credit_sum',
+        'credit_collection_sum',
+        'banking_sum',
+        'direct_banking_sum',
+        DB::raw('count(retailer_returns.re_item_id) as retialer_item_count')
+    )
+    ->where('pending_sum_status.date', '=', $request->get('date'))
+    ->where('pending_sum_status.dsr_id', '=', $request->get('dsr_id'))
     ->get();
 
 

@@ -200,7 +200,7 @@ public function CompleteDsr(){
     ->join('users', 'pending_sum.dsr_id', 'users.id')
     ->select('pending_sum.id','pending_sum.dsr_id','users.name','date','inhand_sum','sales_sum','credit_sum','credit_collection_sum','banking_sum','direct_banking_sum','retialer_sum')
     ->where('date', '=', $todayDate)
-    ->where('pending_sum.status', '=', 1)->get();
+    ->where('pending_sum.status', '=', 1)->paginate(5);
 
     return view('admin.dsr.complete_dsr',["dsrData"=>$pdsr]);
 }
