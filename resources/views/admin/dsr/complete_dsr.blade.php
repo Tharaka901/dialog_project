@@ -75,6 +75,7 @@
                                        <th>Credit</th>
                                        <th>Retailer Return</th>
                                        <th>Credit Collection</th>
+                                       <th>Variation</th>
                                     </tr>
                                  </thead>
                                  <tbody>
@@ -93,6 +94,7 @@
                                        <td>Rs. {{ number_format($dd->credit_sum,2)  }}</td>
                                        <td>Rs. {{ number_format($dd->retialer_sum ,2) }}</td>
                                        <td>Rs. {{ number_format($dd->credit_collection_sum,2)  }}</td>
+                                       <td>Rs. {{ number_format( (($dd->sales_sum + $dd->credit_collection_sum) - ($dd->inhand_sum + $dd->banking_sum + $dd->direct_banking_sum + $dd->credit_sum)),2 ) }}</td>
                                     </tr>
                                     <?php $count++ ?>
 
