@@ -53,3 +53,4 @@ Route::post('mobile_get_creditcol_summery',[PassportAuthController::class,'Mobil
 Route::post('mobile_get_retailer_summery',[PassportAuthController::class,'MobileGetRetailerSumery'])->name('mobile_get_retailer_summery');
 Route::post('mobile_get_summery_status',[PassportAuthController::class,'MobileGetSumeryStatus'])->name('mobile_get_summery_status');
 Route::post('mobile_issue_dsr_return',[PassportAuthController::class,'MobileReturnBulkStock'])->name('mobile_issue_dsr_return');
+Route::post('mobile_approve_summery',[PassportAuthController::class,'MobileApproveSumery'])->name('mobile_approve_summery');

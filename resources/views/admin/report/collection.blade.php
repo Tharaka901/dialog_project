@@ -96,7 +96,7 @@
                             <td>Rs.15,000.00</td>
                             <td>Rs.     0.00</td>
                         </tr>
-
+                        @endforeach
 
                     </tbody>
                     <tfoot class="back_table_color" >
