@@ -84,9 +84,9 @@
                     <tbody>
 
                         <tr>
-                            <?php foreach ($i=0; $i < ; $i++) { 
+                            <?php foreach ($collection as $col) { 
                                 ?>
-                                <td>29/06/2022</td>
+                                <td>$col</td>
                                 <td>Chathuranga</td>
                                 <td>Rs.50,000.00</td>
                                 <td>Rs.15,000.00</td>

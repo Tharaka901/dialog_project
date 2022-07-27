@@ -37,7 +37,7 @@ class ReportController extends Controller
     ->where('status', '=', 1)
     ->get();
 
-    $collection->push($bank_summery_items);
+    $collection->push(array('bank' => $bank_summery_items));
 
     return view('admin.report.collection',["collection"=> $collection]);
   }

@@ -861,13 +861,15 @@ public function MobileReturnBulkStock(Request $request){
 public function MobileApproveSumery(Request $request){
 
  $updateUserData = DB::table('pending_sum')
- ->where('id','=',$request->get('id'))
+ ->where('dsr_id','=',$request->get('dsr_id'))
+ ->where('date','=',$request->get('date'))
  ->update([
     'status'=> 1
 ]);
 
  $updateUserData = DB::table('pending_sum_status')
- ->where('id','=',$request->get('id'))
+ ->where('dsr_id','=',$request->get('dsr_id'))
+ ->where('date','=',$request->get('date'))
  ->update([
     'status'=> 1
 ]);
