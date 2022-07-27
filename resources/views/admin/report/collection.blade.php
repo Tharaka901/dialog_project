@@ -60,6 +60,7 @@
                     </ul>
                 </div>
                 <!-- ./Plugin content:pdf,excel -->
+
                 <div class="table-responsive">
                   <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
                      <thead class="back_table_color">
@@ -80,16 +81,13 @@
                     </thead>
                     <tbody>
 
-                        @if($collection)
                         @foreach($collection as $col)
-
                         <tr>
-                            <td>{{ date($col->created_at) }}</td>
-                            <td>{{ $col->name }}</td>
-                            <td>Rs. {{ number_format($col->cash,2) }}</td>
-                            <td>Rs. {{ number_format($col->cheque,2) }}</td>
-                            <td>Rs. {{ number_format($col->ccAmount,2) }}</td>
-
+                            <td>29/06/2022</td>
+                            <td>Chathuranga</td>
+                            <td>Rs.50,000.00</td>
+                            <td>Rs.15,000.00</td>
+                            <td>Rs.5,000.00</td>
                             <td>Rs.25,000.00</td>
                             <td>Rs.10,000.00</td>
                             <td>Rs.10,000.00</td>
@@ -99,8 +97,6 @@
                             <td>Rs.     0.00</td>
                         </tr>
 
-                        @endforeach
-                        @endif
 
                     </tbody>
                     <tfoot class="back_table_color" >
