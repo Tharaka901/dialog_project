@@ -261,7 +261,7 @@ public function MobileGetItemCount(Request $request){
     $stock_item_data = DB::table('dsr_stock_items')
     ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
     ->leftjoin('dsr_returns','dsr_stock_items.item_id','dsr_returns.item_id')
-    ->select('dsr_stock_items.item_id', DB::raw('sum(dsr_stock_items.qty) as qty_sum'),'dsr_returns.qty as return_qty')
+    ->select('dsr_stock_items.item_id', DB::raw('sum(dsr_stock_items.qty) as qty_sum'),DB::raw('sum(dsr_returns.qty) as return_qty'))
     ->where('dsr_stocks.dsr_id', '=', $request->get('dsr_id'))
     ->where('dsr_stocks.status', '=', 1)
     ->groupBy('dsr_stock_items.item_id')
