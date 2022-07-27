@@ -258,16 +258,43 @@ public function MobileUpdateStockStatus(Request $request){
 
 public function MobileGetItemCount(Request $request){
 
+    $allData = [];
+
     $stock_item_data = DB::table('dsr_stock_items')
     ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
     ->leftjoin('dsr_returns','dsr_stock_items.item_id','dsr_returns.item_id')
-    ->select('dsr_stock_items.item_id', DB::raw('sum(dsr_stock_items.qty) as qty_sum'),DB::raw('sum(dsr_returns.qty) as return_qty'))
+    ->select('dsr_stock_items.item_id')
     ->where('dsr_stocks.dsr_id', '=', $request->get('dsr_id'))
     ->where('dsr_stocks.status', '=', 1)
     ->groupBy('dsr_stock_items.item_id')
     ->get();
 
-    return response()->json(['data' => array('info'=>$stock_item_data,'error'=>null)],200);
+
+    $stock_qty_sum = DB::table('dsr_stock_items')
+    ->join('dsr_stocks','dsr_stock_items.dsr_stock_id','dsr_stocks.id')
+    ->select(DB::raw('sum(dsr_stock_items.qty) as qty_sum'))
+    ->where('dsr_stocks.dsr_id', '=', $request->get('dsr_id'))
+    ->where('dsr_stocks.status', '=', 1)
+    ->groupBy('dsr_stock_items.item_id')
+    ->get();
+
+    $srqs = [];
+    foreach($stock_item_data as $sid){
+     $stock_return_qty_sum = DB::table('dsr_returns')
+     ->select(DB::raw('sum(dsr_returns.qty) as return_qty'))
+     ->where('dsr_id', '=', $request->get('dsr_id'))
+     ->where('item_id', '=', $sid->item_id)
+     ->get();
+     $srqs[] = $stock_return_qty_sum;
+ }
+
+
+
+ for ($x = 0; $x < count($stock_item_data); $x++) {
+    $allData[] = (object) ['item_id' => $stock_item_data{$x}->item_id, "qty_sum" => $stock_qty_sum[$x]->qty_sum, "return_qty" => $srqs[$x][0]->return_qty];
+}
+
+return response()->json(['data' => array('info'=>$allData,'error'=>null)],200);
 }
 
 
