@@ -86,7 +86,7 @@
                         <tr>
                             <?php foreach ($collection as $col) { 
                                 ?>
-                                <td>$col</td>
+                                <td>{{ $col }}</td>
                                 <td>Chathuranga</td>
                                 <td>Rs.50,000.00</td>
                                 <td>Rs.15,000.00</td>
