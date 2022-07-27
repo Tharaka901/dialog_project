@@ -772,6 +772,7 @@ public function MobileGetRetailerSumery(Request $request){
     ->select('re_customer_name','re_item_id as item_id','re_item_qty as item_count')
     ->whereDate('created_at', '=', $request->get('date'))
     ->where('dsr_id', '=', $request->get('dsr_id'))
+    ->orderBy('item_id','asc')
     ->get();
 
 

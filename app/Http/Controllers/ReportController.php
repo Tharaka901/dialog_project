@@ -34,8 +34,8 @@ class ReportController extends Controller
 
 
 
-      print_r(json_encode($bigArray));
-      exit();
+      // print_r(json_encode($bigArray));
+      // exit();
 
       return view('admin.report.collection',["collection"=> $bigArray]);
   }

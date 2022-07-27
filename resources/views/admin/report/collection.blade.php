@@ -80,44 +80,36 @@
                         </tr>
                     </thead>
                     <tbody>
+                     <tr>
+                        <?php
+                        for($i=0; $i<10; $i++){ 
+                            ?>
+                            <td><?php echo $i; ?></td>
+                            <?php
+                        }
+                        ?>
+                    </tr>
 
-                        @foreach($collection as $col)
-                        <tr>
-                            <td>29/06/2022</td>
-                            <td>Chathuranga</td>
-                            <td>Rs.50,000.00</td>
-                            <td>Rs.15,000.00</td>
-                            <td>Rs.5,000.00</td>
-                            <td>Rs.25,000.00</td>
-                            <td>Rs.10,000.00</td>
-                            <td>Rs.10,000.00</td>
-                            <td>Rs.5,000.00</td>
-                            <td>Rs.10,000.00</td>
-                            <td>Rs.15,000.00</td>
-                            <td>Rs.     0.00</td>
-                        </tr>
-                        @endforeach
-
-                    </tbody>
-                    <tfoot class="back_table_color" >
-                        <tr>
-                            <th colspan="2">Total</th>
-                            <th>Rs.150,000.00</th>
-                            <th>Rs.45,000.00</th>
-                            <th>Rs. 15,000.00</th>
-                            <th>Rs. 75,000.00</th>
-                            <th>Rs. 30,000.00</th>
-                            <th>Rs. 30,000.00</th>
-                            <th>Rs. 15,000.00</th>
-                            <th>Rs. 30,000.00</th>
-                            <th>Rs. 45,000.00</th>
-                            <td>Rs.     0.00</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+                </tbody>
+                <tfoot class="back_table_color" >
+                    <tr>
+                        <th colspan="2">Total</th>
+                        <th>Rs.150,000.00</th>
+                        <th>Rs.45,000.00</th>
+                        <th>Rs. 15,000.00</th>
+                        <th>Rs. 75,000.00</th>
+                        <th>Rs. 30,000.00</th>
+                        <th>Rs. 30,000.00</th>
+                        <th>Rs. 15,000.00</th>
+                        <th>Rs. 30,000.00</th>
+                        <th>Rs. 45,000.00</th>
+                        <td>Rs.     0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
+</div>
 </div>
 </div>
 
