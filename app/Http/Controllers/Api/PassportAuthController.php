@@ -776,7 +776,8 @@ public function MobileGetSumeryStatus(Request $request){
         'credit_sum',
         'credit_collection_sum',
         'banking_sum',
-        'direct_banking_sum'
+        'direct_banking_sum',
+        'retialer_sum'
     )
     ->where('pending_sum_status.date', '=', $request->get('date'))
     ->where('pending_sum_status.dsr_id', '=', $request->get('dsr_id'))
