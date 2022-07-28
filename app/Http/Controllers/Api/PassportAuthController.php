@@ -890,13 +890,14 @@ public function MobileApproveSumery(Request $request){
 public function MobileApproveStatus(Request $request){
 
     $approve_status = DB::table('pending_sum')
+    ->select('status','date')
     ->where('dsr_id','=',$request->get('dsr_id'))
     ->where('date','=',$request->get('date'))
     ->get();
 
 
     if($approve_status){
-        return response()->json(['data' => array('info'=>$approve_status[0]->status,'error'=>null)], 200);
+        return response()->json(['data' => array('info'=>$approve_status,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
      return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
