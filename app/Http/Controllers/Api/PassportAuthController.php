@@ -876,9 +876,9 @@ public function MobileApproveSumery(Request $request){
 
 
    if($update_sum == 1 && $update_sum_status == 1){
-    return response()->json(['data' => array('info'=>$update_sum,'error'=>null)], 200);
+    return response()->json(['data' => array('info'=>$update_sum, 'comment'=>"updated", 'error'=>null)], 200);
 }else if($update_sum == 0 && $update_sum_status == 0){
-    return response()->json(['data' => array('info'=>0,'error'=>null)], 200);
+    return response()->json(['data' => array('info'=>0, 'comment'=>"not updated", 'error'=>null)], 200);
 }else{
     // Oops.. Error Occured!
  return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
@@ -896,7 +896,7 @@ public function MobileApproveStatus(Request $request){
 
 
     if($approve_status){
-        return response()->json(['data' => array('info'=>$approve_status,'error'=>null)], 200);
+        return response()->json(['data' => array('info'=>$approve_status[0]->status,'error'=>null)], 200);
     }else{
     // Oops.. Error Occured!
      return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
