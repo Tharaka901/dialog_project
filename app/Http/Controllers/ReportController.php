@@ -16,30 +16,50 @@ class ReportController extends Controller
 
     date_default_timezone_set("Asia/colombo");
     $todayDate = date('Y-m-d');
+    $allSubData = [];
 
     $collection = DB::table('users')
     ->leftjoin('dsrs', 'dsrs.dsr_user_id', 'users.id')
     ->leftjoin('credit_collections', 'credit_collections.dsr_id', 'users.id')
-    ->select(
-      'users.id',
-      'users.name',
-      'dsrs.created_at',
-      'in_hand',
-      'cash',
-      'cheque',
-      DB::raw('sum(credit_collections.credit_collection_amount) as ccAmount')
-    )
+    ->select('users.id','users.name','dsrs.created_at','in_hand','cash','cheque',DB::raw('sum(credit_collections.credit_collection_amount) as ccAmount'))
     ->where('users.status','=',1)
+    ->groupBy('dsrs.dsr_user_id')
     ->get();
 
     $bank_summery_items = DB::table('bankings')
-    ->select('bank_name','bank_ref_no','bank_amount')
+    ->select('bank_name','bank_amount')
     ->where('status', '=', 1)
     ->get();
 
-    $collection->push(array('bank' => $bank_summery_items));
+    $dbank_summery_items = DB::table('directbankings')
+    ->select('direct_bank_name','direct_bank_amount')
+    ->where('status', '=', 1)
+    ->get();
 
-    return view('admin.report.collection',["collection"=> $collection]);
+
+    foreach($collection as $col){
+      $bank_data = DB::table('bankings')
+      ->select('bank_name','bank_amount')
+      ->where('status', '=', 1)
+      ->where('dsr_id', '=', $col->id)
+      ->get();
+
+      $dbank_data = DB::table('directbankings')
+      ->select('direct_bank_name','direct_bank_amount')
+      ->where('status', '=', 1)
+      ->where('dsr_id', '=', $col->id)
+      ->get();
+
+      $allSubData["bankData"] = $bank_data;
+      $allSubData["dbankData"] = $dbank_data;
+    }
+
+
+    print_r(json_encode($allSubData));
+    exit();
+    
+
+    return view('admin.report.collection',["bank"=>$bank_summery_items, "dbank"=>$dbank_summery_items, "collectionData"=>$allSubData ]);
   }
 
 }

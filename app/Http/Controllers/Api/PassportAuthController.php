@@ -860,14 +860,14 @@ public function MobileReturnBulkStock(Request $request){
 
 public function MobileApproveSumery(Request $request){
 
-   $updateUserData = DB::table('pending_sum')
+   $update_sum = DB::table('pending_sum')
    ->where('dsr_id','=',$request->get('dsr_id'))
    ->where('date','=',$request->get('date'))
    ->update([
     'status'=> 1
 ]);
 
-   $updateUserData = DB::table('pending_sum_status')
+   $update_sum_status = DB::table('pending_sum_status')
    ->where('dsr_id','=',$request->get('dsr_id'))
    ->where('date','=',$request->get('date'))
    ->update([
@@ -875,8 +875,10 @@ public function MobileApproveSumery(Request $request){
 ]);
 
 
-   if($updateUserData){
-    return response()->json(['data' => array('info'=>$updateUserData,'error'=>null)], 200);
+   if($update_sum == 1 && $update_sum_status == 1){
+    return response()->json(['data' => array('info'=>$update_sum,'error'=>null)], 200);
+}else if($update_sum == 0 && $update_sum_status == 0){
+    return response()->json(['data' => array('info'=>0,'error'=>null)], 200);
 }else{
     // Oops.. Error Occured!
  return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 

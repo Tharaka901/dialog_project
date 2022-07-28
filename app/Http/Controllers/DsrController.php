@@ -181,7 +181,7 @@ foreach($directBankingTable as $db){
 $updateItemData = DB::table('pending_sum')
 ->where('id','=',$request->get('pending_sum_id'))
 ->update([
-    'status'=>1,
+    'status'=>2,
 ]);
 
 return response($inHandTable);
@@ -200,7 +200,7 @@ public function CompleteDsr(){
     ->join('users', 'pending_sum.dsr_id', 'users.id')
     ->select('pending_sum.id','pending_sum.dsr_id','users.name','date','inhand_sum','sales_sum','credit_sum','credit_collection_sum','banking_sum','direct_banking_sum','retialer_sum')
     ->where('date', '=', $todayDate)
-    ->where('pending_sum.status', '=', 1)->paginate(5);
+    ->where('pending_sum.status', '=', 2)->paginate(5);
 
     return view('admin.dsr.complete_dsr',["dsrData"=>$pdsr]);
 }
