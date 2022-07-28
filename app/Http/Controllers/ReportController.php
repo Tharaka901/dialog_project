@@ -16,7 +16,6 @@ class ReportController extends Controller
 
     date_default_timezone_set("Asia/colombo");
     $todayDate = date('Y-m-d');
-    $allSubData = [];
 
     $collection = DB::table('users')
     ->leftjoin('dsrs', 'dsrs.dsr_user_id', 'users.id')
@@ -41,7 +40,7 @@ class ReportController extends Controller
       $bank_data = DB::table('bankings')
       ->select('bank_name','bank_amount')
       ->where('status', '=', 1)
-      ->where('dsr_id', '=', $col->id)
+      ->whereIN('dsr_id', array($col->id))
       ->get();
 
       $dbank_data = DB::table('directbankings')
@@ -50,16 +49,16 @@ class ReportController extends Controller
       ->where('dsr_id', '=', $col->id)
       ->get();
 
-      $allSubData["bankData"] = $bank_data;
-      $allSubData["dbankData"] = $dbank_data;
+      $collection->push($bank_data);
+      $collection->push($dbank_data);
     }
 
 
-    print_r(json_encode($allSubData));
+    print_r(json_encode($collection));
     exit();
     
 
-    return view('admin.report.collection',["bank"=>$bank_summery_items, "dbank"=>$dbank_summery_items, "collectionData"=>$allSubData ]);
+    return view('admin.report.collection',["bank"=>$bank_summery_items, "dbank"=>$dbank_summery_items, "collectionData"=>$collection ]);
   }
 
 }

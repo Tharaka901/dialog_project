@@ -284,6 +284,7 @@ public function MobileGetItemCount(Request $request){
        ->select(DB::raw('sum(dsr_returns.qty) as return_qty'))
        ->where('dsr_id', '=', $request->get('dsr_id'))
        ->where('item_id', '=', $sid->item_id)
+       ->where('status','=',0)
        ->get();
        $srqs[] = $stock_return_qty_sum;
    }

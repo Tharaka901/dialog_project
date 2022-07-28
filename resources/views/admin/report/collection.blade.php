@@ -86,11 +86,11 @@
 
                     @foreach($collectionData as $cdata)
                     <tr>
-                        <td>{{ $cdata }}</td>
-                        <td>0</td>
-                        <td>Rs. 0</td>
-                        <td>Rs. 0</td>
-                        <td>Rs.0</td>
+                        <td>{{ $cdata->created_at }}</td>
+                        <td>{{ $cdata->name }}</td>
+                        <td>Rs. {{ $cdata->cash }}</td>
+                        <td>Rs. {{ $cdata->cheque }}</td>
+                        <td>Rs. {{ $cdata->ccAmount }}</td>
 
                         @foreach($bank as $bk)
                         <td>{{ $bk->bank_amount }}</td>
