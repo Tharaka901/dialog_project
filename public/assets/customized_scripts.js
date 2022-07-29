@@ -248,7 +248,7 @@ function viewDsr(psum_id,dsr_id,status){
       // var dbank = $("#directBankTable tbody tr").length;
 
 
-      if(status == 1 || status == 0){
+      if(status == 0){
         $("#btnDsrApprove").prop('disabled', true);
       }else{
         $("#btnDsrApprove").prop('disabled', false);
