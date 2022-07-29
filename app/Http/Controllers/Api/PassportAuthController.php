@@ -309,6 +309,7 @@ public function MobileDsrSales(Request $request){
     $can_deduct = 0;
     $deduct_stock = 0;
     $deduct_qty = 0;
+    $stock_qty = 0;
 
     foreach($saleItems as $sale){
         $sales = new Sale([
@@ -336,6 +337,7 @@ public function MobileDsrSales(Request $request){
             ->get();
 
             foreach($stock_items_data as $sid){
+                $stock_qty += $sid->qty;
                 if($sid->qty >=  $sale['itemQty']){
                     $can_deduct = 1;
                     $deduct_stock = $sid->id;
@@ -343,39 +345,70 @@ public function MobileDsrSales(Request $request){
                     break;
                 }
             }
-
         }
 
         if($can_deduct != 0){
         // update dsr stock (-)
             $update_dsr_qty = DB::table('dsr_stock_items')->where('id','=',$deduct_stock)->decrement('qty', $sale['itemQty']);
+        }else{
+
+           if($stock_qty > $sale['itemQty']) {
+            // print_r($stock_qty - $sale['itemQty']);
+
+            foreach($sale['dsrStockIds'] as $stock_ids){
+                $stock_items_data1 = DB::table('dsr_stock_items')
+                ->join('dsr_stocks' ,'dsr_stock_items.dsr_stock_id' ,'dsr_stocks.id')
+                ->select('dsr_stock_items.id','dsr_stock_id','item_id','qty')
+                ->where('dsr_stock_items.dsr_stock_id','=',$stock_ids['id'])
+                ->where('dsr_stock_items.item_id','=',$sale['itemId'])
+                ->get();
+
+                print_r(
+                    "select `dsr_stock_items`.`id`, `dsr_stock_id`, `item_id`, `qty` from `dsr_stock_items` inner join `dsr_stocks` on `dsr_stock_items`.`dsr_stock_id` = `dsr_stocks`.`id` where `dsr_stock_items`.`dsr_stock_id` = ".$stock_ids['id']." and `dsr_stock_items`.`item_id` = ".$sale['itemId']."==="
+                );
+
+                foreach($stock_items_data1 as $sid1){
+
+                    // print_r($sid1->id."--".$sid->qty."==");
+
+
+
+                }
+
+
+            }
+
+
         }
-        /////////////////////////////////////////////////
+
+
     }
+        /////////////////////////////////////////////////
+}
 
 
 
     // check if there is data in pending sum table for dsr today
-    $psum = DB::table('pending_sum')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
-    $pstatus = DB::table('pending_sum_status')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
+$psum = DB::table('pending_sum')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
+$pstatus = DB::table('pending_sum_status')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
 
-    if(count($psum)==0){
+if(count($psum)==0){
         // insert
-        DB::insert('insert into pending_sum (dsr_id, date,sales_sum) values (?,?,?)', array($dsrId, $todayDate, $saleSum));
-    }else{
+    DB::insert('insert into pending_sum (dsr_id, date,sales_sum) values (?,?,?)', array($dsrId, $todayDate, $saleSum));
+}else{
         // update
-        DB::update('update pending_sum set sales_sum = sales_sum + ? where dsr_id = ? and date = ?', array($saleSum,$dsrId,$todayDate));
-    }
+    DB::update('update pending_sum set sales_sum = sales_sum + ? where dsr_id = ? and date = ?', array($saleSum,$dsrId,$todayDate));
+}
 
-    if(count($pstatus)==0){
+if(count($pstatus)==0){
         // insert
-        DB::insert('insert into pending_sum_status (dsr_id, date,sales_sum) values (?,?,?)', array($dsrId, $todayDate, 1));
-    }else{
+    DB::insert('insert into pending_sum_status (dsr_id, date,sales_sum) values (?,?,?)', array($dsrId, $todayDate, 1));
+}else{
         // update
-        DB::update('update pending_sum_status set sales_sum = ? where dsr_id = ? and date = ?', array(1,$dsrId,$todayDate));
-    }
+    DB::update('update pending_sum_status set sales_sum = ? where dsr_id = ? and date = ?', array(1,$dsrId,$todayDate));
+}
 
-    return response()->json(['data' => array('info'=>$saleItems,'error'=>null)],200);
+return response()->json(['data' => array('info'=>$saleItems,'error'=>null)],200);
 }
 
 
@@ -664,8 +697,10 @@ public function MobileDsrSumery(Request $request){
     'banking_sum',
     'direct_banking_sum',
     DB::raw('count(distinct retailer_returns.re_item_id) as retialer_item_count'))
- ->where('date', '=', $request->get('date'))
+ ->where('pending_sum.date', '=', $request->get('date'))
  ->where('pending_sum.dsr_id', '=', $request->get('dsr_id'))
+ ->whereDate('retailer_returns.date', '=', $request->get('date'))
+ ->where('retailer_returns.dsr_id', '=', $request->get('dsr_id'))
  ->get();
 
 
