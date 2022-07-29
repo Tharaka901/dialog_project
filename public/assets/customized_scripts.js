@@ -139,7 +139,7 @@ $('.btnPrevious').click(function() {
 });
 
 
-function viewDsr(psum_id,dsr_id){
+function viewDsr(psum_id,dsr_id,status){
   $("#txt_drs_id").val(dsr_id);
   $("#txt_pending_sum_id").val(psum_id);
 
@@ -240,19 +240,22 @@ function viewDsr(psum_id,dsr_id){
       }
 
 
-      var sales = $("#salesTable tbody tr").length;
-      var inhand = $("#inHandTable tbody tr").length;
-      var credit = $("#creditTable tbody tr").length;
-      var creditCol = $("#creditCollectionTable tbody tr").length;
-      var bank = $("#bankTable tbody tr").length;
-      var dbank = $("#directBankTable tbody tr").length;
+      // var sales = $("#salesTable tbody tr").length;
+      // var inhand = $("#inHandTable tbody tr").length;
+      // var credit = $("#creditTable tbody tr").length;
+      // var creditCol = $("#creditCollectionTable tbody tr").length;
+      // var bank = $("#bankTable tbody tr").length;
+      // var dbank = $("#directBankTable tbody tr").length;
 
 
-      if(sales ==0 || inhand ==0 || credit ==0 || creditCol ==0 || bank ==0 || dbank ==0){
+      if(status == 1 || status == 0){
         $("#btnDsrApprove").prop('disabled', true);
       }else{
         $("#btnDsrApprove").prop('disabled', false);
       }
+
+
+
 
       $("#dsrModal").modal("show");
     },
