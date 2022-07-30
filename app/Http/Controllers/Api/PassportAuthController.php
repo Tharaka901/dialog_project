@@ -905,11 +905,6 @@ public function MobileReturnBulkStock(Request $request){
  ->decrement('qty', $request->get('qty'));
 
 
-   // if approve reject before approve decut from the qty from dsr_stock_item table (status=2)
- $update_item_qty = DB::table('dsr_stock_items')->where('dsr_stock_id','=',$request->get('dsr_stock_id'))->where('item_id','=',$request->get('item_id'))->decrement('qty', $request->get('qty')); 
-
-
-
  if($update_dsr_qty){
     return response()->json(['data' => array('info'=>$update_dsr_qty,'error'=>null)], 200);
 }else{
