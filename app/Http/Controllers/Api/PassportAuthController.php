@@ -252,6 +252,26 @@ public function MobileUpdateStockStatus(Request $request){
         'status'=> $request->get('stock_status')
     ]);
 
+
+    // if approve deduct the qty from item table (status=1)
+
+    if($request->get('stock_status') == 1){
+        foreach($request->items as $item){
+            $update_item_qty = DB::table('items')->where('id','=',$item["item_id"])->decrement('qty', $item["qty"]); 
+        }
+    }
+
+
+    // if approve reject before approve decut from the qty from dsr_stock_item table (status=2)
+    if($request->get('stock_status') == 2){
+        foreach($request->items as $item){
+            $update_item_qty = DB::table('dsr_stock_items')->where('dsr_stock_id','=',$request->get('stock_id'))->where('item_id','=',$item["item_id"])->decrement('qty', $item["qty"]); 
+        }
+    }
+
+
+
+
     return response()->json(['data' => array('info'=>$updateUserData,'error'=>null)],200);
 }
 
@@ -310,6 +330,8 @@ public function MobileDsrSales(Request $request){
     $deduct_stock = 0;
     $deduct_qty = 0;
     $stock_qty = 0;
+    $balance_stock = 0;
+    $updated_id = 0;
 
     foreach($saleItems as $sale){
         $sales = new Sale([
@@ -352,8 +374,9 @@ public function MobileDsrSales(Request $request){
             $update_dsr_qty = DB::table('dsr_stock_items')->where('id','=',$deduct_stock)->decrement('qty', $sale['itemQty']);
         }else{
 
+
          if($stock_qty > $sale['itemQty']) {
-            // print_r($stock_qty - $sale['itemQty']);
+            $count = 0;
 
             foreach($sale['dsrStockIds'] as $stock_ids){
                 $stock_items_data1 = DB::table('dsr_stock_items')
@@ -363,26 +386,26 @@ public function MobileDsrSales(Request $request){
                 ->where('dsr_stock_items.item_id','=',$sale['itemId'])
                 ->get();
 
-                print_r(
-                    "select `dsr_stock_items`.`id`, `dsr_stock_id`, `item_id`, `qty` from `dsr_stock_items` inner join `dsr_stocks` on `dsr_stock_items`.`dsr_stock_id` = `dsr_stocks`.`id` where `dsr_stock_items`.`dsr_stock_id` = ".$stock_ids['id']." and `dsr_stock_items`.`item_id` = ".$sale['itemId']."==="
-                );
-
                 foreach($stock_items_data1 as $sid1){
-
-                    // print_r($sid1->id."--".$sid->qty."==");
-
-
-
+                    $count++;
+                    $updated_id = $sid1->id;
+                    // set 0 to every primary key to set the actual blance by calculating
+                    DB::update('update dsr_stock_items set qty =  0 where id = ?', array($sid1->id));
                 }
 
-
+                if($count == 1){
+                   $balance_stock = $sale['itemQty'] - $sid1->qty;
+               }else {
+                $balance_stock = $balance_stock - $sid1->qty;
             }
 
-
         }
-
+        // set the actual balance in db
+        DB::update('update dsr_stock_items set qty =  ? where id = ?', array(abs($balance_stock),$updated_id));
 
     }
+
+}
         /////////////////////////////////////////////////
 }
 

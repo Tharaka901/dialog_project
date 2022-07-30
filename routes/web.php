@@ -22,7 +22,7 @@ use App\Http\Controllers\AdminController;
 */
 
 Route::get('/',[AdminController::class,'main'])->name('/');
-Route::post('login',[AdminController::class,'Login'])->name('login');
+Route::post('login_dash',[AdminController::class,'Login'])->name('login_dash');
 Route::get('logout',[AdminController::class,'Logout'])->name('logout');
 
 

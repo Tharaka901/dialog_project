@@ -51,7 +51,7 @@ class StockController extends Controller
      $update_stock_total = DB::table('dsr_stocks')->where('id','=',$dsr_stock->id)->increment('total', ($td["qty"] * $td["sprice"]) ); 
 
       // update main stock (items table)
-     $update_item_qty = DB::table('items')->where('id','=',$td["item_id"])->decrement('qty', $td["qty"]); 
+     // $update_item_qty = DB::table('items')->where('id','=',$td["item_id"])->decrement('qty', $td["qty"]); 
  }
 
 

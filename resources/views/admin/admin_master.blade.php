@@ -1,9 +1,3 @@
-<?php  
-if(!isset($_SESSION['user_id'])){
-   $newURL = '/login';
-   header('Location: '.$newURL);
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

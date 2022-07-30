@@ -80,7 +80,7 @@
       <div class="mb-3" id="lblGreetings"></div>
       <h5 class="mb-3">Please Sign in to continue..</h5>
 
-      <form method="post" action="{{ route('login') }}">
+      <form method="post" action="{{ route('login_dash') }}">
          @csrf
          <div class="form-outline mb-4">
             <label class="form-label" for="form3Example3">User Name</label>

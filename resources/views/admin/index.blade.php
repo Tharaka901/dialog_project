@@ -16,7 +16,7 @@
 
   <section class="content">
      <div class="row">
-       <div class=" col-sm-12 col-md-6 col-lg-3">
+       <div class="col-sm-12 col-md-2 col-lg-2">
         <div id="cardbox1">
            <div class="statistic-box">
               <i class="fa fa-handshake-o fa-3x"></i>
@@ -27,7 +27,7 @@
            </div>
         </div>
      </div>
-     <div class=" col-sm-12 col-md-6 col-lg-3">
+     <div class=" col-sm-12 col-md-2 col-lg-2">
         <div id="cardbox2">
            <div class="statistic-box">
               <i class="fa fa-bank fa-3x"></i>
@@ -38,7 +38,7 @@
            </div>
         </div>
      </div>
-     <div class=" col-sm-12 col-md-6 col-lg-3">
+     <div class=" col-sm-12 col-md-2 col-lg-2">
         <div id="cardbox3">
            <div class="statistic-box">
               <i class="fa fa-money fa-3x"></i>
@@ -49,7 +49,18 @@
            </div>
         </div>
      </div>
-     <div class=" col-sm-12 col-md-6 col-lg-3">
+     <div class=" col-sm-12 col-md-2 col-lg-2">
+        <div id="cardbox3">
+           <div class="statistic-box">
+              <i class="fa fa-money fa-3x"></i>
+              <div class="counter-number pull-right">
+                 <span class="count-number" style="font-size: 14px;" >Rs. {{  number_format($summaryData[0]->sales,2) }}</span>
+              </div>
+              <h5 style="font-size: 14px;">Sale</h5>
+           </div>
+        </div>
+     </div>
+     <div class=" col-sm-12 col-md-2 col-lg-2">
         <div id="cardbox4">
            <div class="statistic-box">
               <i class="fa fa-credit-card fa-3x"></i>
@@ -57,6 +68,17 @@
                  <span class="count-number" style="font-size: 14px;" >Rs. {{  number_format($summaryData[0]->credit,2) }}</span>
               </div>
               <h5 style="font-size: 14px;"> Credit</h5>
+           </div>
+        </div>
+     </div>
+     <div class=" col-sm-12 col-md-2 col-lg-2">
+        <div id="cardbox4">
+           <div class="statistic-box">
+              <i class="fa fa-credit-card fa-3x"></i>
+              <div class="counter-number pull-right">
+                 <span class="count-number" style="font-size: 14px;" >{{  count($usersData) }}</span>
+              </div>
+              <h5 style="font-size: 14px;">User status count</h5>
            </div>
         </div>
      </div>

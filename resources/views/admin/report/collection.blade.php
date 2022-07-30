@@ -71,55 +71,51 @@
                         <th style="min-width: 100px">Cheque</th>
                         <th style="min-width: 150px">Credit Collection</th>
 
-                        @foreach($bank as $bk)
-                        <th style="min-width: 150px">Banking - {{ ucfirst($bk->bank_name) }}</th>
-                        @endforeach
-
-                        @foreach($dbank as $dbk)
-                        <th style="min-width: 150px">Direct Banking - {{ ucfirst($dbk->direct_bank_name) }}</th>
-                        @endforeach
-
+                        <th style="min-width: 150px">Banking - Sampath</th>
+                        <th style="min-width: 150px">Banking - Peoples</th>
+                        <th style="min-width: 150px">Banking - Cargils</th>
+                        <th style="min-width: 200px">Direct Banking - Sampath</th>
+                        <th style="min-width: 200px">Direct Banking - Peoples</th>
+                        <th style="min-width: 200px">Direct Banking - Cargils</th>
                         <th style="min-width: 100px">Balance</th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    @foreach($collectionData as $cdata)
                     <tr>
-                        <td>{{ $cdata->created_at }}</td>
-                        <td>{{ $cdata->name }}</td>
-                        <td>Rs. {{ $cdata->cash }}</td>
-                        <td>Rs. {{ $cdata->cheque }}</td>
-                        <td>Rs. {{ $cdata->ccAmount }}</td>
-
-                        @foreach($bank as $bk)
-                        <td>{{ $bk->bank_amount }}</td>
-                        @endforeach
-
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
+                        <td>29/06/2022</td>
+                        <td>Chathuranga</td>
+                        <td>Rs.50,000.00</td>
+                        <td>Rs.15,000.00</td>
+                        <td>Rs.5,000.00</td>
+                        <td>Rs.25,000.00</td>
+                        <td>Rs.10,000.00</td>
+                        <td>Rs.10,000.00</td>
+                        <td>Rs.5,000.00</td>
+                        <td>Rs.10,000.00</td>
+                        <td>Rs.15,000.00</td>
+                        <td>Rs.     0.00</td>
                     </tr>
-                    @endforeach
 
                 </tbody>
                 <tfoot class="back_table_color" >
-                    <tr>
-                        <th colspan="2">Total</th>
-                        <th>Rs.150,000.00</th>
-                        <th>Rs.45,000.00</th>
-                        <th>Rs. 15,000.00</th>
-                        <th>Rs. 75,000.00</th>
-                        <th>Rs. 30,000.00</th>
-                        <th>Rs. 30,000.00</th>
-                        <th>Rs. 15,000.00</th>
-                        <th>Rs. 30,000.00</th>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+                   <tr>
+                    <th colspan="2">Total</th>
+                    <th>Rs.150,000.00</th>
+                    <th>Rs.45,000.00</th>
+                    <th>Rs. 15,000.00</th>
+                    <th>Rs. 75,000.00</th>
+                    <th>Rs. 30,000.00</th>
+                    <th>Rs. 30,000.00</th>
+                    <th>Rs. 15,000.00</th>
+                    <th>Rs. 30,000.00</th>
+                    <th>Rs. 45,000.00</th>
+                    <td>Rs.     0.00</td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
+</div>
 </div>
 </div>
 </div>

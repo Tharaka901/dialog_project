@@ -1,12 +1,11 @@
-<?php  
-if(!isset($_SESSION['user_id'])){
-   $newURL = '/login';
-   header('Location: '.$newURL);
+<?php
+if(!Session::has('user_id')){
+    header("Location: https://jayawardenanetwork.lk/");
 }
 ?>
 <div class="wrapper">
  <header class="main-header">
-    <a href="index.html" class="logo">
+    <a href="/" class="logo">
        <!-- Logo -->
        <span class="logo-mini">
           <img src="assets/dist/img/dialog.png" alt="">
