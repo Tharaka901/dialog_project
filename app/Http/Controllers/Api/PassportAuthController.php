@@ -253,14 +253,19 @@ public function MobileUpdateStockStatus(Request $request){
     ]);
 
 
-    // if approve deduct the qty from item table (status=1)
-    if($request->get('stock_status') == 1){
-        foreach($request->items as $item){
-            $update_item_qty = DB::table('items')->where('id','=',$item["item_id"])->decrement('qty', $item["qty"]); 
-        }
-    }
+    $dsr_stock_items = DB::table('dsr_stock_items')
+    ->select('item_id','qty')
+    ->where('dsr_stock_id', '=', $request->get('stock_id'))
+    ->get();
 
-    return response()->json(['data' => array('info'=>$updateUserData,'error'=>null)],200);
+    if($request->get('stock_status') == 1){
+     foreach($dsr_stock_items as $item){
+        $update_item_qty = DB::table('items')->where('id','=',$item->item_id)->decrement('qty', $item->qty); 
+    }
+}
+
+
+return response()->json(['data' => array('info'=>$updateUserData,'error'=>null)],200);
 }
 
 
@@ -903,6 +908,20 @@ public function MobileReturnBulkStock(Request $request){
  ->where('dsr_stock_id','=',$request->get('dsr_stock_id'))
  ->where('item_id','=',$request->get('item_id'))
  ->decrement('qty', $request->get('qty'));
+
+ $update_sum_status = DB::table('dsr_stock_items')
+ ->where('dsr_stock_id','=',$request->get('dsr_stock_id'))
+ ->where('item_id','=',$request->get('item_id'))
+ ->update([
+    'return_qty'=> $request->get('qty')
+]);
+
+ $update_sum_status = DB::table('dsr_stock_items')
+ ->where('dsr_stock_id','=',$request->get('dsr_stock_id'))
+ ->where('item_id','=',$request->get('item_id'))
+ ->update([
+    'status'=> 2
+]);
 
 
  if($update_dsr_qty){

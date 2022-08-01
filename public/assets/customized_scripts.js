@@ -153,6 +153,7 @@ function viewDsr(psum_id,dsr_id,status){
     success: function(data) {
 
       $("#salesTable tbody").empty();
+      $("#inHandTable tbody").empty();
       $("#creditTable tbody").empty();
       $("#creditTable tbody").empty();
       $("#creditCollectionTable tbody").empty();
@@ -171,9 +172,9 @@ function viewDsr(psum_id,dsr_id,status){
       for (var i = 0; i < data.saleData.length; i++) {
         $("#salesTable tbody").append("<tr><td>"+salecount+"</td>"+
           "<td style='display:none;'>"+data.saleData[i].id+"</td>"+
-          "<td><input type='text' class='form-control' value="+data.saleData[i].item_name+"></td>"+
+          "<td>"+ data.saleData[i].item_name +"</td>"+
           "<td><input type='text' class='form-control' value="+data.saleData[i].item_qty+"></td>"+
-          "<td><input type='text' class='form-control' value="+data.saleData[i].item_amount+"></td>"+
+          "<td><input type='text' class='form-control' value="+(data.saleData[i].item_amount * data.saleData[i].item_qty)+"></td>"+
           "</tr>");
         salecount++;
       }
@@ -213,7 +214,7 @@ function viewDsr(psum_id,dsr_id,status){
           "<td style='display:none'>"+data.reData[i].re_item_id+"</td>"+
           "<td><input type='text' class='form-control' value="+data.reData[i].name+"></td>"+
           "<td><input type='text' class='form-control' value="+data.reData[i].re_item_qty+"></td>"+
-          "<td><input type='text' class='form-control' value="+data.reData[i].re_item_amount+"></td>"+
+          "<td><input type='text' class='form-control' value="+(data.reData[i].re_item_amount * data.reData[i].re_item_qty)+"></td>"+
           "</tr>");
         recount++;
       }

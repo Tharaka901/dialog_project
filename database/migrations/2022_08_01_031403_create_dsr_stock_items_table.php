@@ -18,6 +18,7 @@ return new class extends Migration
             $table->double("dsr_stock_id");
             $table->integer("item_id");
             $table->double("qty")->default(0);
+            $table->double("return_qty")->default(0);
             $table->integer("status")->default("1");
             $table->timestamps();
         });

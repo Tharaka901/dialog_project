@@ -17,12 +17,12 @@
     <div class="row">
         <div class="col-md-3">
             <div class="position-relative form-group"><label
-               for="search" class="">Search</label><input
-               name="search"
-               placeholder="Search" type="text" class="form-control">
-           </div>
-       </div>
-       <div class="col-md-3">
+             for="search" class="">Search</label><input
+             name="search"
+             placeholder="Search" type="text" class="form-control">
+         </div>
+     </div>
+     <div class="col-md-3">
         <div class="position-relative form-group"><label
           for="fromdate" class="">From</label><input
           name="fromdate" id="fromdate" placeholder="Date"
@@ -85,7 +85,6 @@
                         </td>
                     </tr>
 
-
                     @endforeach
                     @endif
 
@@ -103,32 +102,32 @@
 
 <!-- User Modal1 -->
 <div class="modal fade" id="transferItemModal" tabindex="-1" role="dialog" aria-hidden="true">
-   <div class="modal-dialog">
+ <div class="modal-dialog">
     <div class="modal-content">
-     <div class="modal-header modal-header-primary">
-      <h3><i class="fa fa-eye m-r-5"></i> Relevent Items</h3>
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  </div>
-  <div class="modal-body">
-      <div class="row">
-       <div class="col-md-12">
+       <div class="modal-header modal-header-primary">
+          <h3><i class="fa fa-eye m-r-5"></i> Relevent Items</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+             <div class="col-md-12">
 
-          <div class="table-responsive">
-            <table id="transfer_status_table" class="table table-bordered table-striped table-hover">
-                <thead class="back_table_color">
-                    <tr class="info">
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+              <div class="table-responsive">
+                <table id="transfer_status_table" class="table table-bordered table-striped table-hover">
+                    <thead class="back_table_color">
+                        <tr class="info">
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
-
     </div>
-</div>
 </div>
 </div>
 </div>
@@ -137,4 +136,3 @@
 
 
 @endsection
-
