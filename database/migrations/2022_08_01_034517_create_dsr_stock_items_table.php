@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dsr_returns', function (Blueprint $table) {
+        Schema::create('dsr_stock_items', function (Blueprint $table) {
             $table->id();
-            $table->integer("dsr_id");
+            $table->double("dsr_stock_id");
             $table->integer("item_id");
             $table->double("qty")->default(0);
+            $table->double("issue_return_qty")->default(0);
+            $table->double("approve_return_qty")->default(0);
+            $table->double("sale_qty")->default(0);
             $table->integer("status")->default("1");
             $table->timestamps();
         });
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dsr_returns');
+        Schema::dropIfExists('dsr_stock_items');
     }
 };

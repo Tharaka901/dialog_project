@@ -912,16 +912,7 @@ public function MobileReturnBulkStock(Request $request){
  $update_sum_status = DB::table('dsr_stock_items')
  ->where('dsr_stock_id','=',$request->get('dsr_stock_id'))
  ->where('item_id','=',$request->get('item_id'))
- ->update([
-    'return_qty'=> $request->get('qty')
-]);
-
- $update_sum_status = DB::table('dsr_stock_items')
- ->where('dsr_stock_id','=',$request->get('dsr_stock_id'))
- ->where('item_id','=',$request->get('item_id'))
- ->update([
-    'status'=> 2
-]);
+ ->increment('issue_return_qty', $request->get('qty'));
 
 
  if($update_dsr_qty){
