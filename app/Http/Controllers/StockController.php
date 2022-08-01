@@ -80,7 +80,7 @@ public function viewTransferItems(Request $request){
 
     $transfer_items = DB::table('dsr_stock_items')
     ->join('items', 'dsr_stock_items.item_id', 'items.id')
-    ->select('items.name','dsr_stock_items.qty')
+    ->select('items.name','dsr_stock_items.qty','dsr_stock_items.issue_return_qty')
     ->where('dsr_stock_id','=',$request->id)
     ->get();
     return response($transfer_items);

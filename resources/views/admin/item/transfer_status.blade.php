@@ -119,6 +119,7 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Quantity</th>
+                            <th>Deducted qty</th>
                         </tr>
                     </thead>
                     <tbody>
