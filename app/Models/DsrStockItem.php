@@ -13,6 +13,9 @@ class DsrStockItem extends Model
         'dsr_stock_id',
         'item_id',
         'qty',
+        'issue_return_qty',
+        'approve_return_qty',
+        'sale_qty',
         'status',
     ];
 

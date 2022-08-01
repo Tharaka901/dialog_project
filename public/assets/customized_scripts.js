@@ -170,9 +170,10 @@ function viewDsr(psum_id,dsr_id,status){
       var directbankcount = 1;
 
       for (var i = 0; i < data.saleData.length; i++) {
+
         $("#salesTable tbody").append("<tr><td>"+salecount+"</td>"+
           "<td style='display:none;'>"+data.saleData[i].id+"</td>"+
-          "<td>"+ data.saleData[i].item_name +"</td>"+
+          "<td><input type='text' class='form-control' value="+JSON.stringify(data.saleData[i].item_name)+"></td>"+
           "<td><input type='text' class='form-control' value="+data.saleData[i].item_qty+"></td>"+
           "<td><input type='text' class='form-control' value="+(data.saleData[i].item_amount * data.saleData[i].item_qty)+"></td>"+
           "</tr>");
@@ -192,7 +193,7 @@ function viewDsr(psum_id,dsr_id,status){
       for (var i = 0; i < data.creditData.length; i++) {
         $("#creditTable tbody").append("<tr><td>"+creditcount+"</td>"+
           "<td style='display: none'>"+data.creditData[i].id+"</td>"+
-          "<td><input type='text' class='form-control' value="+data.creditData[i].credit_customer_name+"></td>"+
+          "<td><input type='text' class='form-control' value="+JSON.stringify(data.creditData[i].credit_customer_name)+"></td>"+
           "<td><input type='text' class='form-control' value="+data.creditData[i].credit_amount+"></td>"+
           "</tr>");
         creditcount++;
@@ -201,7 +202,7 @@ function viewDsr(psum_id,dsr_id,status){
       for (var i = 0; i < data.creditcolData.length; i++) {
         $("#creditCollectionTable tbody").append("<tr><td>"+creditcolcount+"</td>"+
           "<td style='display:none'>"+data.creditcolData[i].id+"</td>"+
-          "<td><input type='text' class='form-control' value="+data.creditcolData[i].credit_collection_customer_name+"></td>"+
+          "<td><input type='text' class='form-control' value="+JSON.stringify(data.creditcolData[i].credit_collection_customer_name)+"></td>"+
           "<td><input type='text' class='form-control' value="+data.creditcolData[i].credit_collection_amount+"></td>"+
           "</tr>");
         creditcolcount++;
@@ -210,9 +211,9 @@ function viewDsr(psum_id,dsr_id,status){
       for (var i = 0; i < data.reData.length; i++) {
         $("#retailerTable tbody").append("<tr><td>"+recount+"</td>"+
           "<td style='display:none'>"+data.reData[i].id+"</td>"+
-          "<td><input type='text' class='form-control' value="+data.reData[i].re_customer_name+"></td>"+
+          "<td><input type='text' class='form-control' value="+JSON.stringify(data.reData[i].re_customer_name)+"></td>"+
           "<td style='display:none'>"+data.reData[i].re_item_id+"</td>"+
-          "<td><input type='text' class='form-control' value="+data.reData[i].name+"></td>"+
+          "<td><input type='text' class='form-control' value="+JSON.stringify(data.reData[i].name)+"></td>"+
           "<td><input type='text' class='form-control' value="+data.reData[i].re_item_qty+"></td>"+
           "<td><input type='text' class='form-control' value="+(data.reData[i].re_item_amount * data.reData[i].re_item_qty)+"></td>"+
           "</tr>");
@@ -222,7 +223,7 @@ function viewDsr(psum_id,dsr_id,status){
       for (var i = 0; i < data.bankData.length; i++) {
         $("#bankTable tbody").append("<tr><td>"+bankcount+"</td>"+
           "<td style='display:none;'>"+data.bankData[i].id+"</td>"+
-          "<td><input type='text' class='form-control' value="+data.bankData[i].bank_name+"></td>"+
+          "<td><input type='text' class='form-control' value="+JSON.stringify(data.bankData[i].bank_name)+"></td>"+
           "<td><input type='text' class='form-control' value="+data.bankData[i].bank_ref_no+"></td>"+
           "<td><input type='text' class='form-control' value="+data.bankData[i].bank_amount+"></td>"+
           "</tr>");
@@ -232,8 +233,8 @@ function viewDsr(psum_id,dsr_id,status){
       for (var i = 0; i < data.directbankData.length; i++) {
         $("#directBankTable tbody").append("<tr><td>"+directbankcount+"</td>"+
           "<td style='display:none;'>"+data.directbankData[i].id+"</td>"+
-          "<td><input type='text' class='form-control' value="+data.directbankData[i].direct_bank_customer_name+"></td>"+
-          "<td><input type='text' class='form-control' value="+data.directbankData[i].direct_bank_name+"></td>"+
+          "<td><input type='text' class='form-control' value="+JSON.stringify(data.directbankData[i].direct_bank_customer_name)+"></td>"+
+          "<td><input type='text' class='form-control' value="+JSON.stringify(data.directbankData[i].direct_bank_name)+"></td>"+
           "<td><input type='text' class='form-control' value="+data.directbankData[i].direct_bank_ref_no+"></td>"+
           "<td><input type='text' class='form-control' value="+data.directbankData[i].direct_bank_amount+"></td>"+
           "</tr>");
@@ -247,7 +248,6 @@ function viewDsr(psum_id,dsr_id,status){
       // var creditCol = $("#creditCollectionTable tbody tr").length;
       // var bank = $("#bankTable tbody tr").length;
       // var dbank = $("#directBankTable tbody tr").length;
-
 
       if(status == 0){
         $("#btnDsrApprove").prop('disabled', true);

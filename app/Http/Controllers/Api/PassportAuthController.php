@@ -364,9 +364,12 @@ public function MobileDsrSales(Request $request){
             }
         }
 
+
         if($can_deduct != 0){
         // update dsr stock (-)
             $update_dsr_qty = DB::table('dsr_stock_items')->where('id','=',$deduct_stock)->decrement('qty', $sale['itemQty']);
+
+             DB::update('update dsr_stock_items set sale_qty = ? where id = ?', array($sale['itemQty'],$deduct_stock));
         }else{
 
 
@@ -384,6 +387,9 @@ public function MobileDsrSales(Request $request){
                 foreach($stock_items_data1 as $sid1){
                     $count++;
                     $updated_id = $sid1->id;
+
+                     DB::update('update dsr_stock_items set sale_qty = sale_qty + ? where id = ?', array($sid1->qty,$sid1->id) );
+
                     // set 0 to every primary key to set the actual blance by calculating
                     DB::update('update dsr_stock_items set qty =  0 where id = ?', array($sid1->id));
                 }
@@ -397,6 +403,7 @@ public function MobileDsrSales(Request $request){
         }
         // set the actual balance in db
         DB::update('update dsr_stock_items set qty =  ? where id = ?', array(abs($balance_stock),$updated_id));
+        DB::update('update dsr_stock_items set sale_qty = ? where id = ?', array(abs($balance_stock),$updated_id));
 
     }
 

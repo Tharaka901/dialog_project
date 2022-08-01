@@ -77,7 +77,6 @@ class DsrReturnController extends Controller
             ->where('dsr_stock_items.item_id','=',$request->item_id)
             ->get();
 
-            $data_count = count($stock_items_data1);
 
             foreach($stock_items_data1 as $sid1){
                 $updated_id = $sid1->id;

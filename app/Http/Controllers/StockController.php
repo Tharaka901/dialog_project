@@ -151,6 +151,7 @@ public function GetStockItemsById(Request $request){
         ->select('items.name', DB::raw('sum(dsr_stock_items.qty) as qty'))
         ->where('items.status','=',1)
         ->where('dsr_stocks.dsr_id','=',$stock_id)
+        ->where('dsr_stocks.status','!=',0)
         // ->whereDate('dsr_stocks.created_at','=',$selected_date)
         // ->whereTime('dsr_stocks.created_at','>=', $selected_time)
         ->groupBy('items.name')
