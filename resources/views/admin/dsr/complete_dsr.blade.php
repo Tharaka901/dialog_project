@@ -9,7 +9,7 @@
         <small></small>
      </div>
      <div class="header-title">
-        <h1>Complete DSR Summery </h1>
+        <h1>Complete DSR Summary </h1>
      </div>
   </section>
   <!-- Main content -->

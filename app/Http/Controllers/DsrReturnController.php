@@ -15,21 +15,21 @@ class DsrReturnController extends Controller
     public function DsrReturn(Request $request){
 
     // need to change the query according to mobile side
-       $results = DB::table('dsr_returns')
-       ->join('items', 'dsr_returns.item_id', 'items.id')
-       ->join('users', 'dsr_returns.dsr_id', 'users.id')
-       ->select('items.id as item_id','items.name','items.created_at','dsr_returns.id as return_id','dsr_returns.qty','users.name as user_name')
-       ->where('dsr_returns.status','=',0)
-       ->orderBy('items.name','asc')
-       ->paginate(5);
+     $results = DB::table('dsr_returns')
+     ->join('items', 'dsr_returns.item_id', 'items.id')
+     ->join('users', 'dsr_returns.dsr_id', 'users.id')
+     ->select('items.id as item_id','items.name','items.created_at','dsr_returns.id as return_id','dsr_returns.qty','users.name as user_name')
+     ->where('dsr_returns.status','=',0)
+     ->orderBy('items.name','asc')
+     ->paginate(5);
 
-       return view('admin.item.dsr_receive', ['returnData'=>$results]);
-   }
-
-
+     return view('admin.item.dsr_receive', ['returnData'=>$results]);
+ }
 
 
-   public function UpdateReturnItems(Request $request){
+
+
+ public function UpdateReturnItems(Request $request){
 
     $return_data = DB::table('dsr_retun_no')->join('dsr_returns', 'dsr_returns.id', 'dsr_retun_no.dsr_return_id')
     ->select('dsr_stock_id','qty')->where('dsr_returns.status','=',0)->where('dsr_returns.id','=',$request->get('id'))->get();
@@ -62,11 +62,12 @@ class DsrReturnController extends Controller
     if($can_deduct != 0){
         // update dsr stock (-)
         $update_dsr_qty = DB::table('dsr_stock_items')->where('id','=',$deduct_stock)->decrement('qty', $deduct_qty);
+        DB::update('update dsr_stock_items set approve_return_qty = ? where id = ?', array(abs($deduct_qty),$deduct_stock));
 
     }else{
 
 
-     if($stock_qty > $request->qty) {
+       if($stock_qty > $request->qty) {
         $count = 0;
 
         foreach($return_data as $stock_ids){
@@ -91,8 +92,8 @@ class DsrReturnController extends Controller
             }
 
             if($count == 1){
-               $balance_stock = $request->qty - $sid1->qty;
-           }else {
+             $balance_stock = $request->qty - $sid1->qty;
+         }else {
             $balance_stock = $balance_stock - $sid1->qty;
         }
 
