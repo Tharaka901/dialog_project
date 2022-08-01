@@ -43,6 +43,8 @@ class DsrReturnController extends Controller
 
         foreach($stock_items_data as $sid){
 
+            DB::update('update dsr_stock_items set approve_return_qty =  ? where id = ?', array($request->qty,$sid->id));
+
             if($sid->qty >=  $ids->qty){
                 $can_deduct = 1;
                 $deduct_stock = $sid->id;

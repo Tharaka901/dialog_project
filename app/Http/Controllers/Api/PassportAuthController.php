@@ -214,6 +214,8 @@ public function MobileAddDsrReturnData(Request $request){
     DB::insert('insert into dsr_retun_no (dsr_return_id, dsr_stock_id) values (?,?)', array($dsr_return->id, $ids['id']));
 }
 
+
+
 if($dsr_return){
     return response()->json(['data' => array('info'=>$dsr_return,'error'=>null)],200);
 }else{
