@@ -583,7 +583,7 @@ function viewTransferItems(stock_id){
       for (var i = 0; i < data.length; i++) {
        $("#transfer_status_table").append("<tr><td>"+count+"</td>"+
         "<td>"+data[i].name+"</td>"+
-        "<td>"+data[i].qty+"</td>"+
+        "<td>"+ (data[i].qty + data[i].issue_return_qty) +"</td>"+
         "<td>"+data[i].issue_return_qty+"</td>"+
         "</tr>");
        count++;
