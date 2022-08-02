@@ -579,23 +579,70 @@ function viewTransferItems(stock_id){
     },
     success: function(data) {
 
+
       var count = 1;
       for (var i = 0; i < data.length; i++) {
-       $("#transfer_status_table").append("<tr><td>"+count+"</td>"+
-        "<td>"+data[i].name+"</td>"+
-        "<td>"+ (data[i].qty + data[i].issue_return_qty + data[i].sale_qty) +"</td>"+
-        "<td>"+data[i].issue_return_qty+"</td>"+
-        "</tr>");
-       count++;
-     }
 
-     $("#transferItemModal").modal("show");
+        var total = parseFloat(data[i].qty) + parseFloat(data[i].issue_return_qty) + parseFloat(data[i].sale_qty) + parseFloat(data[i].approve_return_qty);
+        var qty = total-data[i].issue_return_qty;
 
-   },
-   error: function(error) {
-    alert("error occured " + JSON.stringify(error));
-  }
-});
+        $("#transfer_status_table").append("<tr><td>"+count+"</td>"+
+          "<td>"+data[i].name+"</td>"+
+          "<td>"+ qty +"</td>"+
+          // "<td>"+ data[i].issue_return_qty +"</td>"+
+          "</tr>");
+
+
+
+
+        count++;
+      }
+
+      $("#transferItemModal").modal("show");
+
+    },
+    error: function(error) {
+      alert("error occured " + JSON.stringify(error));
+    }
+  });
+
+}
+
+
+function viewTransferRejectedItems(stock_id){
+
+  $.ajax({
+    type: 'post',
+    url: "view_transfer_rejected_items",
+    dataType: 'json',
+    data: {
+      "id": stock_id
+    },
+    beforeSend: function() {
+      $("#transfer_status_table tbody").remove();
+    },
+    success: function(data) {
+
+
+      var count = 1;
+      for (var i = 0; i < data.length; i++) {
+
+        $("#transfer_status_table").append("<tr><td>"+count+"</td>"+
+          "<td>"+data[i].name+"</td>"+
+          "<td>"+ data[i].issue_return_qty +"</td>"+
+          // "<td>"+ data[i].issue_return_qty +"</td>"+
+          "</tr>");
+
+        count++;
+      }
+
+      $("#transferItemModal").modal("show");
+
+    },
+    error: function(error) {
+      alert("error occured " + JSON.stringify(error));
+    }
+  });
 
 }
 

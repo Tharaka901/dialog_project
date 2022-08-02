@@ -17,12 +17,12 @@
     <div class="row">
         <div class="col-md-3">
             <div class="position-relative form-group"><label
-             for="search" class="">Search</label><input
-             name="search"
-             placeholder="Search" type="text" class="form-control">
-         </div>
-     </div>
-     <div class="col-md-3">
+               for="search" class="">Search</label><input
+               name="search"
+               placeholder="Search" type="text" class="form-control">
+           </div>
+       </div>
+       <div class="col-md-3">
         <div class="position-relative form-group"><label
           for="fromdate" class="">From</label><input
           name="fromdate" id="fromdate" placeholder="Date"
@@ -67,6 +67,10 @@
                         <td>{{ $ts->name }}</td>
                         <td>{{ number_format($ts->total,2) }}</td>
 
+                        @if($ts->subData == 1)
+                        <td><span class="label-danger label label-default" style="font-size: 13px" >Reject</span></td>
+                        @else
+                        
                         @if($ts->status == 0)
                         <!-- pending -->
                         <td><span class="label-warning label label-default" style="font-size: 13px" >Pending</span></td>
@@ -78,11 +82,23 @@
                         <td><span class="label-danger label label-default" style="font-size: 13px" >Reject</span></td>
                         @endif
 
+                        @endif
+
+
+                        @if($ts->subData == 0)
                         <td>
-                            <button type="button" class="btn btn-add btn-sm" onclick="viewTransferItems({{ $ts->id }})">
+                            <button type="button" class="btn btn-add btn-sm" onclick="viewTransferItems({{ $ts->stockid  }})">
                                 <i class="fa fa-pencil"></i>
                             </button>
                         </td>
+                        @else
+                        <td>
+                            <button type="button" class="btn btn-add btn-sm" onclick="viewTransferRejectedItems({{ $ts->stockid  }})">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </td>
+                        @endif
+
                     </tr>
 
                     @endforeach
@@ -102,33 +118,33 @@
 
 <!-- User Modal1 -->
 <div class="modal fade" id="transferItemModal" tabindex="-1" role="dialog" aria-hidden="true">
- <div class="modal-dialog">
+   <div class="modal-dialog">
     <div class="modal-content">
-       <div class="modal-header modal-header-primary">
-          <h3><i class="fa fa-eye m-r-5"></i> Relevent Items</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      </div>
-      <div class="modal-body">
-          <div class="row">
-             <div class="col-md-12">
+     <div class="modal-header modal-header-primary">
+      <h3><i class="fa fa-eye m-r-5"></i> Relevent Items</h3>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  </div>
+  <div class="modal-body">
+      <div class="row">
+       <div class="col-md-12">
 
-              <div class="table-responsive">
-                <table id="transfer_status_table" class="table table-bordered table-striped table-hover">
-                    <thead class="back_table_color">
-                        <tr class="info">
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Quantity</th>
-                            <th>Deducted qty</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-
+          <div class="table-responsive">
+            <table id="transfer_status_table" class="table table-bordered table-striped table-hover">
+                <thead class="back_table_color">
+                    <tr class="info">
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <!-- <th>Deducted qty</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
+
     </div>
+</div>
 </div>
 </div>
 </div>

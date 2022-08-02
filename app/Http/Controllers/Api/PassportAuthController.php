@@ -539,7 +539,7 @@ public function MobileDsrRetialers(Request $request){
         $retailerSum += floatval($reit['reQuantity']) * floatval($reit['reAmount']);
 
           // update dsr stock (+)
-        $update_item_qty = DB::table('items')->where('id','=',$reit['reitemId'])->increment('qty', $reit['reQuantity']);
+        // $update_item_qty = DB::table('items')->where('id','=',$reit['reitemId'])->increment('qty', $reit['reQuantity']);
     }
 
     // check if there is data in pending sum table for dsr today
@@ -673,7 +673,7 @@ public function MobileDsrInhands(Request $request){
      $inhand->save();
  }else{
 
-    DB::update('update dsrs set cash = cash+?, cheque = cheque+?, in_hand = in_hand+? WHERE dsr_user_id =?',array($request->get('cash'),$request->get('cheque'),floatval($request->get('cash')) + floatval($request->get('cheque')),$request->get('dsr_id') ));
+    DB::update('update dsrs set cash = ?, cheque = ?, in_hand = ? WHERE dsr_user_id =?',array($request->get('cash'),$request->get('cheque'),floatval($request->get('cash')) + floatval($request->get('cheque')),$request->get('dsr_id') ));
 
 }
 

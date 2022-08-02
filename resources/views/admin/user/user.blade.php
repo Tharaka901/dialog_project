@@ -52,7 +52,7 @@
                      @foreach($userData as $user)
                      <tr>
                         <td><?php echo $count ?></td>
-                        <td><img src="http://localhost:8000/{{$user->profile_photo_path}}" class="img-responsive img-fluid rounded" alt="User Image" width="70" height="70"></td>
+                        <td><img src="https://jayawardenanetwork.lk/{{$user->profile_photo_path}}" class="img-responsive img-fluid rounded" alt="User Image" width="70" height="70"></td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->nic }}</td>

@@ -75,14 +75,14 @@
             <td><?php echo $count ?></td>
             <td>{{ $dd->date }}</td>
             <td>{{ $dd->name }}</td>
-            <td>Rs. {{ number_format($dd->sales_sum,2)  }}</td>
-            <td>Rs. {{ number_format($dd->inhand_sum,2)  }}</td>
-            <td>Rs. {{ number_format($dd->banking_sum,2)  }}</td>
-            <td>Rs. {{ number_format($dd->direct_banking_sum,2)  }}</td>
-            <td>Rs. {{ number_format($dd->credit_sum,2)  }}</td>
-            <td>Rs. {{ number_format($dd->retialer_sum ,2) }}</td>
-            <td>Rs. {{ number_format($dd->credit_collection_sum,2)  }}</td>
-            <td>Rs. {{ number_format( (($dd->sales_sum + $dd->credit_collection_sum) - ($dd->inhand_sum + $dd->banking_sum + $dd->direct_banking_sum + $dd->credit_sum)),2 ) }}</td>
+            <td> {{ number_format($dd->sales_sum,2)  }}</td>
+            <td> {{ number_format($dd->inhand_sum,2)  }}</td>
+            <td> {{ number_format($dd->banking_sum,2)  }}</td>
+            <td> {{ number_format($dd->direct_banking_sum,2)  }}</td>
+            <td> {{ number_format($dd->credit_sum,2)  }}</td>
+            <td> {{ number_format($dd->retialer_sum ,2) }}</td>
+            <td> {{ number_format($dd->credit_collection_sum,2)  }}</td>
+            <td> {{ number_format( (($dd->sales_sum + $dd->credit_collection_sum) - ($dd->inhand_sum + $dd->banking_sum + $dd->direct_banking_sum + $dd->credit_sum)),2 ) }}</td>
             <td class="text-center">
                <button type="button" class="btn btn-add btn-sm" onclick="viewDsr({{ $dd->id  }},{{ $dd->dsr_id  }},{{ $dd->status  }});"><i class="fa fa-pencil"></i></button>
             </td>

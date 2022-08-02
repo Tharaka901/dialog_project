@@ -40,9 +40,10 @@ class DsrController extends Controller
         $data = [];
 
         $sales = DB::table('sales')
-        ->select('sales.id','sales.item_name','sales.item_qty','sales.item_amount')
+        ->select('sales.id','sales.item_name',DB::raw('sum(sales.item_qty) as item_qty'),DB::raw('sum(sales.item_amount) as item_amount'))
         ->where('sales.status', '=', 1)
         ->where('sales.dsr_id',$request->id)
+        ->groupby('sales.item_name')
         ->get();
 
         $inhand = DB::table('dsrs')
@@ -158,6 +159,10 @@ foreach($retailerTable as $retailer){
     're_item_qty'=>$retailer['reQuantity'],
     're_item_amount'=>$retailer['reAmount'],
 ]);
+
+    // update stock (+)
+ $update_item_qty = DB::table('items')->where('id','=',$retailer['reitemId'])->increment('qty', $retailer['reQuantity']);
+
 }
 
 foreach($bankingTable as $banking){

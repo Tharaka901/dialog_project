@@ -23,7 +23,7 @@ class DashboardController extends Controller
         DB::raw('sum(direct_banking_sum) as direct_bank'),
         DB::raw('sum(retialer_sum) as retialer')
     )
-      ->where('pending_sum.status', '=', 0)
+      ->where('pending_sum.status', '=', 2)
       ->where('pending_sum.date', '=', $todayDate)
       ->get();
 
@@ -31,7 +31,7 @@ class DashboardController extends Controller
       $dashboard_data2 = DB::table('pending_sum')
       ->join('users', 'pending_sum.dsr_id', 'users.id')
       ->select('pending_sum.id','pending_sum.dsr_id','users.name','users.profile_photo_path','date','inhand_sum','sales_sum','credit_sum','credit_collection_sum','banking_sum','direct_banking_sum','retialer_sum')
-      ->where('pending_sum.status', '=', 0)
+      ->where('pending_sum.status', '=', 2)
       ->paginate(5);
 
 

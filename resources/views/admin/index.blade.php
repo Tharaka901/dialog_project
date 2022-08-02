@@ -16,72 +16,79 @@
 
   <section class="content">
      <div class="row">
-       <div class="col-sm-12 col-md-2 col-lg-2">
-        <div id="cardbox1">
-           <div class="statistic-box">
-              <i class="fa fa-handshake-o fa-3x"></i>
-              <div class="counter-number pull-right">
-                 <span class="count-number" style="font-size: 14px;" >Rs. {{  number_format($summaryData[0]->inhand,2) }}</span>
-              </div>
-              <h5 style="font-size: 14px;">Inhand</h5>
-           </div>
-        </div>
-     </div>
-     <div class=" col-sm-12 col-md-2 col-lg-2">
-        <div id="cardbox2">
-           <div class="statistic-box">
-              <i class="fa fa-bank fa-3x"></i>
-              <div class="counter-number pull-right">
-                 <span class="count-number" style="font-size: 14px;" >Rs. {{  number_format($summaryData[0]->bank,2) }}</span>
-              </div>
-              <h5 style="font-size: 14px;">Bank</h5>
-           </div>
-        </div>
-     </div>
-     <div class=" col-sm-12 col-md-2 col-lg-2">
-        <div id="cardbox3">
-           <div class="statistic-box">
-              <i class="fa fa-money fa-3x"></i>
-              <div class="counter-number pull-right">
-                 <span class="count-number" style="font-size: 14px;" >Rs. {{  number_format($summaryData[0]->creditcol,2) }}</span>
-              </div>
-              <h5 style="font-size: 14px;">Credit Collection</h5>
-           </div>
-        </div>
-     </div>
-     <div class=" col-sm-12 col-md-2 col-lg-2">
-        <div id="cardbox3">
-           <div class="statistic-box">
-              <i class="fa fa-money fa-3x"></i>
-              <div class="counter-number pull-right">
-                 <span class="count-number" style="font-size: 14px;" >Rs. {{  number_format($summaryData[0]->sales,2) }}</span>
-              </div>
-              <h5 style="font-size: 14px;">Sale</h5>
-           </div>
-        </div>
-     </div>
-     <div class=" col-sm-12 col-md-2 col-lg-2">
-        <div id="cardbox4">
-           <div class="statistic-box">
-              <i class="fa fa-credit-card fa-3x"></i>
-              <div class="counter-number pull-right">
-                 <span class="count-number" style="font-size: 14px;" >Rs. {{  number_format($summaryData[0]->credit,2) }}</span>
-              </div>
-              <h5 style="font-size: 14px;"> Credit</h5>
-           </div>
-        </div>
-     </div>
-     <div class=" col-sm-12 col-md-2 col-lg-2">
+
+      <div class=" col-sm-12 col-md-2 col-lg-2">
         <div id="cardbox4">
            <div class="statistic-box">
               <i class="fa fa-credit-card fa-3x"></i>
               <div class="counter-number pull-right">
                  <span class="count-number" style="font-size: 14px;" >{{  count($usersData) }}</span>
               </div>
-              <h5 style="font-size: 14px;">User status count</h5>
+              <h5 style="font-size: 14px;">DSR status count</h5>
            </div>
         </div>
      </div>
+
+     <div class=" col-sm-12 col-md-2 col-lg-2">
+        <div id="cardbox3">
+           <div class="statistic-box">
+              <i class="fa fa-money fa-3x"></i>
+              <div class="counter-number pull-right">
+                 <span class="count-number" style="font-size: 14px;" > {{  number_format($summaryData[0]->sales,2) }}</span>
+              </div>
+              <h5 style="font-size: 14px;">Sale</h5>
+           </div>
+        </div>
+     </div>
+
+     <div class="col-sm-12 col-md-2 col-lg-2">
+        <div id="cardbox1">
+           <div class="statistic-box">
+              <i class="fa fa-handshake-o fa-3x"></i>
+              <div class="counter-number pull-right">
+                 <span class="count-number" style="font-size: 14px;" > {{  number_format($summaryData[0]->inhand,2) }}</span>
+              </div>
+              <h5 style="font-size: 14px;">Inhand</h5>
+           </div>
+        </div>
+     </div>
+
+     <div class=" col-sm-12 col-md-2 col-lg-2">
+        <div id="cardbox2">
+           <div class="statistic-box">
+              <i class="fa fa-bank fa-3x"></i>
+              <div class="counter-number pull-right">
+                 <span class="count-number" style="font-size: 14px;" > {{  number_format(($summaryData[0]->bank + $summaryData[0]->direct_bank),2) }}</span>
+              </div>
+              <h5 style="font-size: 14px;">Bank</h5>
+           </div>
+        </div>
+     </div>
+
+     <div class=" col-sm-12 col-md-2 col-lg-2">
+        <div id="cardbox4">
+           <div class="statistic-box">
+              <i class="fa fa-credit-card fa-3x"></i>
+              <div class="counter-number pull-right">
+                 <span class="count-number" style="font-size: 14px;" > {{  number_format($summaryData[0]->credit,2) }}</span>
+              </div>
+              <h5 style="font-size: 14px;"> Credit</h5>
+           </div>
+        </div>
+     </div>
+
+     <div class=" col-sm-12 col-md-2 col-lg-2">
+        <div id="cardbox3">
+           <div class="statistic-box">
+              <i class="fa fa-money fa-3x"></i>
+              <div class="counter-number pull-right">
+                 <span class="count-number" style="font-size: 14px;" > {{  number_format($summaryData[0]->creditcol,2) }}</span>
+              </div>
+              <h5 style="font-size: 14px;">Credit Collection</h5>
+           </div>
+        </div>
+     </div>
+
   </div>
 
   <div class="col-lg-12 pinpin">
@@ -115,13 +122,13 @@
                <tr>
                 <td><img src="{{  $udata->profile_photo_path }}" class="img-circle" alt="User Image" width="50" height="50"></td>
                 <td>{{  $udata->name }}</td>
-                <td>Rs. {{  number_format($udata->sales_sum,2) }}</td>
-                <td>Rs. {{  number_format($udata->inhand_sum,2) }}</td>
-                <td>Rs. {{  number_format($udata->banking_sum,2) }}</td>
-                <td>Rs. {{  number_format($udata->direct_banking_sum,2) }}</td>
-                <td>Rs. {{  number_format($udata->credit_sum,2) }}</td>
-                <td>Rs. {{  number_format($udata->retialer_sum,2) }}</td>
-                <td>Rs. {{  number_format($udata->credit_collection_sum,2) }}</td>
+                <td> {{  number_format($udata->sales_sum,2) }}</td>
+                <td> {{  number_format($udata->inhand_sum,2) }}</td>
+                <td> {{  number_format($udata->banking_sum,2) }}</td>
+                <td> {{  number_format($udata->direct_banking_sum,2) }}</td>
+                <td> {{  number_format($udata->credit_sum,2) }}</td>
+                <td> {{  number_format($udata->retialer_sum,2) }}</td>
+                <td> {{  number_format($udata->credit_collection_sum,2) }}</td>
              </tr>
 
              @endforeach
@@ -133,10 +140,10 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <div>{!! $usersData->links() !!}</div>
-     </div>
+     <div>{!! $usersData->links() !!}</div>
+  </div>
 
- </div>
+</div>
 </div>
 </div>
 

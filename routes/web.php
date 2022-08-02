@@ -55,6 +55,7 @@ Route::get('rolling_return_items/{id}',[DsrReturnController::class,'RollBackRetu
 
 Route::get('transfer_status',[StockController::class,'TransferStatus']);
 Route::post('view_transfer_items',[StockController::class,'viewTransferItems']);
+Route::post('view_transfer_rejected_items',[StockController::class,'viewTransferRejectedItems']);
 
 Route::get('/view_balance',[StockController::class,'ViewBalance'])->name('view_balance');
 Route::post('/get_view_balance',[StockController::class,'GetStockItemsById'])->name('get_view_balance');

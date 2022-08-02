@@ -66,12 +66,63 @@ class StockController extends Controller
 
 public function TransferStatus(){
 
- $TransferStatus = DB::table('dsr_stocks')
- ->join('users', 'dsr_stocks.dsr_id', 'users.id')
- ->select('users.id','users.name','dsr_stocks.total','dsr_stocks.created_at','dsr_stocks.status','dsr_stocks.id')
- ->get();
+    $allData = [];
+    $subData = [];
 
- return view('admin.item.transfer_status', ['transferStatus'=>$TransferStatus]);
+    $TransferStatus = DB::table('dsr_stocks')
+    ->join('users', 'dsr_stocks.dsr_id', 'users.id')
+    ->select('users.id',
+        'users.name',
+        'dsr_stocks.total',
+        'dsr_stocks.created_at',
+        'dsr_stocks.status',
+        'dsr_stocks.id as stockid'
+    )
+    ->get();
+
+    foreach ($TransferStatus as $transfer){
+
+        $transfer_items = DB::table('dsr_stock_items')
+        ->join('dsr_stocks', 'dsr_stock_items.dsr_stock_id', 'dsr_stocks.id')
+        ->join('users', 'dsr_stocks.dsr_id', 'users.id')
+        ->join('items', 'dsr_stock_items.item_id', 'items.id')
+        ->select('items.name',
+            'dsr_stock_items.qty',
+            'items.selling_price',
+            'dsr_stock_items.issue_return_qty',
+            'dsr_stock_items.sale_qty',
+            'dsr_stock_items.approve_return_qty',
+            'dsr_stock_items.created_at',
+            'users.id',
+            'users.name',
+            'dsr_stocks.total',
+            'dsr_stocks.created_at',
+            'dsr_stocks.status',
+            'dsr_stocks.id as stockid'
+        )
+        ->where('dsr_stock_id','=',$transfer->stockid)
+        ->where('issue_return_qty','!=',0)
+        ->get();
+
+
+        for ($x = 0; $x < count($transfer_items); $x++) {
+            $subData[] = (object) ['user_id' => $transfer_items{$x}->id,'name' => $transfer_items{$x}->name,'total' => ($transfer_items{$x}->qty * $transfer_items{$x}->selling_price) ,'status' => $transfer_items{$x}->status,'stockid' => $transfer_items{$x}->stockid, 'created_at' => $transfer_items{$x}->created_at,"subData"=>1];
+        }
+    }
+
+    for ($x = 0; $x < count($TransferStatus); $x++) {
+        $allData[] = (object) ['user_id' => $TransferStatus{$x}->id,'name' => $TransferStatus{$x}->name,'total' => $TransferStatus{$x}->total,'status' => $TransferStatus{$x}->status,'stockid' => $TransferStatus{$x}->stockid, 'created_at' => $TransferStatus{$x}->created_at,"subData"=>0];
+    }
+
+
+    if(count($subData) >0 ){
+      $allData[] = $subData[0];
+  }
+
+  // print_r(json_encode($allData));
+  // exit();
+
+  return view('admin.item.transfer_status', ['transferStatus'=>$allData]);
 }
 
 
@@ -80,9 +131,33 @@ public function viewTransferItems(Request $request){
 
     $transfer_items = DB::table('dsr_stock_items')
     ->join('items', 'dsr_stock_items.item_id', 'items.id')
-    ->select('items.name','dsr_stock_items.qty','dsr_stock_items.issue_return_qty','dsr_stock_items.sale_qty')
+    ->select('items.name',
+        'dsr_stock_items.qty',
+        'dsr_stock_items.issue_return_qty',
+        'dsr_stock_items.sale_qty',
+        'dsr_stock_items.approve_return_qty'
+    )
     ->where('dsr_stock_id','=',$request->id)
     ->get();
+
+    return response($transfer_items);
+}
+
+
+public function viewTransferRejectedItems(Request $request){
+
+    $transfer_items = DB::table('dsr_stock_items')
+    ->join('items', 'dsr_stock_items.item_id', 'items.id')
+    ->select('items.name',
+        'dsr_stock_items.qty',
+        'dsr_stock_items.issue_return_qty',
+        'dsr_stock_items.sale_qty',
+        'dsr_stock_items.approve_return_qty'
+    )
+    ->where('dsr_stock_id','=',$request->id)
+    ->where('dsr_stock_items.issue_return_qty','!=',0)
+    ->get();
+
     return response($transfer_items);
 }
 

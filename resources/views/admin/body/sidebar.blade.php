@@ -11,18 +11,18 @@
           </li>
           <li class="treeview">
              <a href="#">
-             <i class="fa fa-user"></i><span>Manage User</span>
+             <i class="fa fa-user"></i><span>Manage Users</span>
              <span class="pull-right-container">
              <i class="fa fa-angle-left float-right"></i>
              </span>
              </a>
              <ul class="treeview-menu">
-                <li><a href="{{ asset('/user') }}">View User</a></li>
+                <li><a href="{{ asset('/user') }}">View Users</a></li>
              </ul>
           </li>
           <li class="treeview">
              <a href="#">
-             <i class="fa fa-list-alt"></i><span>Manage Item</span>
+             <i class="fa fa-list-alt"></i><span>Manage Items</span>
              <span class="pull-right-container">
              <i class="fa fa-angle-left float-right"></i>
              </span>
@@ -45,7 +45,7 @@
           </li>
           <li class="treeview">
             <a href="#">
-            <i class="fa fa-folder"></i><span>Day Summary</span>
+            <i class="fa fa-folder"></i><span>Day Summaries</span>
             <span class="pull-right-container">
             <i class="fa fa-angle-left float-right"></i>
             </span>
@@ -59,7 +59,7 @@
          </li>
          <li class="treeview">
             <a href="#">
-            <i class="fa fa-file"></i><span>Report</span>
+            <i class="fa fa-file"></i><span>Reports</span>
             <span class="pull-right-container">
             <i class="fa fa-angle-left float-right"></i>
             </span>
