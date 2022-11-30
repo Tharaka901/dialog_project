@@ -20,7 +20,7 @@
       <div class=" col-sm-12 col-md-2 col-lg-2">
         <div id="cardbox4">
            <div class="statistic-box">
-              <i class="fa fa-credit-card fa-3x"></i>
+              <i class="fa fa-list fa-3x"></i>
               <div class="counter-number pull-right">
                  <span class="count-number" style="font-size: 14px;" >{{  count($usersData) }}</span>
               </div>

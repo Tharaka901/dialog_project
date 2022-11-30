@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dsrs', function (Blueprint $table) {
+        Schema::create('banks', function (Blueprint $table) {
             $table->id();
-            $table->double('in_hand')->default(0);
-            $table->double('cash')->default(0);
-            $table->double('cheque')->default(0);
-            $table->integer('dsr_user_id');
-            $table->integer('status')->default(1);
-            $table->timestamps();
+            $table->string('bank_name');
+            $table->integer('status')->default(0);
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();;
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dsrs');
+        Schema::dropIfExists('banks');
     }
 };

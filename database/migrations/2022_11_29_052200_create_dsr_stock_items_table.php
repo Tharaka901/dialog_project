@@ -14,16 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('dsr_stock_items', function (Blueprint $table) {
-            $table->id();
-            $table->double("dsr_stock_id");
-            $table->integer("item_id");
-            $table->double("qty")->default(0);
-            $table->double("issue_return_qty")->default(0);
-            $table->double("approve_return_qty")->default(0);
-            $table->double("sale_qty")->default(0);
-            $table->integer("status")->default("1");
-            $table->timestamps();
-        });
+           $table->id();
+           $table->double("dsr_stock_id");
+           $table->integer("item_id");
+           $table->double("qty")->default(0);
+           $table->double("issue_return_qty")->default(0);
+           $table->double("approve_return_qty")->default(0);
+           $table->double("sale_qty")->default(0);
+           $table->double("retailer_qty")->default(0);
+           $table->integer("status")->default("1");
+           $table->timestamps();
+       });
     }
 
     /**

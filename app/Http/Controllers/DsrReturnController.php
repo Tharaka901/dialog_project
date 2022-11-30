@@ -12,19 +12,26 @@ use Alert;
 class DsrReturnController extends Controller
 {
 
-    public function DsrReturn(Request $request){
+public function DsrReturn(Request $request){
 
-    // need to change the query according to mobile side
-     $results = DB::table('dsr_returns')
-     ->join('items', 'dsr_returns.item_id', 'items.id')
-     ->join('users', 'dsr_returns.dsr_id', 'users.id')
-     ->select('items.id as item_id','items.name','items.created_at','dsr_returns.id as return_id','dsr_returns.qty','users.name as user_name')
-     ->where('dsr_returns.status','=',0)
-     ->orderBy('items.name','asc')
-     ->paginate(5);
+       $results = DB::table('dsr_returns')
+       ->join('items', 'dsr_returns.item_id', 'items.id')
+       ->join('users', 'dsr_returns.dsr_id', 'users.id')
+       ->select('items.id as item_id','items.name','dsr_returns.created_at','dsr_returns.id as return_id','dsr_returns.qty','users.name as user_name')
+       ->where('dsr_returns.status','=',0)
+       ->orderBy('items.name','asc')
+       ->paginate(5);
 
-     return view('admin.item.dsr_receive', ['returnData'=>$results]);
- }
+       $results1 = DB::table('dsr_returns')
+       ->join('items', 'dsr_returns.item_id', 'items.id')
+       ->join('users', 'dsr_returns.dsr_id', 'users.id')
+       ->select('items.id as item_id','items.name','dsr_returns.created_at','dsr_returns.id as return_id','dsr_returns.qty','users.name as user_name')
+       ->where('dsr_returns.status','=',1)
+       ->orderBy('items.name','asc')
+       ->paginate(5);
+
+       return view('admin.item.dsr_receive', ['returnData'=>$results,'returnedData'=>$results1]);
+   }
 
 
 

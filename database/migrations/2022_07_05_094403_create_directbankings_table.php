@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('direct_bank_ref_no',100)->nullable();
             $table->double('direct_bank_amount')->default(0);
             $table->integer('dsr_id')->default(0);
+            $table->integer('sum_id')->default(0);
             $table->integer('status')->default(1);
             $table->timestamps();
         });

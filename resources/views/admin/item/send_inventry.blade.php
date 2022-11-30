@@ -8,7 +8,7 @@
         <i class="fa fa-send"></i>
      </div>
      <div class="header-title">
-        <h1>Send Inventry</h1>
+        <h1>Send Inventory</h1>
         <small></small>
      </div>
   </section>

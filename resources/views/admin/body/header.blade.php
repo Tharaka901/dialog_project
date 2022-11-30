@@ -1,6 +1,7 @@
 <?php
 if(!Session::has('user_id')){
-    header("Location: https://jayawardenanetwork.lk/");
+   header("Location: https://jayawardenanetwork.lk");
+  die();
 }
 ?>
 <div class="wrapper">

@@ -10,9 +10,10 @@ class banking extends Model
     use HasFactory;
 
     protected $fillable = [
-        'bank_name',
+        'bank_id',
         'bank_ref_no',
         'bank_amount',
+        'sum_id',
         'dsr_id',
         'status',
     ];

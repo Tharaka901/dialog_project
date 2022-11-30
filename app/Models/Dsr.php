@@ -14,6 +14,7 @@ class Dsr extends Model
         'in_hand',
         'cash',
         'cheque',
+        'sum_id',
         'dsr_user_id',
         'created_at',
         'status',

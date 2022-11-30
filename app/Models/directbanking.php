@@ -14,6 +14,7 @@ class directbanking extends Model
         'direct_bank_name',
         'direct_bank_ref_no',
         'direct_bank_amount',
+        'sum_id',
         'dsr_id',
         'status',
     ];

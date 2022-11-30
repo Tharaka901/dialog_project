@@ -20,6 +20,7 @@ return new class extends Migration
             $table->double('re_item_qty')->default(0);
             $table->double('re_item_amount')->default(0);
             $table->integer('dsr_id')->default(0);
+            $table->integer('sum_id');
             $table->integer('status')->default(1);
             $table->timestamps();
         });

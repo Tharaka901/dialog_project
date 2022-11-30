@@ -11,11 +11,15 @@ class Sale extends Model
     use HasFactory;
 
     protected $fillable = [
+        'stock_id',
         'item_id',
         'item_name',
         'item_qty',
         'item_amount',
+        'stock_balance',
+        'sum_id',
         'dsr_id',
         'status',
+        'created_at',
     ];
 }

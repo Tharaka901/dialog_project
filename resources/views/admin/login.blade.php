@@ -1,3 +1,8 @@
+@if( session('user_id') )
+<script type="text/javascript">
+   window.location.href = "/dashboard";
+</script>
+@endif
 <!DOCTYPE html>
 <html lang="en">
 <head>

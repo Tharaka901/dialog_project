@@ -13,17 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pending_sum_status', function (Blueprint $table) {
+        Schema::create('additional', function (Blueprint $table) {
            $table->id();
            $table->integer('dsr_id');
+           $table->string('sum_id');
            $table->string('date');
-           $table->integer('inhand_sum')->default(0);
-           $table->integer('sales_sum')->default(0);
-           $table->integer('credit_sum')->default(0);
-           $table->integer('credit_collection_sum')->default(0);
-           $table->integer('banking_sum')->default(0);
-           $table->integer('direct_banking_sum')->default(0);
-           $table->integer('retialer_sum')->default(0);
+           $table->integer('user_id')->default(0);
            $table->integer('status')->default(0);
            $table->timestamps();
        });
@@ -36,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pending_sum_status');
+        Schema::dropIfExists('additional');
     }
 };

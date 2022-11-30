@@ -32,6 +32,7 @@ class DashboardController extends Controller
       ->join('users', 'pending_sum.dsr_id', 'users.id')
       ->select('pending_sum.id','pending_sum.dsr_id','users.name','users.profile_photo_path','date','inhand_sum','sales_sum','credit_sum','credit_collection_sum','banking_sum','direct_banking_sum','retialer_sum')
       ->where('pending_sum.status', '=', 2)
+       ->where('pending_sum.date', '=', $todayDate)
       ->paginate(5);
 
 

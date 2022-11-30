@@ -1,3 +1,9 @@
+<?php
+if(!Session::has('user_id')){
+   header("Location: https://jayawardenanetwork.lk");
+  die();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,7 +115,7 @@
          <!-- Pace js -->
          <script src="assets/plugins/pace/pace.min.js" ></script>
          <!-- table-export js -->
-         <script src="assets/plugins/table-export/tableExport.js" ></script>
+         <!--<script src="assets/plugins/table-export/tableExport.js" ></script>-->
          <script src="assets/plugins/table-export/jquery.base64.js" ></script>
          <script src="assets/plugins/table-export/html2canvas.js" ></script>
          <script src="assets/plugins/table-export/sprintf.js" ></script>
@@ -143,6 +149,12 @@
       <!-- End Theme label Script
          =====================================================================-->
          <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+         
+          <script src="assets/exceljs/FileSaver.min.js"></script>
+         <script src="assets/exceljs/html2canvas.min.js"></script>
+         <script src="assets/exceljs/xlsx.core.min.js"></script>
+         <script src="assets/exceljs/tableExport.js"></script>
+         
          <script src="assets/customized_scripts.js"></script>
 
 

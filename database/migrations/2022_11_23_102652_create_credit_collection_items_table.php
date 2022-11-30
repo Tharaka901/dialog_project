@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('bankings', function (Blueprint $table) {
+        Schema::create('credit_collection_items', function (Blueprint $table) {
             $table->id();
-            $table->string('bank_name',100)->nullable();
-            $table->string('bank_ref_no',100)->nullable();
-            $table->double('bank_amount')->default(0);
-            $table->integer('dsr_id')->default(0);
+            $table->integer('credit_collection_id');
+            $table->integer('item_id'); 
+            $table->double('item_price')->default(0); 
             $table->integer('status')->default(1);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bankings');
+        Schema::dropIfExists('credit_collection_items');
     }
 };
