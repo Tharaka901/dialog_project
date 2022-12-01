@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('directbankings', function (Blueprint $table) {
             $table->id();
             $table->string('direct_bank_customer_name',100)->nullable();
-            $table->string('direct_bank_name',100)->nullable();
+            $table->integer('direct_bank_id');
             $table->string('direct_bank_ref_no',100)->nullable();
             $table->double('direct_bank_amount')->default(0);
             $table->integer('dsr_id')->default(0);

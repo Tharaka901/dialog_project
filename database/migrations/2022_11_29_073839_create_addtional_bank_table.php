@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('addtional_bank', function (Blueprint $table) {
            $table->id();
            $table->integer('additional_id')->default(0);
-           $table->string('bank_name',100)->nullable();
+           $table->integer('bank_id');
            $table->string('bank_ref_no',100)->nullable();
            $table->string('edited_bank_ref_no',100)->nullable();
            $table->double('bank_amount')->default(0);

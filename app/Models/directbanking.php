@@ -11,7 +11,7 @@ class directbanking extends Model
 
     protected $fillable = [
         'direct_bank_customer_name',
-        'direct_bank_name',
+        'direct_bank_id',
         'direct_bank_ref_no',
         'direct_bank_amount',
         'sum_id',
