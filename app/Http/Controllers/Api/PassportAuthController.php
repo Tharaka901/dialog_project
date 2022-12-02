@@ -535,7 +535,7 @@ public function MobileDsrCredits(Request $request)
     ->get();
 
     foreach ($credits as $credit) {
-        $creditSum += $credit["amount"];
+        $creditSum += $credit["price"];
     }
 
     if (count($crsum) == 0) {
@@ -577,7 +577,7 @@ public function MobileDsrCredits(Request $request)
 
     foreach ($credits as $credit) {
 
-        $existing_credit_customer = Credit::whereDate('created_at', '=', date($todayDate))->where('credit_customer_name', 'like', '%' . $credit["customerName"] . '%' )->get();
+        $existing_credit_customer = Credit::whereDate('created_at', '=', date($system_date))->where('credit_customer_name', 'like', '%' . $credit["customerName"] . '%' )->get();
 
         $credit_sum = 0;
         if(count($existing_credit_customer) == 0 ){
@@ -597,8 +597,7 @@ public function MobileDsrCredits(Request $request)
             $credit_sum += $credit["price"];
             $credit_items->save();
 
-            DB::update("update credit_items set credit_amount = credit_amount + ? where id = ?",[$credit["price"], $credits->id];
-        );
+            DB::update("update credits set credit_amount = credit_amount + ? where id = ?",[$credit["price"], $credits->id]);
 
         }else{
 
@@ -612,7 +611,7 @@ public function MobileDsrCredits(Request $request)
                 $credit_items->save();
             }
 
-            DB::update("update credit_items set credit_amount = credit_amount + ? where id = ?",[$credit["price"], $credits->id];
+            DB::update("update credits set credit_amount = credit_amount + ? where id = ?",[$credit["price"], $credits->id]);
 
         }
     }
