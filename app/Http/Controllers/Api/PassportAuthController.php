@@ -611,7 +611,7 @@ public function MobileDsrCredits(Request $request)
                 $credit_items->save();
             }
 
-            DB::update("update credits set credit_amount = credit_amount + ? where id = ?",[$credit["price"], $credits->id]);
+            DB::update("update credits set credit_amount = credit_amount + ? where id = ?",[$credit["price"], $customer->id]);
 
         }
     }
