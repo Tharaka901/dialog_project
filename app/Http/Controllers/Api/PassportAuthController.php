@@ -583,7 +583,6 @@ public function MobileDsrCredits(Request $request)
         if(count($existing_credit_customer) == 0 ){
             $credits = new Credit([
                 "credit_customer_name" => $credit["customerName"],
-                "credit_amount" => $credit["amount"],
                 "sum_id" => $sum_id->id,
                 "dsr_id" => $dsrId,
                 "created_at" => $system_date." ".$system_time,
