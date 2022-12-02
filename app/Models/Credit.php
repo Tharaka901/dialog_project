@@ -16,6 +16,8 @@ class Credit extends Model
         'sum_id',
         'dsr_id',
         'status',
+        'created_at',
+        'updated_at',
     ];
 
 }
