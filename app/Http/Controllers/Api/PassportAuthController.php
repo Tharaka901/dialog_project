@@ -626,7 +626,10 @@ public function MobileDsrCredits(Request $request)
 
 public function MobileDsrCreditcollections(Request $request)
 {
+
     date_default_timezone_set("Asia/colombo");
+    $system_date = date('Y-m-d');
+    $system_time = date('h:i:s');
 
     $dsrId = $request->get("dsr_id");
     $todayDate = $request->get("date");
@@ -686,22 +689,42 @@ public function MobileDsrCreditcollections(Request $request)
 
         // CreditCollectionItem
 
-    foreach ($creditcollections as $cc) {
-        $credit_collections = new CreditCollection([
-            "credit_collection_customer_name" => $cc["ccName"],
-            "credit_collection_amount" => $cc["ccAmount"],
-            "sum_id" => $sum_id->id,
-            "dsr_id" => $dsrId,
-        ]);
-        $credit_collections->save();
+    foreach ($creditcollections as $creditcol) {
 
-        foreach ($cc["items"] as $ccitem) {
-            $credit_items = new CreditCollectionItem([
-                "credit_collection_id" => $credit_collections->id,
-                "item_id" => $ccitem["item_id"],
-                "item_price" => $ccitem["price"],
-            ]);
-            $credit_items->save();
+        $existing_creditcol_customer = CreditCollection::whereDate('created_at', '=', date($system_date))->where('credit_collection_customer_name', 'like', '%' . $creditcol["ccName"] . '%' )->get();
+
+        
+        if(count($existing_creditcol_customer) == 0 ){
+            $creditcollection = new CreditCollection([
+             "credit_collection_customer_name" => $creditcol["ccName"],
+             "option_id" => $creditcol["option_id"],
+             "sum_id" => $sum_id->id,
+             "dsr_id" => $dsrId,
+         ]);
+            $creditcollection->save();
+
+            $creditcollection_items = new CreditCollectionItem([
+               "credit_collection_id" => $creditcollection->id,
+               "item_id" => $creditcol["item_id"],
+               "item_price" => $creditcol["ccAmount"],
+           ]);
+            $creditcollection_items->save();
+
+            DB::update("update credit_collections set credit_collection_amount = credit_collection_amount + ? where id = ?",[$creditcol["ccAmount"], $creditcollection_items->id]);
+
+        }else{
+
+            foreach ($existing_creditcol_customer as $customer) {
+                $credit_collection_item = new CreditCollectionItem([
+                    "credit_collection_id" => $customer->id,
+                    "item_id" => $creditcol["item_id"],
+                    "item_price" => $creditcol["ccAmount"],
+                ]);
+                $credit_collection_item->save();
+            }
+
+            DB::update("update credit_collections set credit_collection_amount = credit_collection_amount + ? where id = ?",[$creditcol["ccAmount"], $customer->id]);
+
         }
     }
 
@@ -828,48 +851,48 @@ public function MobileDsrBankings(Request $request){
 
  if(count($bsum)==0){
 
-       foreach($bankingItems as $banking){
-        $bankingSum += floatval($banking['amount']);
-        $single_bank = DB::table('banks')->whereIN('id',[$banking['bank_id']])->where('status',1)->get();
+   foreach($bankingItems as $banking){
+    $bankingSum += floatval($banking['amount']);
+    $single_bank = DB::table('banks')->whereIN('id',[$banking['bank_id']])->where('status',1)->get();
 
-        foreach($single_bank as $sbank){
-            if($sbank->bank_name == "Sampath Bank"){           
-                $sampath += $banking['amount'];
-            }
+    foreach($single_bank as $sbank){
+        if($sbank->bank_name == "Sampath Bank"){           
+            $sampath += $banking['amount'];
+        }
 
-            if($sbank->bank_name == "People's Bank"){
-                $peoples += $banking['amount'];
-            }
+        if($sbank->bank_name == "People's Bank"){
+            $peoples += $banking['amount'];
+        }
 
-            if($sbank->bank_name == "Cargills Bank"){
-                $cargils += $banking['amount'];
-            }
+        if($sbank->bank_name == "Cargills Bank"){
+            $cargils += $banking['amount'];
         }
     }
+}
 
-    DB::insert('insert into pending_sum (dsr_id, date,banking_sum,banking_sampath,banking_cargils,banking_peoples) values (?,?,?,?,?,?)', array($dsrId, $todayDate,$bankingSum,$sampath,$cargils,$peoples));
-    $sum_id = DB::table('pending_sum')->latest('id')->first();
+DB::insert('insert into pending_sum (dsr_id, date,banking_sum,banking_sampath,banking_cargils,banking_peoples) values (?,?,?,?,?,?)', array($dsrId, $todayDate,$bankingSum,$sampath,$cargils,$peoples));
+$sum_id = DB::table('pending_sum')->latest('id')->first();
 
 }else{
 
   foreach($bankingItems as $banking){
-        $bankingSum += floatval($banking['amount']);
-        $single_bank = DB::table('banks')->whereIN('id',[$banking['bank_id']])->where('status',1)->get();
+    $bankingSum += floatval($banking['amount']);
+    $single_bank = DB::table('banks')->whereIN('id',[$banking['bank_id']])->where('status',1)->get();
 
-        foreach($single_bank as $sbank){
-            if($sbank->bank_name == "Sampath Bank"){           
-                $sampath += $banking['amount'];
-            }
+    foreach($single_bank as $sbank){
+        if($sbank->bank_name == "Sampath Bank"){           
+            $sampath += $banking['amount'];
+        }
 
-            if($sbank->bank_name == "People's Bank"){
-                $peoples += $banking['amount'];
-            }
+        if($sbank->bank_name == "People's Bank"){
+            $peoples += $banking['amount'];
+        }
 
-            if($sbank->bank_name == "Cargills Bank"){
-                $cargils += $banking['amount'];
-            }
+        if($sbank->bank_name == "Cargills Bank"){
+            $cargils += $banking['amount'];
         }
     }
+}
 
 DB::update('update pending_sum set banking_sum = banking_sum + ? ,banking_sampath = banking_sampath+ ? ,banking_cargils = banking_cargils+ ? ,banking_peoples = banking_peoples + ?  where dsr_id = ? and date = ?', array($bankingSum, $sampath, $cargils, $peoples,  $dsrId,$todayDate));
 foreach($bsum as $sum){

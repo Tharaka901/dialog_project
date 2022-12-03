@@ -254,6 +254,7 @@ function viewDsr(psum_id,dsr_id,status){
          "<td><input type='text' class='form-control' value="+data.bankData[i].bank_ref_no+"></td>"+
          "<td style='display:none;'>"+data.bankData[i].bank_amount+"</td>"+
          "<td><input type='text' class='form-control' value="+data.bankData[i].bank_amount+"></td>"+
+         "<td style='display:none;'><input type='text' class='form-control' value="+data.bankData[i].bankId+"></td>"+
          "<td><a class='btn btn-danger' "+disableValue+" onclick='removeBankRow(this,"+status+")'><i class='fa fa-trash'></i></a></td>"+
          "</tr>");
         bankcount++;
@@ -263,11 +264,12 @@ function viewDsr(psum_id,dsr_id,status){
         $("#directBankTable tbody").append("<tr><td>"+directbankcount+"</td>"+
           "<td style='display:none;'>"+data.directbankData[i].id+"</td>"+
           "<td><input type='text' class='form-control' value="+JSON.stringify(data.directbankData[i].direct_bank_customer_name)+"></td>"+
-          "<td><input type='text' class='form-control' value="+JSON.stringify(data.directbankData[i].direct_bank_name)+"></td>"+
+          "<td><input type='text' class='form-control' value="+JSON.stringify(data.directbankData[i].bank_name)+"></td>"+
           "<td style='display:none;'>"+data.directbankData[i].direct_bank_ref_no+"</td>"+
           "<td><input type='text' class='form-control' value="+data.directbankData[i].direct_bank_ref_no+"></td>"+
           "<td style='display:none;'>"+data.directbankData[i].direct_bank_amount+"</td>"+
           "<td><input type='text' class='form-control' value="+data.directbankData[i].direct_bank_amount+"></td>"+
+          "<td style='display:none;'><input type='text' class='form-control' value="+data.directbankData[i].bankId+"></td>"+
           "<td><a class='btn btn-danger' "+disableValue+" onclick='removDbankRow(this,"+status+")'><i class='fa fa-trash'></i></a></td>"+
           "</tr>");
         directbankcount++;
@@ -684,38 +686,36 @@ $("#btnDsrApprove").click(function() {
   var bankingTable = JSON.stringify(bankingTableValues());
   var directBankingTable = JSON.stringify(directBankingTableValues());
   
-//   alert(creditTable);
-//   return;
 
-$.ajax({
-  type: 'post',
-  url: "/approve_dsr",
-  dataType: 'json',
-  data: {
-    "saleTable": saleTable,
-    "inHandTable": inHandTable,
-    "creditTable": creditTable,
-    "creditItemTable": creditItemTable,
-    "creditCollectionTable": creditCollectionTable,
-    "creditCollectionItemTable": creditCollectionItemTable,
-    "retailerTable": retailerTable,
-    "bankingTable": bankingTable,
-    "directBankingTable": directBankingTable,
-    "id": dsr_id,
-    "pending_sum_id": psum_id,
-  },
-  success: function(data) {
+  $.ajax({
+    type: 'post',
+    url: "/approve_dsr",
+    dataType: 'json',
+    data: {
+      "saleTable": saleTable,
+      "inHandTable": inHandTable,
+      "creditTable": creditTable,
+      "creditItemTable": creditItemTable,
+      "creditCollectionTable": creditCollectionTable,
+      "creditCollectionItemTable": creditCollectionItemTable,
+      "retailerTable": retailerTable,
+      "bankingTable": bankingTable,
+      "directBankingTable": directBankingTable,
+      "id": dsr_id,
+      "pending_sum_id": psum_id,
+    },
+    success: function(data) {
 
-   swal_success("Dsr Approved Successfully");
-   $("#dsrModal").modal("hide");
-   setTimeout(function() {
-    location.reload();
-  }, 1300);
+     swal_success("Dsr Approved Successfully");
+     $("#dsrModal").modal("hide");
+     setTimeout(function() {
+      location.reload();
+    }, 1300);
 
- },
- error: function(error) {
-  alert("error occured " + JSON.stringify(error));
-}
+   },
+   error: function(error) {
+    alert("error occured " + JSON.stringify(error));
+  }
 });
 
 });
@@ -846,6 +846,7 @@ function bankingTableValues(){
     "refno" : $(tr).find('td:eq(4)').find('input').val(),
     "oldamount" : $(tr).find('td:eq(5)').text(),
     "amount" : $(tr).find('td:eq(6)').find('input').val(),
+    "bankId" : $(tr).find('td:eq(7)').find('input').val(),
   }     
 }); 
  TableData.shift();
@@ -864,6 +865,7 @@ function directBankingTableValues(){
    "refno" : $(tr).find('td:eq(5)').find('input').val(),
    "oldamount" : $(tr).find('td:eq(6)').text(),
    "amount" : $(tr).find('td:eq(7)').find('input').val(),
+   "bankId" : $(tr).find('td:eq(8)').find('input').val(),
  }     
 }); 
  TableData.shift();

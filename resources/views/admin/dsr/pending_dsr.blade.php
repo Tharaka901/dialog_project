@@ -387,6 +387,7 @@
            <th>Ref #</th>
            <th style='display:none;'>Old Amount</th>
            <th>Amount</th>
+           <th style='display:none;'>Bank_id</th>
            <th>Remove</th>
         </tr>
      </thead>
@@ -418,6 +419,7 @@
            <th>Ref #</th>
            <th style='display:none;'>Old Amount</th>
            <th>Amount</th>
+           <th style='display:none;'>Bank_id</th>
            <th>Remove</th>
         </tr>
      </thead>

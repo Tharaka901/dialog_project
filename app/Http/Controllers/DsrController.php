@@ -102,13 +102,14 @@ class DsrController extends Controller
 
        $bank = DB::table('bankings')
        ->join('banks','banks.id','bankings.bank_id')
-       ->select('bankings.id','bank_name','bank_ref_no','bank_amount')
+       ->select('bankings.id','banks.id as bankId','banks.bank_name','bank_ref_no','bank_amount')
        ->where('bankings.status', '=', 1)
        ->where('bankings.sum_id',$request->id)
        ->get();
 
        $direct_bank = DB::table('directbankings')
-       ->select('directbankings.id','direct_bank_customer_name','direct_bank_name','direct_bank_ref_no','direct_bank_amount')
+       ->join('banks','banks.id','directbankings.direct_bank_id')
+       ->select('directbankings.id','direct_bank_customer_name','banks.id as bankId','banks.bank_name','direct_bank_ref_no','direct_bank_amount')
        ->where('directbankings.status', '=', 1)
        ->where('directbankings.sum_id',$request->id)
        ->get();
@@ -345,7 +346,7 @@ if($bankingTable){
                     $lastInsertId = $ad_data;
             }
 
-            DB::insert('insert into addtional_bank (additional_id, bank_name, bank_ref_no, edited_bank_ref_no, bank_amount, edited_bank_amount) values (?, ?, ?, ?, ?, ?)', [$lastInsertId->id, $banking["bank"], $banking['oldrefno'], $banking['refno'], $banking['oldamount'], $banking['amount'] ]);
+            DB::insert('insert into addtional_bank (additional_id, bank_id, bank_ref_no, edited_bank_ref_no, bank_amount, edited_bank_amount) values (?, ?, ?, ?, ?, ?)', [$lastInsertId->id, $banking["bankId"], $banking['oldrefno'], $banking['refno'], $banking['oldamount'], $banking['amount'] ]);
 
         }
 
@@ -401,7 +402,7 @@ if($directBankingTable){
                 $lastInsertId = $ad_data;
         }
 
-        DB::insert('insert into addtional_directbank (additional_id, bank_name, direct_bank_ref_no, edited_direct_bank_ref_no, direct_bank_amount, edited_direct_bank_amount) values (?, ?, ?, ?, ?, ?)', [$lastInsertId->id, $db["bank"], $db['oldrefno'], $db['refno'], $db['oldamount'], $db['amount'] ]);
+        DB::insert('insert into addtional_directbank (additional_id, bank_id, direct_bank_ref_no, edited_direct_bank_ref_no, direct_bank_amount, edited_direct_bank_amount) values (?, ?, ?, ?, ?, ?)', [$lastInsertId->id, $db["bankId"], $db['oldrefno'], $db['refno'], $db['oldamount'], $db['amount'] ]);
     }
 
 

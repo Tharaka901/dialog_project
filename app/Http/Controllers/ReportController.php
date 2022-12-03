@@ -13,9 +13,9 @@ class ReportController extends Controller
   }
 
   public function Collection(){
-      
-        date_default_timezone_set("Asia/colombo");
-        $todayDate = date('Y-m-d');
+    
+    date_default_timezone_set("Asia/colombo");
+    $todayDate = date('Y-m-d');
 
     $collection = DB::table('pending_sum')
     ->join('users','pending_sum.dsr_id','users.id')
@@ -28,30 +28,61 @@ class ReportController extends Controller
   }
 
 
-public function SearchCollection(Request $request){
+  public function SearchCollection(Request $request){
 
-  $text = $request->search;
-  $collection_from = $request->fromdate;
-  $collection_to = $request->todate;
+    $text = $request->search;
+    $collection_from = $request->fromdate;
+    $collection_to = $request->todate;
 
-  if($text !=""){
-    session(['collection_name' => $text]);
-  }
+    if($text !=""){
+      session(['collection_name' => $text]);
+    }
 
-  if($collection_from !=""){
-    session(['collection_from' => $collection_from]);
-  }
+    if($collection_from !=""){
+      session(['collection_from' => $collection_from]);
+    }
 
-  if($collection_to !=""){
-   session(['collection_to' => $collection_to]);
- }
+    if($collection_to !=""){
+     session(['collection_to' => $collection_to]);
+   }
 
- if($request->session()->get('collection_name') != ""){
+   if($request->session()->get('collection_name') != ""){
 
-  $users = DB::table('users')->select('id','name')->where('name', 'like', '%' . $request->session()->get('collection_name') . '%' )->where('status','=',1)->get();
+    $users = DB::table('users')->select('id','name')->where('name', 'like', '%' . $request->session()->get('collection_name') . '%' )->where('status','=',1)->get();
 
-  $userIds = [];
-  foreach($users as $user){
+    $userIds = [];
+    foreach($users as $user){
+      array_push($userIds,$user->id);
+    }
+
+    $collection = DB::table('pending_sum')
+    ->join('users','pending_sum.dsr_id','users.id')
+    ->select('pending_sum.id','users.name','pending_sum.date','pending_sum.inhand_cash','pending_sum.inhand_cheque','pending_sum.credit_sum','pending_sum.credit_collection_sum','pending_sum.banking_sampath','pending_sum.banking_peoples','pending_sum.banking_cargils','pending_sum.direct_banking_sampath','pending_sum.direct_banking_peoples','pending_sum.direct_banking_cargils')
+    ->where('pending_sum.status','=',2)
+    ->whereIn('users.id', $userIds)
+    ->paginate(20);
+
+    return view('admin.report.search_collection',["collectionData"=>$collection]);
+
+
+  }else if($request->session()->get('collection_from') != "" && $request->session()->get('collection_to') != ""){
+
+    $collection = DB::table('pending_sum')
+    ->join('users','pending_sum.dsr_id','users.id')
+    ->select('pending_sum.id','users.name','pending_sum.date','pending_sum.inhand_cash','pending_sum.inhand_cheque','pending_sum.credit_sum','pending_sum.credit_collection_sum','pending_sum.banking_sampath','pending_sum.banking_peoples','pending_sum.banking_cargils','pending_sum.direct_banking_sampath','pending_sum.direct_banking_peoples','pending_sum.direct_banking_cargils')
+    ->where('pending_sum.status','=',2)
+    ->whereBetween('pending_sum.date', [$request->session()->get('collection_from'), $request->session()->get('collection_to')])
+    ->paginate(20);
+
+    return view('admin.report.search_collection',["collectionData"=>$collection]);
+
+
+  }else if($request->session()->get('collection_from') != "" && $request->session()->get('collection_to') != "" && $request->session()->get('collection_name') != ""){
+
+   $users = DB::table('users')->select('id','name')->where('name', 'like', '%' . $request->session()->get('collection_name') . '%' )->where('status','=',1)->get();
+
+   $userIds = [];
+   foreach($users as $user){
     array_push($userIds,$user->id);
   }
 
@@ -60,41 +91,10 @@ public function SearchCollection(Request $request){
   ->select('pending_sum.id','users.name','pending_sum.date','pending_sum.inhand_cash','pending_sum.inhand_cheque','pending_sum.credit_sum','pending_sum.credit_collection_sum','pending_sum.banking_sampath','pending_sum.banking_peoples','pending_sum.banking_cargils','pending_sum.direct_banking_sampath','pending_sum.direct_banking_peoples','pending_sum.direct_banking_cargils')
   ->where('pending_sum.status','=',2)
   ->whereIn('users.id', $userIds)
-  ->paginate(20);
-
-  return view('admin.report.search_collection',["collectionData"=>$collection]);
-
-
-}else if($request->session()->get('collection_from') != "" && $request->session()->get('collection_to') != ""){
-
-  $collection = DB::table('pending_sum')
-  ->join('users','pending_sum.dsr_id','users.id')
-  ->select('pending_sum.id','users.name','pending_sum.date','pending_sum.inhand_cash','pending_sum.inhand_cheque','pending_sum.credit_sum','pending_sum.credit_collection_sum','pending_sum.banking_sampath','pending_sum.banking_peoples','pending_sum.banking_cargils','pending_sum.direct_banking_sampath','pending_sum.direct_banking_peoples','pending_sum.direct_banking_cargils')
-  ->where('pending_sum.status','=',2)
   ->whereBetween('pending_sum.date', [$request->session()->get('collection_from'), $request->session()->get('collection_to')])
   ->paginate(20);
 
   return view('admin.report.search_collection',["collectionData"=>$collection]);
-
-
-}else if($request->session()->get('collection_from') != "" && $request->session()->get('collection_to') != "" && $request->session()->get('collection_name') != ""){
-
- $users = DB::table('users')->select('id','name')->where('name', 'like', '%' . $request->session()->get('collection_name') . '%' )->where('status','=',1)->get();
-
- $userIds = [];
- foreach($users as $user){
-  array_push($userIds,$user->id);
-}
-
-$collection = DB::table('pending_sum')
-->join('users','pending_sum.dsr_id','users.id')
-->select('pending_sum.id','users.name','pending_sum.date','pending_sum.inhand_cash','pending_sum.inhand_cheque','pending_sum.credit_sum','pending_sum.credit_collection_sum','pending_sum.banking_sampath','pending_sum.banking_peoples','pending_sum.banking_cargils','pending_sum.direct_banking_sampath','pending_sum.direct_banking_peoples','pending_sum.direct_banking_cargils')
-->where('pending_sum.status','=',2)
-->whereIn('users.id', $userIds)
-->whereBetween('pending_sum.date', [$request->session()->get('collection_from'), $request->session()->get('collection_to')])
-->paginate(20);
-
-return view('admin.report.search_collection',["collectionData"=>$collection]);
 
 }else{
     // return $this->Collection();
@@ -163,14 +163,16 @@ public function getAdditionalData(Request $request){
 
   $bank_data = DB::table('addtional_bank')
   ->join('additional','additional.id','addtional_bank.additional_id')
-  ->select('addtional_bank.bank_ref_no','addtional_bank.edited_bank_ref_no','addtional_bank.bank_amount','addtional_bank.edited_bank_amount','addtional_bank.bank_name')
+  ->join('banks','addtional_bank.bank_id','banks.id')
+  ->select('addtional_bank.bank_ref_no','addtional_bank.edited_bank_ref_no','addtional_bank.bank_amount','addtional_bank.edited_bank_amount','banks.bank_name')
   ->where('additional_id','=',$request->id)
   ->groupBy('addtional_bank.id')
   ->get();
 
   $direct_bank_data = DB::table('addtional_directbank')
   ->join('additional','additional.id','addtional_directbank.additional_id')
-  ->select('addtional_directbank.direct_bank_ref_no','addtional_directbank.edited_direct_bank_ref_no','addtional_directbank.direct_bank_amount','addtional_directbank.edited_direct_bank_amount','addtional_directbank.bank_name')
+  ->join('banks','addtional_directbank.bank_id','banks.id')
+  ->select('addtional_directbank.direct_bank_ref_no','addtional_directbank.edited_direct_bank_ref_no','addtional_directbank.direct_bank_amount','addtional_directbank.edited_direct_bank_amount','banks.bank_name')
   ->where('additional_id','=',$request->id)
   ->groupBy('addtional_directbank.id')
   ->get();

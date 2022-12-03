@@ -13,6 +13,7 @@ class CreditCollection extends Model
     protected $fillable = [
         'credit_collection_customer_name',
         'credit_collection_amount',
+        'option_id',
         'sum_id',
         'dsr_id',
         'status',

@@ -14,14 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('credit_collections', function (Blueprint $table) {
-            $table->id();
-            $table->string('credit_collection_customer_name',100)->nullable();
-            $table->double('credit_collection_amount')->default(0);
-            $table->integer('sum_id');
-            $table->integer('dsr_id')->default(0);
-            $table->integer('status')->default(1);
-            $table->timestamps();
-        });
+           $table->id();
+           $table->string('credit_collection_customer_name',100)->nullable();
+           $table->double('credit_collection_amount')->default(0);
+           $table->integer('option_id');
+           $table->integer('sum_id');
+           $table->integer('dsr_id')->default(0);
+           $table->integer('status')->default(1);
+           $table->timestamps();
+       });
     }
 
     /**
