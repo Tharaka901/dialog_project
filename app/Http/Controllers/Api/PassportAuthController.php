@@ -1725,9 +1725,9 @@ public function MobileEditBankSummary(Request $request){
 
     $bankings_update = DB::table('bankings')
     ->where('id','=',$request->get('id'))
-    ->update(['bank_name'=>$request->get('bank'),'bank_ref_no'=>$request->get('refno'),'bank_amount'=>$request->get('amount')]);
+    ->update(['bank_id'=>$request->get('bank_id'),'bank_ref_no'=>$request->get('refno'),'bank_amount'=>$request->get('amount')]);
 
-    $banking_details = DB::table('bankings')->select('bank_name','bank_amount','sum_id')->where('status', '!=', 0)->where('sum_id','=',$request->get('sum_id'))->get();
+    $banking_details = DB::table('bankings')->select('bank_id','bank_amount','sum_id')->where('status', '!=', 0)->where('sum_id','=',$request->get('sum_id'))->get();
     $bank_total = 0;
     $sampath = 0;
     $peoples = 0;
@@ -1739,15 +1739,15 @@ public function MobileEditBankSummary(Request $request){
 
      $bank_total += floatval($banks->bank_amount);
 
-     if($banks->bank_name == "Sampath Bank"){
+     if($banks->bank_id == 2){
         $sampath += $banks->bank_amount;
     }
 
-    if($banks->bank_name == "People's Bank"){
+    if($banks->bank_id == 4){
         $peoples += $banks->bank_amount;
     }
 
-    if($banks->bank_name == "Cargills Bank"){
+    if($banks->bank_id == 1){
         $cargils += $banks->bank_amount;
     }
 
@@ -1768,10 +1768,10 @@ public function MobileEditDBankSummary(Request $request){
 
   $direct_banking_update = DB::table('directbankings')
   ->where('id','=',$request->get('id'))
-  ->update(['direct_bank_customer_name'=>$request->get('customerName'),'direct_bank_name'=>$request->get('bank'),'direct_bank_ref_no'=>$request->get('refno'),'direct_bank_amount'=>$request->get('amount')]);
+  ->update(['direct_bank_customer_name'=>$request->get('customerName'),'direct_bank_id'=>$request->get('bank_id'),'direct_bank_ref_no'=>$request->get('refno'),'direct_bank_amount'=>$request->get('amount')]);
 
 
-  $direct_banking_details = DB::table('directbankings')->select('direct_bank_name','direct_bank_amount','sum_id')->where('status', '!=', 0)->where('sum_id','=',$request->get('sum_id'))->get();
+  $direct_banking_details = DB::table('directbankings')->select('direct_bank_id','direct_bank_amount','sum_id')->where('status', '!=', 0)->where('sum_id','=',$request->get('sum_id'))->get();
   $dbank_total = 0;
   $sampath = 0;
   $peoples = 0;
@@ -1783,15 +1783,15 @@ public function MobileEditDBankSummary(Request $request){
 
      $dbank_total += floatval($dbanks->direct_bank_amount);
 
-     if($dbanks->direct_bank_name == "Sampath Bank"){
+     if($dbanks->direct_bank_id == 2){
         $sampath += $dbanks->direct_bank_amount;
     }
 
-    if($dbanks->direct_bank_name == "People's Bank"){
+    if($dbanks->direct_bank_id == 4){
         $peoples += $dbanks->direct_bank_amount;
     }
 
-    if($dbanks->direct_bank_name == "Cargills Bank"){
+    if($dbanks->direct_bank_id == 1){
         $cargils += $dbanks->direct_bank_amount;
     }
 

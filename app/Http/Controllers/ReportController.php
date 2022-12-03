@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Bank;
 use DB;
 
 class ReportController extends Controller
@@ -13,7 +14,7 @@ class ReportController extends Controller
   }
 
   public function Collection(){
-    
+
     date_default_timezone_set("Asia/colombo");
     $todayDate = date('Y-m-d');
 
@@ -201,6 +202,28 @@ public function getAdditionalData(Request $request){
   return response($data);
 
 }
+
+
+public function BankingDetails(){
+ $banks = Bank::where('status',1)->get();
+ return view('admin.report.banking',["banks"=>$banks]);
+}
+
+public function GetBankDetails(Request $request){
+
+
+  $userData = DB::table('additional')
+  ->join('admins as u','additional.user_id','u.id')
+  ->join('users as d','additional.dsr_id','d.id')
+  ->select('additional.id','additional.date','additional.sum_id','u.name as admin_name','d.name as dsr_name')
+  ->paginate(10);
+
+
+  return response('admin.report.additional_details',["userData"=>$userData]);
+
+
+}
+
 
 
 }

@@ -99,3 +99,5 @@ Route::get('/collection',[ReportController::class,'Collection']);
 Route::get('search_collection',[ReportController::class,'SearchCollection']);
 Route::get('/additional_details',[ReportController::class,'AdditionalDetails']);
 Route::post('/get_additional_data',[ReportController::class,'getAdditionalData']);
+Route::get('banking_details',[ReportController::class,'BankingDetails']);
+Route::post('get_bank_details',[ReportController::class,'GetBankDetails']);

@@ -1335,7 +1335,7 @@ function viewCompleteDsr(psum_id,dsr_id,status){
       for (var i = 0; i < data.directbankData.length; i++) {
         $("#directBankTable1 tbody").append("<tr><td>"+directbankcount+"</td>"+
           "<td>"+data.directbankData[i].direct_bank_customer_name+"</td>"+
-          "<td>"+data.directbankData[i].direct_bank_name+"</td>"+
+          "<td>"+data.directbankData[i].bank_name+"</td>"+
           "<td>"+data.directbankData[i].direct_bank_ref_no+"</td>"+
           "<td>"+data.directbankData[i].direct_bank_amount+"</td>"+
           "</tr>");
@@ -1458,4 +1458,28 @@ function editBank(bank_id){
 function deleteBank(item_id){
   $("#delete_bank_id").val(item_id);
   $("#deleteBankModal").modal('show');
+}
+
+
+
+
+function getBankDetails(id){
+  $.ajax({
+    type: 'post',
+    url: "get_bank_details",
+    dataType: 'json',
+    data: {
+      "id": id,
+    },
+    success: function(data) {
+
+      $("#edit_bank_id").val(data.id);
+      $("#edit_bank_name").val(data.bank_name);
+      $("#updateBankModal").modal('show');
+
+    },
+    error: function(error) {
+      alert("error occured " + JSON.stringify(error));
+    }
+  });
 }
