@@ -4,19 +4,19 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-     <div class="header-icon">
-      <i class="fa fa-money"></i>
-  </div>
-  <div class="header-title">
-      <h1>Collection Report</h1>
-      <small></small>
-  </div>
-</section>
-<!-- Main content -->
-<section class="content">
- <div class="row">
-    
-   <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+       <div class="header-icon">
+          <i class="fa fa-money"></i>
+      </div>
+      <div class="header-title">
+          <h1>Collection Report</h1>
+          <small></small>
+      </div>
+  </section>
+  <!-- Main content -->
+  <section class="content">
+   <div class="row">
+
+     <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
 
         <form method="get" action="{{ url('search_collection')  }}">
             @csrf
@@ -42,81 +42,81 @@
     <h5 class="label label-danger">{{$errors->first()}}</h5>
     @endif
 </div>
-  
-  
-    <div class="col-lg-12 pinpin">
-     <div class="card lobicard" id="lobicard-custom-control" data-sortable="true">
-         <div class="card-header">
-             <div class="card-title custom_title">
-                 <h4>Collection Details</h4>
-             </div>
-         </div>
-         <div class="card-body">
-            <!-- Plugin content:pdf,excel -->
-            <div class="btn-group">
-              <button class="btn btn-exp btn-sm" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Table Data</button>
-              <ul class="dropdown-menu exp-drop" role="menu">
-                <li class="dropdown-divider"></li>
-                <li>
-                    <a href="#" onclick="$('#dataTableExample1').tableExport({type:'xlsx',escape:'false'});">
-                        <img src="assets/dist/img/excel.png" width="24" alt="logo"> Excel</a>
-                    </li>
-                    <!--<li>-->
+
+
+<div class="col-lg-12 pinpin">
+   <div class="card lobicard" id="lobicard-custom-control" data-sortable="true">
+       <div class="card-header">
+           <div class="card-title custom_title">
+               <h4>Collection Details</h4>
+           </div>
+       </div>
+       <div class="card-body">
+        <!-- Plugin content:pdf,excel -->
+        <div class="btn-group">
+          <button class="btn btn-exp btn-sm" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Table Data</button>
+          <ul class="dropdown-menu exp-drop" role="menu">
+            <li class="dropdown-divider"></li>
+            <li>
+                <a href="#" onclick="$('#dataTableExample1').tableExport({type:'xlsx',escape:'false'});">
+                    <img src="assets/dist/img/excel.png" width="24" alt="logo"> Excel</a>
+                </li>
+                <!--<li>-->
                     <!--    <a href="#" onclick="$('#dataTableExample1').tableExport({type:'pdf',pdfFontSize:'7',escape:'false'});">-->
-                    <!--        <img src="assets/dist/img/pdf.png" width="24" alt="logo"> PDF</a>-->
-                    <!--    </li>-->
+                        <!--        <img src="assets/dist/img/pdf.png" width="24" alt="logo"> PDF</a>-->
+                        <!--    </li>-->
                     </ul>
                 </div>
                 <!-- ./Plugin content:pdf,excel -->
 
-                <div class="table-responsive">
+                {{--    <div class="table-responsive">
                   <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
-                   <thead class="back_table_color">
-                    <tr>
-                        <th style="min-width: 100px">Date</th>
-                        <th style="min-width: 100px">Name</th>
-                        <th style="min-width: 100px">Cash</th>
-                        <th style="min-width: 100px">Cheque</th>
-                        <th style="min-width: 150px">Credits</th>
-                        <th style="min-width: 150px">Credit Collection</th>
-                        <th style="min-width: 150px">Banking - Sampath</th>
-                        <th style="min-width: 150px">Banking - Peoples</th>
-                        <th style="min-width: 150px">Banking - Cargils</th>
-                        <th style="min-width: 200px">Direct Banking - Sampath</th>
-                        <th style="min-width: 200px">Direct Banking - Peoples</th>
-                        <th style="min-width: 200px">Direct Banking - Cargils</th>
-                        <th style="min-width: 200px">Sampath Bank - All</th>
-                        <th style="min-width: 200px">Peoples Bank - All</th>
-                        <th style="min-width: 200px">Cargils Bank - All</th>
-                        <th style="min-width: 100px">Balance</th>
-                    </tr>
-                </thead>
-                <tbody>
+                     <thead class="back_table_color">
+                        <tr>
+                            <th style="min-width: 100px">Date</th>
+                            <th style="min-width: 100px">Name</th>
+                            <th style="min-width: 100px">Cash</th>
+                            <th style="min-width: 100px">Cheque</th>
+                            <th style="min-width: 150px">Credits</th>
+                            <th style="min-width: 150px">Credit Collection</th>
+                            <th style="min-width: 150px">Banking - Sampath</th>
+                            <th style="min-width: 150px">Banking - Peoples</th>
+                            <th style="min-width: 150px">Banking - Cargils</th>
+                            <th style="min-width: 200px">Direct Banking - Sampath</th>
+                            <th style="min-width: 200px">Direct Banking - Peoples</th>
+                            <th style="min-width: 200px">Direct Banking - Cargils</th>
+                            <th style="min-width: 200px">Sampath Bank - All</th>
+                            <th style="min-width: 200px">Peoples Bank - All</th>
+                            <th style="min-width: 200px">Cargils Bank - All</th>
+                            <th style="min-width: 100px">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                    @foreach($collectionData as $collection)
-                    <tr>
-                        <td>{{ $collection->date }}</td>
-                        <td>{{ $collection->name }}</td>
-                        <td>{{ number_format($collection->inhand_cash,2) }}</td>
-                        <td>{{ number_format($collection->inhand_cheque,2) }}</td>
-                        <td>{{ number_format($collection->credit_sum,2) }}</td>
-                        <td>{{ number_format($collection->credit_collection_sum,2) }}</td>
-                        <td>{{ number_format($collection->banking_sampath,2) }}</td>
-                        <td>{{ number_format($collection->banking_peoples,2) }}</td>
-                        <td>{{ number_format($collection->banking_cargils,2) }}</td>
-                        <td>{{ number_format($collection->direct_banking_sampath,2) }}</td>
-                        <td>{{ number_format($collection->direct_banking_peoples,2) }}</td>
-                        <td>{{ number_format($collection->direct_banking_cargils,2) }}</td>
-                        <td>{{ number_format( ( $collection->banking_sampath + $collection->direct_banking_sampath ) ,2) }}</td>
-                        <td>{{ number_format( ( $collection->banking_peoples + $collection->direct_banking_peoples ) ,2) }}</td>
-                        <td>{{ number_format( ( $collection->banking_cargils + $collection->direct_banking_cargils ) ,2) }}</td>
-                        <td>{{ number_format( $collection->inhand_cash + $collection->inhand_cheque + $collection->banking_sampath + $collection->banking_peoples + $collection->banking_cargils + $collection->direct_banking_sampath + $collection->direct_banking_peoples + $collection->direct_banking_cargils + $collection->credit_sum - $collection->credit_collection_sum ,2) }}</td>
-                    </tr>
-                    @endforeach
+                        @foreach($collectionData as $collection)
+                        <tr>
+                            <td>{{ $collection->date }}</td>
+                            <td>{{ $collection->name }}</td>
+                            <td>{{ number_format($collection->inhand_cash,2) }}</td>
+                            <td>{{ number_format($collection->inhand_cheque,2) }}</td>
+                            <td>{{ number_format($collection->credit_sum,2) }}</td>
+                            <td>{{ number_format($collection->credit_collection_sum,2) }}</td>
+                            <td>{{ number_format($collection->banking_sampath,2) }}</td>
+                            <td>{{ number_format($collection->banking_peoples,2) }}</td>
+                            <td>{{ number_format($collection->banking_cargils,2) }}</td>
+                            <td>{{ number_format($collection->direct_banking_sampath,2) }}</td>
+                            <td>{{ number_format($collection->direct_banking_peoples,2) }}</td>
+                            <td>{{ number_format($collection->direct_banking_cargils,2) }}</td>
+                            <td>{{ number_format( ( $collection->banking_sampath + $collection->direct_banking_sampath ) ,2) }}</td>
+                            <td>{{ number_format( ( $collection->banking_peoples + $collection->direct_banking_peoples ) ,2) }}</td>
+                            <td>{{ number_format( ( $collection->banking_cargils + $collection->direct_banking_cargils ) ,2) }}</td>
+                            <td>{{ number_format( $collection->inhand_cash + $collection->inhand_cheque + $collection->banking_sampath + $collection->banking_peoples + $collection->banking_cargils + $collection->direct_banking_sampath + $collection->direct_banking_peoples + $collection->direct_banking_cargils + $collection->credit_sum - $collection->credit_collection_sum ,2) }}</td>
+                        </tr>
+                        @endforeach
 
-                </tbody>
-                <tfoot class="back_table_color" >
-                     <tr>
+                    </tbody>
+                    <tfoot class="back_table_color" >
+                       <tr>
                         <th colspan="2">Total</th>
                         <?php 
 
@@ -170,18 +170,67 @@
 
                     </tr>
                 </tfoot>
-        </table>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-center">
+           <div>{!! $collectionData->links() !!}</div>
+       </div> --}}
+
+
+
+<!--                    <th style="min-width: 150px">Banking - Sampath</th>
+                        <th style="min-width: 150px">Banking - Peoples</th>
+                        <th style="min-width: 150px">Banking - Cargils</th>
+                        <th style="min-width: 200px">Direct Banking - Sampath</th>
+                        <th style="min-width: 200px">Direct Banking - Peoples</th>
+                        <th style="min-width: 200px">Direct Banking - Cargils</th> -->
+
+
+                        <div class="table-responsive">
+                          <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
+                             <thead class="back_table_color">
+                                <tr>
+                                    <th style="min-width: 100px">Date</th>
+                                    <th style="min-width: 100px">Name</th>
+                                    <th style="min-width: 100px">Cash</th>
+                                    <th style="min-width: 100px">Cheque</th>
+                                    <th style="min-width: 150px">Credits</th>
+                                    <th style="min-width: 150px">Credit Collection</th>
+                                    @foreach($banks as $bank)
+                                    <th style="min-width: 150px">Banking - {{ $bank->bank_name }}</th>
+                                    @endforeach
+                                    @foreach($banks as $dbank)
+                                    <th style="min-width: 150px">Direct Banking - {{ $dbank->bank_name }}</th>
+                                    @endforeach
+                                    <th style="min-width: 100px">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
     </div>
-    
-     <div class="d-flex justify-content-center">
-         <div>{!! $collectionData->links() !!}</div>
-     </div>
-     
-     
-</div>
-</div>
-</div>
-</div>
 
 </section>
 <!-- /.content -->
