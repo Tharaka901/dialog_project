@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Models\Bank;
 use DB;
 use Alert;
-use App\Models\Bank;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class BankController extends Controller
 {
@@ -35,6 +38,12 @@ class BankController extends Controller
             ['bank_name' => $request->get('bank_name')],
             ['status' => 1]
         );
+
+        // ALTER TABLE Customers
+        // ADD Email varchar(255);
+        Schema::create('banks', function (Blueprint $table) {
+           $table->integer('new_col');
+       });
 
         if($banks){
             Alert::success('Success!!', 'Bank Registered.');

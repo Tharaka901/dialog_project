@@ -1347,7 +1347,9 @@ public function MobileGetCreditColSumery(Request $request){
 
     $credit_summery_items = DB::table('credit_collections')
     ->leftjoin('pending_sum','pending_sum.id','credit_collections.sum_id')
-    ->select('credit_collections.id','credit_collection_customer_name','credit_collection_amount')
+    ->leftjoin('credit_collection_items','credit_collection_items.credit_collection_id','credit_collections.id')
+    ->leftjoin('items','credit_collection_items.item_id','items.id')
+    ->select('credit_collections.id','credit_collection_customer_name','credit_collection_amount','option_id','items.name')
     ->where('pending_sum.date', '=', $request->get('date'))
     ->where('pending_sum.dsr_id', '=', $request->get('dsr_id'))
     ->where('credit_collections.status', '!=', 0)
@@ -1980,6 +1982,24 @@ public function MobileBanks(Request $request)
     if ($bank_data) {
         return response()->json(
             ["data" => ["info" => $bank_data, "error" => null]],
+            200
+        );
+    } else {
+            // Oops.. Error Occured!
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
+
+
+public function MobileDsrChequeList(Request $request)
+{
+    $cheque_data = DB::table("drs_cheques")->where('status',1)->where('dsrs_id',$request->get('dsr_id'))->whereDate('created_at',$request->get('date'))->get();
+    if ($cheque_data) {
+        return response()->json(
+            ["data" => ["info" => $cheque_data, "error" => null]],
             200
         );
     } else {

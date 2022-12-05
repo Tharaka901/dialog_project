@@ -71,3 +71,4 @@ Route::post('mobile_edit_cc_summary',[PassportAuthController::class,'MobileEditC
 Route::post('mobile_edit_retailer_summary',[PassportAuthController::class,'MobileEditRetailerSummary'])->name('mobile_edit_retailer_summary');
 
 Route::post('mobile_banks',[PassportAuthController::class,'MobileBanks'])->name('mobile_banks');
+Route::post('mobile_cheque_list',[PassportAuthController::class,'MobileDsrChequeList'])->name('mobile_cheque_list');

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Bank;
 use DB;
-use Schema;
 
 class ReportController extends Controller
 {
@@ -19,20 +18,14 @@ class ReportController extends Controller
     date_default_timezone_set("Asia/colombo");
     $todayDate = date('Y-m-d');
 
-    // $collection = DB::table('pending_sum')
-    // ->join('users','pending_sum.dsr_id','users.id')
-    // ->select('pending_sum.id','users.name','pending_sum.date','pending_sum.inhand_cash','pending_sum.inhand_cheque','pending_sum.credit_sum','pending_sum.credit_collection_sum','pending_sum.banking_sampath','pending_sum.banking_peoples','pending_sum.banking_cargils','pending_sum.direct_banking_sampath','pending_sum.direct_banking_peoples','pending_sum.direct_banking_cargils')
-    // ->where('pending_sum.status','=',2)
-    // ->where('pending_sum.date','=',$todayDate)
-    // ->paginate(20);
-    // }
+    $collection = DB::table('pending_sum')
+    ->join('users','pending_sum.dsr_id','users.id')
+    ->select('pending_sum.id','users.name','pending_sum.date','pending_sum.inhand_cash','pending_sum.inhand_cheque','pending_sum.credit_sum','pending_sum.credit_collection_sum','pending_sum.banking_sampath','pending_sum.banking_peoples','pending_sum.banking_cargils','pending_sum.direct_banking_sampath','pending_sum.direct_banking_peoples','pending_sum.direct_banking_cargils')
+    ->where('pending_sum.status','=',2)
+    ->where('pending_sum.date','=',$todayDate)
+    ->paginate(20);
 
-
-    $banks = Bank::where('status',1)->get();
-
-
-
-    return view('admin.report.collection',["banks"=>$banks]);
+    return view('admin.report.collection',["collectionData"=>$collection]);
   }
 
 
