@@ -1473,9 +1473,18 @@ function getBankDetails(id){
     },
     success: function(data) {
 
-      $("#edit_bank_id").val(data.id);
-      $("#edit_bank_name").val(data.bank_name);
-      $("#updateBankModal").modal('show');
+      for (var i = 0; i < data.data.data.length; i++) {
+        $("#bankingDetailsTable tbody").append("<tr>"+
+          "<td>"+data.data.data[i].created_at+"</td>"+
+          "<td>"+data.data.data[i].name+"</td>"+
+          "<td>1/2</td>"+
+          "<td>"+data.data.data[i].ref_no+"</td>"+
+          "<td>"+data.data.data[i].amount+"</td>"+
+          "</tr>");
+      }
+
+
+
 
     },
     error: function(error) {

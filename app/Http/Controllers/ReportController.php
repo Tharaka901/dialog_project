@@ -212,14 +212,15 @@ public function BankingDetails(){
 public function GetBankDetails(Request $request){
 
 
-  $userData = DB::table('additional')
-  ->join('admins as u','additional.user_id','u.id')
-  ->join('users as d','additional.dsr_id','d.id')
-  ->select('additional.id','additional.date','additional.sum_id','u.name as admin_name','d.name as dsr_name')
-  ->paginate(10);
+  $bankData = DB::table('bankings')->join('users as bu','bankings.dsr_id','bu.id')->select('bankings.created_at','bankings.bank_ref_no as ref_no','bankings.bank_amount as amount','bu.name')->get();
+
+  $directBankData = DB::table('directbankings')->join('users as dbu','directbankings.dsr_id','dbu.id')->select('directbankings.created_at','direct_bank_ref_no as ref_no','direct_bank_amount as amount','dbu.name')->get();
 
 
-  return response('admin.report.additional_details',["userData"=>$userData]);
+  return response()->json(
+    ["data" => $bankData],
+    200
+  );
 
 
 }
