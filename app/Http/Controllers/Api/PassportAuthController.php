@@ -1911,23 +1911,25 @@ public function MobileEditCreditColSummary(Request $request){
   ->join('credit_collection_items','credit_collection_items.credit_collection_id','credit_collections.id')
   ->select('credit_collections.sum_id','credit_collection_items.item_id','credit_collections.id',)->where('credit_collections.id', '=', $request->get('id'))->get();
   $sum_id = 0;
+  $col_item_id = 0;
   $creditCol = 0;
 
 
 
   foreach($credit_sum_id as $sum){
-         // set amount to 0 in pending sum->sales_sum
-    DB::update('update pending_sum set credit_collection_sum = ? where id = ?', array(0 ,$sum->sum_id));
-
-    $getCreditTotal = DB::table('credit_collection_items')->select('item_price')->where('credit_collection_id', '=', $sum->id)->get();
-
-    foreach($getCreditTotal as $tot){
-        $creditCol += $tot->item_price;
-    }
-
-          // set new amount in pending sum->sales_sum
-    DB::update('update pending_sum set credit_collection_sum = credit_collection_sum + ? where id = ?', array( $creditCol , $sum->sum_id ));   
+   $sum_id = $sum->sum_id;
+   $col_item_id = $sum->id;
 }
+
+DB::update('update pending_sum set credit_collection_sum = ? where id = ?', array(0 ,$sum_id)); 
+
+$getCreditTotal = DB::table('credit_collection_items')->select('item_price')->where('credit_collection_id', '=', $col_item_id)->get();
+foreach($getCreditTotal as $tot){
+    $creditCol += $tot->item_price;
+}
+
+DB::update('update pending_sum set credit_collection_sum = credit_collection_sum + ? where id = ?', array( $creditCol , $sum_id ));
+DB::update('update credit_collections set credit_collection_amount = ? where id = ?', array( $creditCol , $request->get('id') ));
 
 
 if($creditcol_update){
