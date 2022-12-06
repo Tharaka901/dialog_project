@@ -1904,36 +1904,33 @@ public function MobileEditCreditColSummary(Request $request){
   ->update(['credit_collection_customer_name'=>$request->get('ccName'),'option_id'=>$request->get('option_id')]);
 
   $creditcol_item_update = DB::table('credit_collection_items')
-  ->where('credit_collection_id','=',$request->get('id'))
+  ->where('id','=',$request->get('cc_item_id'))
   ->update(['item_id'=>$request->get('item_id'), 'item_price'=>$request->get('ccAmount')]);
 
   $credit_sum_id = DB::table('credit_collections')
   ->join('credit_collection_items','credit_collection_items.credit_collection_id','credit_collections.id')
-  ->select('credit_collections.sum_id','credit_collection_items.item_id',)->where('credit_collections.id', '=', $request->get('id'))->get();
+  ->select('credit_collections.sum_id','credit_collection_items.item_id','credit_collections.id',)->where('credit_collections.id', '=', $request->get('id'))->get();
   $sum_id = 0;
   $creditCol = 0;
 
 
-  print_r(json_encode($credit_sum_id));
-  exit();
 
-//   foreach($credit_sum_id as $sum){
-//          // set amount to 0 in pending sum->sales_sum
-//     DB::update('update pending_sum set credit_collection_sum = ? where id = ?', array( 0 ,$sum->sum_id));
+  foreach($credit_sum_id as $sum){
+         // set amount to 0 in pending sum->sales_sum
+    DB::update('update pending_sum set credit_collection_sum = ? where id = ?', array(0 ,$sum->sum_id));
 
-//     $getCreditTotal = DB::table('credit_collections')->select('credit_collection_amount')->where('sum_id', '=', $sum->sum_id)->where('status', '!=', 0)->get();
+    $getCreditTotal = DB::table('credit_collection_items')->select('item_price')->where('credit_collection_id', '=', $sum->id)->get();
 
-//     foreach($getCreditTotal as $tot){
-//         $sum_id = $sum->sum_id;
-//         $creditCol += $tot->credit_collection_amount;
-//     }
+    foreach($getCreditTotal as $tot){
+        $creditCol += $tot->item_price;
+    }
 
-//           // set new amount in pending sum->sales_sum
-//     DB::update('update pending_sum set credit_collection_sum = credit_collection_sum + ? where id = ?', array( $creditCol , $sum_id));   
-// }
+          // set new amount in pending sum->sales_sum
+    DB::update('update pending_sum set credit_collection_sum = credit_collection_sum + ? where id = ?', array( $creditCol , $sum->sum_id ));   
+}
 
 
-  if($creditcol_update){
+if($creditcol_update){
     return response()->json(['data' => array('info'=>$creditcol_update,'error'=>null)], 200);
 }else{
     // Oops.. Error Occured!
