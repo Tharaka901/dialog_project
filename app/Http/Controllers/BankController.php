@@ -33,6 +33,14 @@ class BankController extends Controller
     public function create(Request $request)
     {
 
+    //    $strarray = explode(" ",$request->get('bank_name'));
+    //    $new_col_name = "";
+    //    if(count($strarray) > 1){
+    //     $new_col_name = $strarray[0]."_".$strarray[1];
+    // }else{
+    //     $new_col_name = $request->get('bank_name');
+    // }
+
         $banks = Bank::updateOrCreate(
             ['bank_name' => ucwords($request->get('bank_name'))],
             ['status' => 1]
@@ -42,12 +50,12 @@ class BankController extends Controller
         // $tableName = $sums->getTable();
         // $columns = Schema::getColumnListing($tableName);
 
-        $single_bank = Bank::where('bank_name',$request->get('bank_name'))->where('status',1)->get();
+    // $single_bank = Bank::where('bank_name',$new_col_name)->where('status',1)->get();
 
-        if(count($single_bank) == 1){
-            DB::statement("alter table pending_sum add banking_".strtolower($request->get('bank_name'))." varchar(10) ");
-            DB::statement("alter table pending_sum add direct_banking_".strtolower($request->get('bank_name'))." varchar(10) ");
-        }
+    // if(count($single_bank) == 1){
+    //     DB::statement("alter table pending_sum add banking_".strtolower($new_col_name)." varchar(10) ");
+    //     DB::statement("alter table pending_sum add direct_banking_".strtolower($new_col_name)." varchar(10) ");
+    // }
 
 
         if($banks){

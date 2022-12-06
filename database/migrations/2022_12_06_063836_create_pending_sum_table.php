@@ -27,10 +27,12 @@ return new class extends Migration
            $table->double('banking_sampath')->default(0);
            $table->double('banking_cargils')->default(0);
            $table->double('banking_peoples')->default(0);
+           $table->double('banking_sampth_online')->default(0);
            $table->double('direct_banking_sum')->default(0);
            $table->double('direct_banking_sampath')->default(0);
            $table->double('direct_banking_cargils')->default(0);
            $table->double('direct_banking_peoples')->default(0);
+           $table->double('direct_banking_sampth_online')->default(0);
            $table->double('retialer_sum')->default(0);
            $table->integer('user_id')->default(0);
            $table->integer('status')->default(0);

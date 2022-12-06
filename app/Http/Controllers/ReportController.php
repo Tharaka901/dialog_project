@@ -20,7 +20,21 @@ class ReportController extends Controller
 
     $collection = DB::table('pending_sum')
     ->join('users','pending_sum.dsr_id','users.id')
-    ->select('pending_sum.id','users.name','pending_sum.date','pending_sum.inhand_cash','pending_sum.inhand_cheque','pending_sum.credit_sum','pending_sum.credit_collection_sum','pending_sum.banking_sampath','pending_sum.banking_peoples','pending_sum.banking_cargils','pending_sum.direct_banking_sampath','pending_sum.direct_banking_peoples','pending_sum.direct_banking_cargils')
+    ->select('pending_sum.id','users.name',
+      'pending_sum.date',
+      'pending_sum.inhand_cash',
+      'pending_sum.inhand_cheque',
+      'pending_sum.credit_sum',
+      'pending_sum.credit_collection_sum',
+      'pending_sum.banking_sampath',
+      'pending_sum.banking_peoples',
+      'pending_sum.banking_cargils',
+      'pending_sum.banking_sampth_online',
+      'pending_sum.direct_banking_sampath',
+      'pending_sum.direct_banking_peoples',
+      'pending_sum.direct_banking_cargils',
+      'pending_sum.direct_banking_sampth_online'
+    )
     ->where('pending_sum.status','=',2)
     ->where('pending_sum.date','=',$todayDate)
     ->paginate(20);

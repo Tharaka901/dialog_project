@@ -686,7 +686,7 @@ $("#btnDsrApprove").click(function() {
   var bankingTable = JSON.stringify(bankingTableValues());
   var directBankingTable = JSON.stringify(directBankingTableValues());
   
-
+  
   $.ajax({
     type: 'post',
     url: "/approve_dsr",
@@ -1473,35 +1473,35 @@ function getBankDetails(id){
     },
     beforeSend: function() {
       $("#bankingDetailsTable tbody tr").remove();
-   },
-   success: function(data) {
+    },
+    success: function(data) {
 
-    for (var i = 0; i < data.bankData.length; i++) {
-      $("#bankingDetailsTable tbody").append("<tr>"+
-        "<td>"+data.bankData[i].created_at+"</td>"+
-        "<td>"+data.bankData[i].name+"</td>"+
-        "<td>1/2</td>"+
-        "<td>"+data.bankData[i].ref_no+"</td>"+
-        "<td>"+data.bankData[i].amount+"</td>"+
-        "</tr>");
+      for (var i = 0; i < data.bankData.length; i++) {
+        $("#bankingDetailsTable tbody").append("<tr>"+
+          "<td>"+data.bankData[i].created_at+"</td>"+
+          "<td>"+data.bankData[i].name+"</td>"+
+          "<td>1/2</td>"+
+          "<td>"+data.bankData[i].ref_no+"</td>"+
+          "<td>"+data.bankData[i].amount+"</td>"+
+          "</tr>");
+      }
+
+      for (var x = 0; x < data.directBankData.length; x++) {
+        $("#bankingDetailsTable tbody").append("<tr>"+
+          "<td>"+data.directBankData[x].created_at+"</td>"+
+          "<td>"+data.directBankData[x].name+"</td>"+
+          "<td>1/2</td>"+
+          "<td>"+data.directBankData[x].ref_no+"</td>"+
+          "<td>"+data.directBankData[x].amount+"</td>"+
+          "</tr>");
+      }
+
+
+
+
+    },
+    error: function(error) {
+      alert("error occured " + JSON.stringify(error));
     }
-
-    for (var x = 0; x < data.directBankData.length; x++) {
-      $("#bankingDetailsTable tbody").append("<tr>"+
-        "<td>"+data.directBankData[x].created_at+"</td>"+
-        "<td>"+data.directBankData[x].name+"</td>"+
-        "<td>1/2</td>"+
-        "<td>"+data.directBankData[x].ref_no+"</td>"+
-        "<td>"+data.directBankData[x].amount+"</td>"+
-        "</tr>");
-    }
-
-
-
-
-  },
-  error: function(error) {
-    alert("error occured " + JSON.stringify(error));
-  }
-});
+  });
 }
