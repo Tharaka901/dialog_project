@@ -8,9 +8,6 @@ use Illuminate\Http\Response;
 use App\Models\Bank;
 use DB;
 use Alert;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class BankController extends Controller
 {
@@ -39,11 +36,7 @@ class BankController extends Controller
             ['status' => 1]
         );
 
-        // ALTER TABLE Customers
-        // ADD Email varchar(255);
-        Schema::create('banks', function (Blueprint $table) {
-           $table->integer('new_col');
-       });
+        DB::statement("alter table pending_sum add ".$request->get('bank_name')." varchar(10)");
 
         if($banks){
             Alert::success('Success!!', 'Bank Registered.');
