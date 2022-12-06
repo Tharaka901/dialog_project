@@ -844,6 +844,7 @@ public function MobileDsrBankings(Request $request){
  $sampath = 0;
  $peoples = 0;
  $cargils = 0;
+ $elsebank = 0;
 
  $bsum = DB::table('pending_sum')->select('id','dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
  $pstatus = DB::table('pending_sum_status')->select('dsr_id','date')->where('dsr_id', '=', $dsrId)->where('date', '=', $todayDate)->get();
@@ -858,19 +859,17 @@ public function MobileDsrBankings(Request $request){
     foreach($single_bank as $sbank){
         if($sbank->bank_name == "Sampath Bank"){           
             $sampath += $banking['amount'];
-        }
-
-        if($sbank->bank_name == "People's Bank"){
+        }else if($sbank->bank_name == "People's Bank"){
             $peoples += $banking['amount'];
-        }
-
-        if($sbank->bank_name == "Cargills Bank"){
+        }else if($sbank->bank_name == "Cargills Bank"){
             $cargils += $banking['amount'];
+        }else{
+            $elsebank += $banking['amount'];
         }
     }
 }
 
-DB::insert('insert into pending_sum (dsr_id, date,banking_sum,banking_sampath,banking_cargils,banking_peoples) values (?,?,?,?,?,?)', array($dsrId, $todayDate,$bankingSum,$sampath,$cargils,$peoples));
+DB::insert('insert into pending_sum (dsr_id, date,banking_sum,banking_sampath,banking_cargils,banking_peoples,banking_boc) values (?,?,?,?,?,?,?)', array($dsrId, $todayDate,$bankingSum,$sampath,$cargils,$peoples,$elsebank));
 $sum_id = DB::table('pending_sum')->latest('id')->first();
 
 }else{
@@ -880,18 +879,16 @@ $sum_id = DB::table('pending_sum')->latest('id')->first();
     $single_bank = DB::table('banks')->whereIN('id',[$banking['bank_id']])->where('status',1)->get();
 
     foreach($single_bank as $sbank){
-        if($sbank->bank_name == "Sampath Bank"){           
-            $sampath += $banking['amount'];
-        }
-
-        if($sbank->bank_name == "People's Bank"){
-            $peoples += $banking['amount'];
-        }
-
-        if($sbank->bank_name == "Cargills Bank"){
-            $cargils += $banking['amount'];
-        }
+     if($sbank->bank_name == "Sampath Bank"){           
+        $sampath += $banking['amount'];
+    }else if($sbank->bank_name == "People's Bank"){
+        $peoples += $banking['amount'];
+    }else if($sbank->bank_name == "Cargills Bank"){
+        $cargils += $banking['amount'];
+    }else{
+        $elsebank += $banking['amount'];
     }
+}
 }
 
 DB::update('update pending_sum set banking_sum = banking_sum + ? ,banking_sampath = banking_sampath+ ? ,banking_cargils = banking_cargils+ ? ,banking_peoples = banking_peoples + ?  where dsr_id = ? and date = ?', array($bankingSum, $sampath, $cargils, $peoples,  $dsrId,$todayDate));
@@ -1349,7 +1346,7 @@ public function MobileGetCreditColSumery(Request $request){
     ->leftjoin('pending_sum','pending_sum.id','credit_collections.sum_id')
     ->leftjoin('credit_collection_items','credit_collection_items.credit_collection_id','credit_collections.id')
     ->leftjoin('items','credit_collection_items.item_id','items.id')
-    ->select('credit_collections.id','credit_collection_customer_name','credit_collection_amount','option_id','items.name','items.id as item_id')
+    ->select('credit_collections.id','credit_collection_customer_name','credit_collection_amount','option_id','items.name','items.id as item_id','credit_collection_items.id as cc_item_id')
     ->where('pending_sum.date', '=', $request->get('date'))
     ->where('pending_sum.dsr_id', '=', $request->get('dsr_id'))
     ->where('credit_collections.status', '!=', 0)
@@ -1904,30 +1901,39 @@ public function MobileEditCreditColSummary(Request $request){
 
   $creditcol_update = DB::table('credit_collections')
   ->where('id','=',$request->get('id'))
-  ->update(['credit_collection_customer_name'=>$request->get('ccName'),'credit_collection_amount'=>$request->get('ccAmount')]);
+  ->update(['credit_collection_customer_name'=>$request->get('ccName'),'option_id'=>$request->get('option_id')]);
 
+  $creditcol_item_update = DB::table('credit_collection_items')
+  ->where('credit_collection_id','=',$request->get('id'))
+  ->update(['item_id'=>$request->get('item_id'), 'item_price'=>$request->get('ccAmount')]);
 
-  $credit_sum_id = DB::table('credit_collections')->select('sum_id')->where('id', '=', $request->get('id'))->get();
+  $credit_sum_id = DB::table('credit_collections')
+  ->join('credit_collection_items','credit_collection_items.credit_collection_id','credit_collections.id')
+  ->select('credit_collections.sum_id','credit_collection_items.item_id',)->where('credit_collections.id', '=', $request->get('id'))->get();
   $sum_id = 0;
   $creditCol = 0;
 
-  foreach($credit_sum_id as $sum){
-         // set amount to 0 in pending sum->sales_sum
-    DB::update('update pending_sum set credit_collection_sum = ? where id = ?', array( 0 ,$sum->sum_id));
 
-    $getCreditTotal = DB::table('credit_collections')->select('credit_collection_amount')->where('sum_id', '=', $sum->sum_id)->where('status', '!=', 0)->get();
+  print_r(json_encode($credit_sum_id));
+  exit();
 
-    foreach($getCreditTotal as $tot){
-        $sum_id = $sum->sum_id;
-        $creditCol += $tot->credit_collection_amount;
-    }
+//   foreach($credit_sum_id as $sum){
+//          // set amount to 0 in pending sum->sales_sum
+//     DB::update('update pending_sum set credit_collection_sum = ? where id = ?', array( 0 ,$sum->sum_id));
 
-          // set new amount in pending sum->sales_sum
-    DB::update('update pending_sum set credit_collection_sum = credit_collection_sum + ? where id = ?', array( $creditCol , $sum_id));   
-}
+//     $getCreditTotal = DB::table('credit_collections')->select('credit_collection_amount')->where('sum_id', '=', $sum->sum_id)->where('status', '!=', 0)->get();
+
+//     foreach($getCreditTotal as $tot){
+//         $sum_id = $sum->sum_id;
+//         $creditCol += $tot->credit_collection_amount;
+//     }
+
+//           // set new amount in pending sum->sales_sum
+//     DB::update('update pending_sum set credit_collection_sum = credit_collection_sum + ? where id = ?', array( $creditCol , $sum_id));   
+// }
 
 
-if($creditcol_update){
+  if($creditcol_update){
     return response()->json(['data' => array('info'=>$creditcol_update,'error'=>null)], 200);
 }else{
     // Oops.. Error Occured!

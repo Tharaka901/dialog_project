@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Bank;
+use App\Models\Sums;
 use DB;
 use Alert;
+use Schema;
 
 class BankController extends Controller
 {
@@ -32,11 +34,21 @@ class BankController extends Controller
     {
 
         $banks = Bank::updateOrCreate(
-            ['bank_name' => $request->get('bank_name')],
+            ['bank_name' => ucwords($request->get('bank_name'))],
             ['status' => 1]
         );
 
-        DB::statement("alter table pending_sum add ".$request->get('bank_name')." varchar(10)");
+        // $sums = new Sums;
+        // $tableName = $sums->getTable();
+        // $columns = Schema::getColumnListing($tableName);
+
+        $single_bank = Bank::where('bank_name',$request->get('bank_name'))->where('status',1)->get();
+
+        if(count($single_bank) == 1){
+            DB::statement("alter table pending_sum add banking_".strtolower($request->get('bank_name'))." varchar(10) ");
+            DB::statement("alter table pending_sum add direct_banking_".strtolower($request->get('bank_name'))." varchar(10) ");
+        }
+
 
         if($banks){
             Alert::success('Success!!', 'Bank Registered.');
@@ -44,7 +56,7 @@ class BankController extends Controller
             Alert::success('Oops!!', 'Error Occured.');
         }
 
-        
+
         return redirect()->back();
     }
 
