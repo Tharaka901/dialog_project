@@ -886,7 +886,7 @@ $sum_id = DB::table('pending_sum')->latest('id')->first();
     }else if($sbank->bank_name == "Cargills Bank"){
         $cargils += $banking['amount'];
     }else{
-        $elsebank += $banking['amount'];
+        $sampathonline += $banking['amount'];
     }
 }
 }
