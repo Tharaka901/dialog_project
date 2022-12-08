@@ -1346,7 +1346,7 @@ public function MobileGetCreditColSumery(Request $request){
     ->leftjoin('pending_sum','pending_sum.id','credit_collections.sum_id')
     ->leftjoin('credit_collection_items','credit_collection_items.credit_collection_id','credit_collections.id')
     ->leftjoin('items','credit_collection_items.item_id','items.id')
-    ->select('credit_collections.id','credit_collection_customer_name','credit_collection_amount','option_id','items.name','items.id as item_id','credit_collection_items.id as cc_item_id')
+    ->select('credit_collections.id','credit_collections.sum_id','credit_collection_customer_name','credit_collection_amount','option_id','items.name','items.id as item_id','credit_collection_items.id as cc_item_id')
     ->where('pending_sum.date', '=', $request->get('date'))
     ->where('pending_sum.dsr_id', '=', $request->get('dsr_id'))
     ->where('credit_collections.status', '!=', 0)
