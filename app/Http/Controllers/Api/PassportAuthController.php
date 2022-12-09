@@ -1324,7 +1324,8 @@ public function MobileGetCreditSumery(Request $request){
     $credit_summery_items = DB::table('credits')
     ->leftjoin('pending_sum','pending_sum.id','credits.sum_id')
     ->join('credit_items','credit_items.credit_id','credits.id')
-    ->select('credits.id', 'credit_customer_name','credit_amount','credit_items.item_id', 'credits.sum_id')
+    ->join('items','items.id','credit_items.item_id')
+    ->select('credits.id', 'credit_customer_name','credit_amount','credit_items.item_id', 'credits.sum_id','items.name')
     ->where('pending_sum.date', '=', $request->get('date'))
     ->where('pending_sum.dsr_id', '=', $request->get('dsr_id'))
     ->where('credits.status', '!=', 0)
@@ -1873,6 +1874,7 @@ public function MobileEditCreditSummary(Request $request){
   foreach($credit_sum_id as $sum){
          // set amount to 0 in pending sum->sales_sum
     DB::update('update pending_sum set credit_sum = ? where id = ?', array( 0 ,$sum->sum_id));
+    DB::update('update credits set credit_amount = ? where id = ?', array( 0 ,$sum->sum_id));
 
     $getCreditTotal = DB::table('credits')
     ->join('credit_items','credit_items.credit_id','credits.id')
@@ -1897,7 +1899,7 @@ $credit_total_all = DB::table('credits')
 ->get();
 
 foreach($credit_total_all as $credit_total){
-    DB::update('update credits set credit_amount = ? where id = ?', array($credit_total->item_price , $credit_total->credit_id));
+    DB::update('update credits set credit_amount = credit_amount + ? where id = ?', array($credit_total->item_price , $credit_total->credit_id));
 } 
 
 
