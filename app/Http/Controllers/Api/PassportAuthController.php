@@ -1110,7 +1110,7 @@ class PassportAuthController extends Controller
                             if(count($cheques_is_exist) !=0 ){
 
                                 if(count($chequeArr) !=0){
-                                    DB::table('drs_cheques')->where('sum_id', $sum_id->id)->delete();
+                                    // DB::table('drs_cheques')->where('sum_id', $sum_id->id)->delete();
 
                                     foreach ($chequeArr as $cheque) {
                                         $inhand_cheque = new DrsCheque([
