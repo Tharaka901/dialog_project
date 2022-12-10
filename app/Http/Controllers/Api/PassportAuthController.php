@@ -1325,7 +1325,7 @@ public function MobileGetCreditSumery(Request $request){
     ->leftjoin('pending_sum','pending_sum.id','credits.sum_id')
     ->join('credit_items','credit_items.credit_id','credits.id')
     ->join('items','items.id','credit_items.item_id')
-    ->select('credits.id', 'credit_customer_name','credit_amount','credit_items.item_id','credit_items.id as citemid', 'credits.sum_id','items.name')
+    ->select('credits.id', 'credit_customer_name','credit_items.item_price','credit_items.item_id','credit_items.id as citemid', 'credits.sum_id','items.name')
     ->where('pending_sum.date', '=', $request->get('date'))
     ->where('pending_sum.dsr_id', '=', $request->get('dsr_id'))
     ->where('credits.status', '!=', 0)
@@ -1914,7 +1914,7 @@ foreach($credit_total_all as $credit_total){
 
 
 if($credit_update){
-    return response()->json(['data' => array('info'=>$credit_update,'error'=>null)], 200);
+    return response()->json(['data' => array('info'=>$credit_total_all,'error'=>null)], 200);
 }else{
     // Oops.. Error Occured!
  return response()->json(['data' => array('info'=>[],'error'=>0) ], 401); 
