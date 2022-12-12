@@ -2088,24 +2088,6 @@ class PassportAuthController extends Controller
         $peoples = 0;
         $cargils = 0;
 
-        // if($request->get('bank_name') == "Sampath Bank"){
-        //     foreach($get_banking_details as $bdata){
-        //         DB::update('update pending_sum set banking_sum = banking_sum - ?, banking_sampath = banking_sampath - ? where id = ?', array($bdata->bank_amount,$bdata->bank_amount,$bdata->sum_id));
-        //     }
-        // }
-
-        //     if($request->get('bank_name') == "People's Bank"){
-        //      foreach($get_banking_details as $bdata){
-        //         DB::update('update pending_sum set banking_sum = banking_sum - ?, banking_peoples = banking_peoples - ? where id = ?', array($bdata->bank_amount,$bdata->bank_amount,$bdata->sum_id));
-        //     }
-        // }
-
-        // if($request->get('bank_name') == "Cargills Bank"){
-        //     foreach($get_banking_details as $bdata){
-        //         DB::update('update pending_sum set banking_sum = banking_sum - ?, banking_cargils = banking_cargils - ? where id = ?', array($bdata->bank_amount,$bdata->bank_amount,$bdata->sum_id));
-        //     }
-        // }
-
         $single_bank = DB::table("banks")
         ->where("id", $request->get("bank_id"))
         ->where("status", 1)
@@ -2150,6 +2132,19 @@ class PassportAuthController extends Controller
                     );
                 }
             }
+
+            if ($sbank->bank_name == "Sampath Bank - Online") {
+                foreach ($get_banking_details as $bdata) {
+                    DB::update(
+                        "update pending_sum set banking_sum = banking_sum - ?, banking_sampth_online = banking_sampth_online - ? where id = ?",
+                        [
+                            $bdata->bank_amount,
+                            $bdata->bank_amount,
+                            $bdata->sum_id,
+                        ]
+                    );
+                }
+            }
         }
 
 
@@ -2157,17 +2152,17 @@ class PassportAuthController extends Controller
         $get_banking_details = banking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
         if(count($get_banking_details) == 0){
-           DB::update(
+         DB::update(
             "update pending_sum_status set banking_sum = ? where sum_id = ?",
             [
                 0,
                 $request->get("sum_id"),
             ]
         );
-       }
+     }
 
 
-       if ($get_banking_details) {
+     if ($get_banking_details) {
         return response()->json(
             ["data" => ["info" => $remove_sales, "error" => null]],
             200
