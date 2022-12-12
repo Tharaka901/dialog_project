@@ -2152,17 +2152,17 @@ class PassportAuthController extends Controller
         $get_banking_details = banking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
         if(count($get_banking_details) == 0){
-         DB::update(
+           DB::update(
             "update pending_sum_status set banking_sum = ? where sum_id = ?",
             [
                 0,
                 $request->get("sum_id"),
             ]
         );
-     }
+       }
 
 
-     if ($get_banking_details) {
+       if ($get_banking_details) {
         return response()->json(
             ["data" => ["info" => $remove_sales, "error" => null]],
             200
@@ -2254,18 +2254,31 @@ public function MobileRemoveDBankingSummary(Request $request)
         }
     }
 
-    if ($get_dbanking_details) {
-        return response()->json(
-            ["data" => ["info" => $remove_dbankings, "error" => null]],
-            200
-        );
-    } else {
+
+    $get_banking_details = directbanking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
+
+    if(count($get_banking_details) == 0){
+       DB::update(
+        "update pending_sum_status set direct_banking_sum = ? where sum_id = ?",
+        [
+            0,
+            $request->get("sum_id"),
+        ]
+    );
+   }
+
+   if ($get_dbanking_details) {
+    return response()->json(
+        ["data" => ["info" => $remove_dbankings, "error" => null]],
+        200
+    );
+} else {
             // Oops.. Error Occured!
-        return response()->json(
-            ["data" => ["info" => [], "error" => 0]],
-            401
-        );
-    }
+    return response()->json(
+        ["data" => ["info" => [], "error" => 0]],
+        401
+    );
+}
 }
 
 public function MobileRemoveCreditSummary(Request $request)
@@ -2283,6 +2296,19 @@ public function MobileRemoveCreditSummary(Request $request)
             [$cdata->credit_amount, $cdata->sum_id]
         );
     }
+
+
+     $get_banking_details = Credit::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
+
+    if(count($get_banking_details) == 0){
+       DB::update(
+        "update pending_sum_status set credit_sum = ? where sum_id = ?",
+        [
+            0,
+            $request->get("sum_id"),
+        ]
+    );
+   }
 
     if ($get_credits) {
         return response()->json(
@@ -2313,6 +2339,19 @@ public function MobileRemoveCreditColSummary(Request $request)
             [$cdata->credit_collection_amount, $cdata->sum_id]
         );
     }
+
+
+    $get_banking_details = CreditCollection::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
+
+    if(count($get_banking_details) == 0){
+       DB::update(
+        "update pending_sum_status set credit_collection_sum = ? where sum_id = ?",
+        [
+            0,
+            $request->get("sum_id"),
+        ]
+    );
+   }
 
     if ($get_col_credits) {
         return response()->json(
