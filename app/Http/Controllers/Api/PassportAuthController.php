@@ -1975,7 +1975,7 @@ class PassportAuthController extends Controller
                                                             }
 
 
-                                                            if ($credit_update) {
+                                                            if ($credit_total_all) {
                                                                 return response()->json(['data' => array('info' => $credit_total_all, 'error' => null)], 200);
                                                             } else {
             // Oops.. Error Occured!
