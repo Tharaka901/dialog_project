@@ -2078,6 +2078,7 @@ class PassportAuthController extends Controller
         $remove_sales = DB::table("bankings")
         ->where("id", "=", $request->get("id"))
         ->update(["status" => 0]);
+
         $get_banking_details = DB::table("bankings")
         ->where("id", "=", $request->get("id"))
         ->where("sum_id", "=", $request->get("sum_id"))
@@ -2151,33 +2152,48 @@ class PassportAuthController extends Controller
             }
         }
 
-        if ($get_banking_details) {
-            return response()->json(
-                ["data" => ["info" => $remove_sales, "error" => null]],
-                200
-            );
-        } else {
+
+
+        $get_banking_details = banking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
+
+        if(count($get_banking_details) == 0){
+           DB::update(
+            "update pending_sum_status set banking_sum = ? where sum_id = ?",
+            [
+                0,
+                $request->get("sum_id"),
+            ]
+        );
+       }
+
+
+       if ($get_banking_details) {
+        return response()->json(
+            ["data" => ["info" => $remove_sales, "error" => null]],
+            200
+        );
+    } else {
             // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
-        }
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
     }
+}
 
-    public function MobileRemoveDBankingSummary(Request $request)
-    {
-        $remove_dbankings = DB::table("directbankings")
-        ->where("id", "=", $request->get("id"))
-        ->update(["status" => 0]);
-        $get_dbanking_details = DB::table("directbankings")
-        ->where("id", "=", $request->get("id"))
-        ->where("sum_id", "=", $request->get("sum_id"))
-        ->get();
+public function MobileRemoveDBankingSummary(Request $request)
+{
+    $remove_dbankings = DB::table("directbankings")
+    ->where("id", "=", $request->get("id"))
+    ->update(["status" => 0]);
+    $get_dbanking_details = DB::table("directbankings")
+    ->where("id", "=", $request->get("id"))
+    ->where("sum_id", "=", $request->get("sum_id"))
+    ->get();
 
-        $sampath = 0;
-        $peoples = 0;
-        $cargils = 0;
+    $sampath = 0;
+    $peoples = 0;
+    $cargils = 0;
 
         //     if($request->get('bank_name') == "Sampath Bank"){
         //         foreach($get_dbanking_details as $bdata){
@@ -2197,559 +2213,559 @@ class PassportAuthController extends Controller
         //     }
         // }
 
-        $single_bank = DB::table("banks")
-        ->where("id", $request->get("bank_id"))
-        ->where("status", 1)
-        ->get();
+    $single_bank = DB::table("banks")
+    ->where("id", $request->get("bank_id"))
+    ->where("status", 1)
+    ->get();
 
-        foreach ($single_bank as $sbank) {
-            if ($sbank->bank_name == "Sampath Bank") {
-                foreach ($get_dbanking_details as $bdata) {
-                    DB::update(
-                        "update pending_sum set direct_banking_sum = direct_banking_sum - ?, direct_banking_sampath = direct_banking_sampath - ? where id = ?",
-                        [
-                            $bdata->direct_bank_amount,
-                            $bdata->direct_bank_amount,
-                            $bdata->sum_id,
-                        ]
-                    );
-                }
-            }
-
-            if ($sbank->bank_name == "People's Bank") {
-                foreach ($get_dbanking_details as $bdata) {
-                    DB::update(
-                        "update pending_sum set direct_banking_sum = direct_banking_sum - ?, direct_banking_peoples = direct_banking_peoples - ? where id = ?",
-                        [
-                            $bdata->direct_bank_amount,
-                            $bdata->direct_bank_amount,
-                            $bdata->sum_id,
-                        ]
-                    );
-                }
-            }
-
-            if ($sbank->bank_name == "Cargills Bank") {
-                foreach ($get_dbanking_details as $bdata) {
-                    DB::update(
-                        "update pending_sum set direct_banking_sum = direct_banking_sum - ?, direct_banking_cargils = direct_banking_cargils - ? where id = ?",
-                        [
-                            $bdata->direct_bank_amount,
-                            $bdata->direct_bank_amount,
-                            $bdata->sum_id,
-                        ]
-                    );
-                }
+    foreach ($single_bank as $sbank) {
+        if ($sbank->bank_name == "Sampath Bank") {
+            foreach ($get_dbanking_details as $bdata) {
+                DB::update(
+                    "update pending_sum set direct_banking_sum = direct_banking_sum - ?, direct_banking_sampath = direct_banking_sampath - ? where id = ?",
+                    [
+                        $bdata->direct_bank_amount,
+                        $bdata->direct_bank_amount,
+                        $bdata->sum_id,
+                    ]
+                );
             }
         }
 
-        if ($get_dbanking_details) {
-            return response()->json(
-                ["data" => ["info" => $remove_dbankings, "error" => null]],
-                200
-            );
-        } else {
-            // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
+        if ($sbank->bank_name == "People's Bank") {
+            foreach ($get_dbanking_details as $bdata) {
+                DB::update(
+                    "update pending_sum set direct_banking_sum = direct_banking_sum - ?, direct_banking_peoples = direct_banking_peoples - ? where id = ?",
+                    [
+                        $bdata->direct_bank_amount,
+                        $bdata->direct_bank_amount,
+                        $bdata->sum_id,
+                    ]
+                );
+            }
+        }
+
+        if ($sbank->bank_name == "Cargills Bank") {
+            foreach ($get_dbanking_details as $bdata) {
+                DB::update(
+                    "update pending_sum set direct_banking_sum = direct_banking_sum - ?, direct_banking_cargils = direct_banking_cargils - ? where id = ?",
+                    [
+                        $bdata->direct_bank_amount,
+                        $bdata->direct_bank_amount,
+                        $bdata->sum_id,
+                    ]
+                );
+            }
         }
     }
 
-    public function MobileRemoveCreditSummary(Request $request)
-    {
-        $remove_credits = DB::table("credits")
-        ->where("id", "=", $request->get("id"))
-        ->update(["status" => 0]);
-        $get_credits = DB::table("credits")
-        ->where("id", "=", $request->get("id"))
-        ->get();
-
-        foreach ($get_credits as $cdata) {
-            DB::update(
-                "update pending_sum set credit_sum = credit_sum - ? where id = ?",
-                [$cdata->credit_amount, $cdata->sum_id]
-            );
-        }
-
-        if ($get_credits) {
-            return response()->json(
-                ["data" => ["info" => $remove_credits, "error" => null]],
-                200
-            );
-        } else {
+    if ($get_dbanking_details) {
+        return response()->json(
+            ["data" => ["info" => $remove_dbankings, "error" => null]],
+            200
+        );
+    } else {
             // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
-        }
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
+
+public function MobileRemoveCreditSummary(Request $request)
+{
+    $remove_credits = DB::table("credits")
+    ->where("id", "=", $request->get("id"))
+    ->update(["status" => 0]);
+    $get_credits = DB::table("credits")
+    ->where("id", "=", $request->get("id"))
+    ->get();
+
+    foreach ($get_credits as $cdata) {
+        DB::update(
+            "update pending_sum set credit_sum = credit_sum - ? where id = ?",
+            [$cdata->credit_amount, $cdata->sum_id]
+        );
     }
 
-    public function MobileRemoveCreditColSummary(Request $request)
-    {
-        $remove_col_credits = DB::table("credit_collections")
-        ->where("id", "=", $request->get("id"))
-        ->update(["status" => 0]);
-        $get_col_credits = DB::table("credit_collections")
-        ->where("id", "=", $request->get("id"))
-        ->get();
-
-        foreach ($get_col_credits as $cdata) {
-            DB::update(
-                "update pending_sum set credit_collection_sum = credit_collection_sum - ? where id = ?",
-                [$cdata->credit_collection_amount, $cdata->sum_id]
-            );
-        }
-
-        if ($get_col_credits) {
-            return response()->json(
-                ["data" => ["info" => $remove_col_credits, "error" => null]],
-                200
-            );
-        } else {
+    if ($get_credits) {
+        return response()->json(
+            ["data" => ["info" => $remove_credits, "error" => null]],
+            200
+        );
+    } else {
             // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
-        }
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
+
+public function MobileRemoveCreditColSummary(Request $request)
+{
+    $remove_col_credits = DB::table("credit_collections")
+    ->where("id", "=", $request->get("id"))
+    ->update(["status" => 0]);
+    $get_col_credits = DB::table("credit_collections")
+    ->where("id", "=", $request->get("id"))
+    ->get();
+
+    foreach ($get_col_credits as $cdata) {
+        DB::update(
+            "update pending_sum set credit_collection_sum = credit_collection_sum - ? where id = ?",
+            [$cdata->credit_collection_amount, $cdata->sum_id]
+        );
     }
 
-    public function MobileRemoveRetailerSummary(Request $request)
-    {
-        $remove_col_credits = DB::table("retailer_returns")
-        ->where("id", "=", $request->get("id"))
-        ->update(["status" => 0]);
-        $get_col_credits = DB::table("retailer_returns")
-        ->where("id", "=", $request->get("id"))
-        ->get();
-
-        foreach ($get_col_credits as $cdata) {
-            DB::update(
-                "update pending_sum set retialer_sum = retialer_sum - ? where id = ?",
-                [$cdata->re_item_qty * $cdata->re_item_amount, $cdata->sum_id]
-            );
-        }
-
-        if ($get_col_credits) {
-            return response()->json(
-                ["data" => ["info" => $remove_col_credits, "error" => null]],
-                200
-            );
-        } else {
+    if ($get_col_credits) {
+        return response()->json(
+            ["data" => ["info" => $remove_col_credits, "error" => null]],
+            200
+        );
+    } else {
             // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
-        }
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
+
+public function MobileRemoveRetailerSummary(Request $request)
+{
+    $remove_col_credits = DB::table("retailer_returns")
+    ->where("id", "=", $request->get("id"))
+    ->update(["status" => 0]);
+    $get_col_credits = DB::table("retailer_returns")
+    ->where("id", "=", $request->get("id"))
+    ->get();
+
+    foreach ($get_col_credits as $cdata) {
+        DB::update(
+            "update pending_sum set retialer_sum = retialer_sum - ? where id = ?",
+            [$cdata->re_item_qty * $cdata->re_item_amount, $cdata->sum_id]
+        );
     }
 
-    public function MobileEditSaleSummary(Request $request)
-    {
+    if ($get_col_credits) {
+        return response()->json(
+            ["data" => ["info" => $remove_col_credits, "error" => null]],
+            200
+        );
+    } else {
+            // Oops.. Error Occured!
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
+
+public function MobileEditSaleSummary(Request $request)
+{
         // $get_dsr_stock_id = DB::table('sales')->select('dsr_id','item_id','qty','sum_id','created_at')->where('id', '=', $request->get('id'))->get();
 
-        $get_dsr_stock_id = DB::table("sales")
-        ->join("dsr_stock_items", "sales.stock_id", "dsr_stock_items.id")
-        ->select(
-            "sales.item_qty",
-            "sales.sum_id",
-            "dsr_stock_items.id",
-            "dsr_stock_items.issue_return_qty",
-            "dsr_stock_items.approve_return_qty",
-            "dsr_stock_items.sale_qty",
-            "dsr_stock_items.retailer_qty"
-        )
-        ->where("sales.id", "=", $request->get("id"))
-        ->where("sales.status", "!=", 0)
-        ->get();
+    $get_dsr_stock_id = DB::table("sales")
+    ->join("dsr_stock_items", "sales.stock_id", "dsr_stock_items.id")
+    ->select(
+        "sales.item_qty",
+        "sales.sum_id",
+        "dsr_stock_items.id",
+        "dsr_stock_items.issue_return_qty",
+        "dsr_stock_items.approve_return_qty",
+        "dsr_stock_items.sale_qty",
+        "dsr_stock_items.retailer_qty"
+    )
+    ->where("sales.id", "=", $request->get("id"))
+    ->where("sales.status", "!=", 0)
+    ->get();
 
-        $sum_id = 0;
-        $sale_total = 0;
+    $sum_id = 0;
+    $sale_total = 0;
 
-        foreach ($get_dsr_stock_id as $sum) {
+    foreach ($get_dsr_stock_id as $sum) {
             // set amount to 0 in pending sum->sales_sum to calculate new value
-            DB::update("update pending_sum set sales_sum = ? where id = ?", [
-                0,
-                $sum->sum_id,
-            ]);
-
-            DB::update(
-                "update dsr_stock_items set qty = qty - ?  where id = ?",
-                [
-                    floatval($request->get("itemQty")) -
-                    floatval($sum->item_qty),
-                    $sum->id,
-                ]
-            );
-
-            DB::update(
-                "update dsr_stock_items set sale_qty = ?  where id = ?",
-                [$request->get("itemQty"), $sum->id]
-            );
-        }
-
-        $sales_update = DB::table("sales")
-        ->where("id", "=", $request->get("id"))
-        ->update([
-            "item_name" => $request->get("itemName"),
-            "item_qty" => $request->get("itemQty"),
-            "item_amount" => $request->get("itemPrice"),
+        DB::update("update pending_sum set sales_sum = ? where id = ?", [
+            0,
+            $sum->sum_id,
         ]);
-
-        $getTotal = DB::table("sales")
-        ->select("sum_id", "item_qty", "item_amount")
-        ->where("dsr_id", "=", $request->get("dsr_id"))
-        ->whereDate("created_at", "=", $request->get("date"))
-        ->where("status", "!=", 0)
-        ->get();
-
-        foreach ($getTotal as $tot) {
-            $sum_id = $tot->sum_id;
-            $sale_total += $tot->item_qty * $tot->item_amount;
-        }
-
-        // set new amount in pending sum->sales_sum
-        DB::update(
-            "update pending_sum set sales_sum = sales_sum + ? where id = ?",
-            [$sale_total, $sum_id]
-        );
-
-        $allData = [];
-        $stock_balance_by_items = DB::table("sales")
-        ->join("dsr_stocks", "sales.dsr_id", "dsr_stocks.dsr_id")
-        ->join(
-            "dsr_stock_items",
-            "dsr_stock_items.dsr_stock_id",
-            "dsr_stocks.id"
-        )
-        ->select(
-            "item_name",
-            "qty",
-            "issue_return_qty",
-            "approve_return_qty",
-            "sale_qty",
-            "retailer_qty"
-        )
-        ->groupBy("dsr_stock_items.item_id")
-        ->get();
-
-        for ($x = 0; $x < count($stock_balance_by_items); $x++) {
-            $allData[] = (object) [
-                "stock_balance" =>
-                $stock_balance_by_items[$x]->qty +
-                $stock_balance_by_items[$x]->retailer_qty -
-                ($stock_balance_by_items[$x]->issue_return_qty +
-                    $stock_balance_by_items[$x]->approve_return_qty +
-                    $stock_balance_by_items[$x]->sale_qty),
-            ];
-        }
-
-        if ($sales_update) {
-            return response()->json(
-                ["data" => ["info" => $allData, "error" => null]],
-                200
-            );
-        } else {
-            // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
-        }
-    }
-
-    public function MobileEditBankSummary(Request $request)
-    {
-        $bankings_update = DB::table("bankings")
-        ->where("id", "=", $request->get("id"))
-        ->update([
-            "bank_id" => $request->get("bank_id"),
-            "bank_ref_no" => $request->get("refno"),
-            "bank_amount" => $request->get("amount"),
-        ]);
-
-        $banking_details = DB::table("bankings")
-        ->select("bank_id", "bank_amount", "sum_id")
-        ->where("status", "!=", 0)
-        ->where("sum_id", "=", $request->get("sum_id"))
-        ->get();
-        $bank_total = 0;
-        $sampath = 0;
-        $peoples = 0;
-        $cargils = 0;
-
-        foreach ($banking_details as $banks) {
-            DB::update(
-                "update pending_sum set banking_sum = ?, banking_sampath = ?, banking_cargils = ?, banking_peoples = ? where id = ?",
-                [0, 0, 0, 0, $banks->sum_id]
-            );
-
-            $bank_total += floatval($banks->bank_amount);
-
-            if ($banks->bank_id == 2) {
-                $sampath += $banks->bank_amount;
-            }
-
-            if ($banks->bank_id == 4) {
-                $peoples += $banks->bank_amount;
-            }
-
-            if ($banks->bank_id == 1) {
-                $cargils += $banks->bank_amount;
-            }
-
-            DB::update(
-                "update pending_sum set banking_sum = banking_sum + ? ,banking_sampath = banking_sampath+ ? ,banking_cargils = banking_cargils+ ? ,banking_peoples = banking_peoples + ?  where id = ?",
-                [$bank_total, $sampath, $cargils, $peoples, $banks->sum_id]
-            );
-        }
-
-        if ($bankings_update) {
-            return response()->json(
-                ["data" => ["info" => $bankings_update, "error" => null]],
-                200
-            );
-        } else {
-            // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
-        }
-    }
-
-    public function MobileEditDBankSummary(Request $request)
-    {
-        $direct_banking_update = DB::table("directbankings")
-        ->where("id", "=", $request->get("id"))
-        ->update([
-            "direct_bank_customer_name" => $request->get("customerName"),
-            "direct_bank_id" => $request->get("bank_id"),
-            "direct_bank_ref_no" => $request->get("refno"),
-            "direct_bank_amount" => $request->get("amount"),
-        ]);
-
-        $direct_banking_details = DB::table("directbankings")
-        ->select("direct_bank_id", "direct_bank_amount", "sum_id")
-        ->where("status", "!=", 0)
-        ->where("sum_id", "=", $request->get("sum_id"))
-        ->get();
-        $dbank_total = 0;
-        $sampath = 0;
-        $peoples = 0;
-        $cargils = 0;
-
-        foreach ($direct_banking_details as $dbanks) {
-            DB::update(
-                "update pending_sum set direct_banking_sum = ?, direct_banking_sampath = ?, direct_banking_cargils = ?, direct_banking_peoples = ? where id = ?",
-                [0, 0, 0, 0, $dbanks->sum_id]
-            );
-
-            $dbank_total += floatval($dbanks->direct_bank_amount);
-
-            if ($dbanks->direct_bank_id == 2) {
-                $sampath += $dbanks->direct_bank_amount;
-            }
-
-            if ($dbanks->direct_bank_id == 4) {
-                $peoples += $dbanks->direct_bank_amount;
-            }
-
-            if ($dbanks->direct_bank_id == 1) {
-                $cargils += $dbanks->direct_bank_amount;
-            }
-
-            DB::update(
-                "update pending_sum set direct_banking_sum = direct_banking_sum + ? ,direct_banking_sampath = direct_banking_sampath+ ? ,direct_banking_cargils = direct_banking_cargils+ ? ,direct_banking_peoples = direct_banking_peoples + ?  where id = ?",
-                [$dbank_total, $sampath, $cargils, $peoples, $dbanks->sum_id]
-            );
-        }
-
-        if ($direct_banking_update) {
-            return response()->json(
-                ["data" => ["info" => $direct_banking_update, "error" => null]],
-                200
-            );
-        } else {
-            // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
-        }
-    }
-
-    public function MobileEditCreditSummary(Request $request)
-    {
-        $credit_update = DB::table("credits")
-        ->where("id", "=", $request->get("id"))
-        ->update(["credit_customer_name" => $request->get("customerName")]);
 
         DB::update(
-            "update credit_items set item_id = ?, item_price = ? where id = ?",
+            "update dsr_stock_items set qty = qty - ?  where id = ?",
             [
-                $request->get("item_id"),
-                $request->get("amount"),
-                $request->get("citemid"),
+                floatval($request->get("itemQty")) -
+                floatval($sum->item_qty),
+                $sum->id,
             ]
         );
 
-        $credit_sum_id = DB::table("credits")
-        ->select("id", "sum_id")
-        ->where("id", "=", $request->get("id"))
-        ->get();
-        $sum_id = 0;
-        $credit_total = 0;
+        DB::update(
+            "update dsr_stock_items set sale_qty = ?  where id = ?",
+            [$request->get("itemQty"), $sum->id]
+        );
+    }
 
-        foreach ($credit_sum_id as $sum) {
-            // set amount to 0 in pending sum->sales_sum
-            DB::update("update pending_sum set credit_sum = ? where id = ?", [
-                0,
-                $sum->sum_id,
-            ]);
-            DB::update(
-                "update credits set credit_amount = ? where sum_id = ?",
-                [0, $sum->sum_id]
-            );
+    $sales_update = DB::table("sales")
+    ->where("id", "=", $request->get("id"))
+    ->update([
+        "item_name" => $request->get("itemName"),
+        "item_qty" => $request->get("itemQty"),
+        "item_amount" => $request->get("itemPrice"),
+    ]);
 
-            $getCreditTotal = DB::table("credits")
-            ->join("credit_items", "credit_items.credit_id", "credits.id")
-            ->select("sum_id", "item_price", "credit_items.credit_id")
-            ->where("sum_id", "=", $sum->sum_id)
-            ->where("credits.status", "!=", 0)
-            ->get();
+    $getTotal = DB::table("sales")
+    ->select("sum_id", "item_qty", "item_amount")
+    ->where("dsr_id", "=", $request->get("dsr_id"))
+    ->whereDate("created_at", "=", $request->get("date"))
+    ->where("status", "!=", 0)
+    ->get();
 
-            foreach ($getCreditTotal as $tot) {
-                $sum_id = $sum->sum_id;
-                $credit_total += $tot->item_price;
-            }
-            DB::update(
-                "update pending_sum set credit_sum = credit_sum + ? where id = ?",
-                [$credit_total, $sum_id]
-            );
+    foreach ($getTotal as $tot) {
+        $sum_id = $tot->sum_id;
+        $sale_total += $tot->item_qty * $tot->item_amount;
+    }
+
+        // set new amount in pending sum->sales_sum
+    DB::update(
+        "update pending_sum set sales_sum = sales_sum + ? where id = ?",
+        [$sale_total, $sum_id]
+    );
+
+    $allData = [];
+    $stock_balance_by_items = DB::table("sales")
+    ->join("dsr_stocks", "sales.dsr_id", "dsr_stocks.dsr_id")
+    ->join(
+        "dsr_stock_items",
+        "dsr_stock_items.dsr_stock_id",
+        "dsr_stocks.id"
+    )
+    ->select(
+        "item_name",
+        "qty",
+        "issue_return_qty",
+        "approve_return_qty",
+        "sale_qty",
+        "retailer_qty"
+    )
+    ->groupBy("dsr_stock_items.item_id")
+    ->get();
+
+    for ($x = 0; $x < count($stock_balance_by_items); $x++) {
+        $allData[] = (object) [
+            "stock_balance" =>
+            $stock_balance_by_items[$x]->qty +
+            $stock_balance_by_items[$x]->retailer_qty -
+            ($stock_balance_by_items[$x]->issue_return_qty +
+                $stock_balance_by_items[$x]->approve_return_qty +
+                $stock_balance_by_items[$x]->sale_qty),
+        ];
+    }
+
+    if ($sales_update) {
+        return response()->json(
+            ["data" => ["info" => $allData, "error" => null]],
+            200
+        );
+    } else {
+            // Oops.. Error Occured!
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
+
+public function MobileEditBankSummary(Request $request)
+{
+    $bankings_update = DB::table("bankings")
+    ->where("id", "=", $request->get("id"))
+    ->update([
+        "bank_id" => $request->get("bank_id"),
+        "bank_ref_no" => $request->get("refno"),
+        "bank_amount" => $request->get("amount"),
+    ]);
+
+    $banking_details = DB::table("bankings")
+    ->select("bank_id", "bank_amount", "sum_id")
+    ->where("status", "!=", 0)
+    ->where("sum_id", "=", $request->get("sum_id"))
+    ->get();
+    $bank_total = 0;
+    $sampath = 0;
+    $peoples = 0;
+    $cargils = 0;
+
+    foreach ($banking_details as $banks) {
+        DB::update(
+            "update pending_sum set banking_sum = ?, banking_sampath = ?, banking_cargils = ?, banking_peoples = ? where id = ?",
+            [0, 0, 0, 0, $banks->sum_id]
+        );
+
+        $bank_total += floatval($banks->bank_amount);
+
+        if ($banks->bank_id == 2) {
+            $sampath += $banks->bank_amount;
         }
 
-        $credit_total_all = DB::table("credits")
+        if ($banks->bank_id == 4) {
+            $peoples += $banks->bank_amount;
+        }
+
+        if ($banks->bank_id == 1) {
+            $cargils += $banks->bank_amount;
+        }
+
+        DB::update(
+            "update pending_sum set banking_sum = banking_sum + ? ,banking_sampath = banking_sampath+ ? ,banking_cargils = banking_cargils+ ? ,banking_peoples = banking_peoples + ?  where id = ?",
+            [$bank_total, $sampath, $cargils, $peoples, $banks->sum_id]
+        );
+    }
+
+    if ($bankings_update) {
+        return response()->json(
+            ["data" => ["info" => $bankings_update, "error" => null]],
+            200
+        );
+    } else {
+            // Oops.. Error Occured!
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
+
+public function MobileEditDBankSummary(Request $request)
+{
+    $direct_banking_update = DB::table("directbankings")
+    ->where("id", "=", $request->get("id"))
+    ->update([
+        "direct_bank_customer_name" => $request->get("customerName"),
+        "direct_bank_id" => $request->get("bank_id"),
+        "direct_bank_ref_no" => $request->get("refno"),
+        "direct_bank_amount" => $request->get("amount"),
+    ]);
+
+    $direct_banking_details = DB::table("directbankings")
+    ->select("direct_bank_id", "direct_bank_amount", "sum_id")
+    ->where("status", "!=", 0)
+    ->where("sum_id", "=", $request->get("sum_id"))
+    ->get();
+    $dbank_total = 0;
+    $sampath = 0;
+    $peoples = 0;
+    $cargils = 0;
+
+    foreach ($direct_banking_details as $dbanks) {
+        DB::update(
+            "update pending_sum set direct_banking_sum = ?, direct_banking_sampath = ?, direct_banking_cargils = ?, direct_banking_peoples = ? where id = ?",
+            [0, 0, 0, 0, $dbanks->sum_id]
+        );
+
+        $dbank_total += floatval($dbanks->direct_bank_amount);
+
+        if ($dbanks->direct_bank_id == 2) {
+            $sampath += $dbanks->direct_bank_amount;
+        }
+
+        if ($dbanks->direct_bank_id == 4) {
+            $peoples += $dbanks->direct_bank_amount;
+        }
+
+        if ($dbanks->direct_bank_id == 1) {
+            $cargils += $dbanks->direct_bank_amount;
+        }
+
+        DB::update(
+            "update pending_sum set direct_banking_sum = direct_banking_sum + ? ,direct_banking_sampath = direct_banking_sampath+ ? ,direct_banking_cargils = direct_banking_cargils+ ? ,direct_banking_peoples = direct_banking_peoples + ?  where id = ?",
+            [$dbank_total, $sampath, $cargils, $peoples, $dbanks->sum_id]
+        );
+    }
+
+    if ($direct_banking_update) {
+        return response()->json(
+            ["data" => ["info" => $direct_banking_update, "error" => null]],
+            200
+        );
+    } else {
+            // Oops.. Error Occured!
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
+
+public function MobileEditCreditSummary(Request $request)
+{
+    $credit_update = DB::table("credits")
+    ->where("id", "=", $request->get("id"))
+    ->update(["credit_customer_name" => $request->get("customerName")]);
+
+    DB::update(
+        "update credit_items set item_id = ?, item_price = ? where id = ?",
+        [
+            $request->get("item_id"),
+            $request->get("amount"),
+            $request->get("citemid"),
+        ]
+    );
+
+    $credit_sum_id = DB::table("credits")
+    ->select("id", "sum_id")
+    ->where("id", "=", $request->get("id"))
+    ->get();
+    $sum_id = 0;
+    $credit_total = 0;
+
+    foreach ($credit_sum_id as $sum) {
+            // set amount to 0 in pending sum->sales_sum
+        DB::update("update pending_sum set credit_sum = ? where id = ?", [
+            0,
+            $sum->sum_id,
+        ]);
+        DB::update(
+            "update credits set credit_amount = ? where sum_id = ?",
+            [0, $sum->sum_id]
+        );
+
+        $getCreditTotal = DB::table("credits")
         ->join("credit_items", "credit_items.credit_id", "credits.id")
         ->select("sum_id", "item_price", "credit_items.credit_id")
         ->where("sum_id", "=", $sum->sum_id)
         ->where("credits.status", "!=", 0)
         ->get();
 
-        foreach ($credit_total_all as $credit_total) {
-            if (count($credit_total_all) == 1) {
-                DB::update(
-                    "update credits set credit_amount = ? where id = ?",
-                    [$credit_total->item_price, $credit_total->credit_id]
-                );
-            } else {
-                DB::update(
-                    "update credits set credit_amount = credit_amount + ? where id = ?",
-                    [$credit_total->item_price, $credit_total->credit_id]
-                );
-            }
+        foreach ($getCreditTotal as $tot) {
+            $sum_id = $sum->sum_id;
+            $credit_total += $tot->item_price;
         }
+        DB::update(
+            "update pending_sum set credit_sum = credit_sum + ? where id = ?",
+            [$credit_total, $sum_id]
+        );
+    }
 
-        if ($credit_total_all) {
-            return response()->json(
-                ["data" => ["info" => $credit_total_all, "error" => null]],
-                200
+    $credit_total_all = DB::table("credits")
+    ->join("credit_items", "credit_items.credit_id", "credits.id")
+    ->select("sum_id", "item_price", "credit_items.credit_id")
+    ->where("sum_id", "=", $sum->sum_id)
+    ->where("credits.status", "!=", 0)
+    ->get();
+
+    foreach ($credit_total_all as $credit_total) {
+        if (count($credit_total_all) == 1) {
+            DB::update(
+                "update credits set credit_amount = ? where id = ?",
+                [$credit_total->item_price, $credit_total->credit_id]
             );
         } else {
-            // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
+            DB::update(
+                "update credits set credit_amount = credit_amount + ? where id = ?",
+                [$credit_total->item_price, $credit_total->credit_id]
             );
         }
     }
 
-    public function MobileEditCreditColSummary(Request $request)
-    {
-        $creditcol_update = DB::table("credit_collections")
-        ->where("id", "=", $request->get("id"))
-        ->update([
-            "credit_collection_customer_name" => $request->get("ccName"),
-            "option_id" => $request->get("option_id"),
-        ]);
+    if ($credit_total_all) {
+        return response()->json(
+            ["data" => ["info" => $credit_total_all, "error" => null]],
+            200
+        );
+    } else {
+            // Oops.. Error Occured!
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
 
-        $creditcol_item_update = DB::table("credit_collection_items")
-        ->where("id", "=", $request->get("cc_item_id"))
-        ->update([
-            "item_id" => $request->get("item_id"),
-            "item_price" => $request->get("ccAmount"),
-        ]);
+public function MobileEditCreditColSummary(Request $request)
+{
+    $creditcol_update = DB::table("credit_collections")
+    ->where("id", "=", $request->get("id"))
+    ->update([
+        "credit_collection_customer_name" => $request->get("ccName"),
+        "option_id" => $request->get("option_id"),
+    ]);
 
-        $creditcol_sum = DB::table("credit_collections")
-        ->join(
-            "credit_collection_items",
-            "credit_collection_items.credit_collection_id",
-            "credit_collections.id"
-        )
-        ->select(
-            "credit_collections.sum_id",
-            "credit_collection_items.item_id",
-            "credit_collections.id",
-            "credit_collection_items.item_price"
-        )
-        ->where("credit_collections.sum_id", "=", $request->get("sum_id"))
-        ->get();
+    $creditcol_item_update = DB::table("credit_collection_items")
+    ->where("id", "=", $request->get("cc_item_id"))
+    ->update([
+        "item_id" => $request->get("item_id"),
+        "item_price" => $request->get("ccAmount"),
+    ]);
 
-        $creditCol = 0;
+    $creditcol_sum = DB::table("credit_collections")
+    ->join(
+        "credit_collection_items",
+        "credit_collection_items.credit_collection_id",
+        "credit_collections.id"
+    )
+    ->select(
+        "credit_collections.sum_id",
+        "credit_collection_items.item_id",
+        "credit_collections.id",
+        "credit_collection_items.item_price"
+    )
+    ->where("credit_collections.sum_id", "=", $request->get("sum_id"))
+    ->get();
 
-        foreach ($creditcol_sum as $sum) {
-            DB::update(
-                "update pending_sum set credit_collection_sum = ? where id = ?",
-                [0, $sum->sum_id]
-            );
-            DB::update(
-                "update credit_collections set credit_collection_amount = ? where sum_id = ?",
-                [0, $sum->sum_id]
-            );
-            $creditCol += $sum->item_price;
+    $creditCol = 0;
 
-            DB::update(
-                "update pending_sum set credit_collection_sum = credit_collection_sum + ? where id = ?",
-                [$creditCol, $sum->sum_id]
-            );
+    foreach ($creditcol_sum as $sum) {
+        DB::update(
+            "update pending_sum set credit_collection_sum = ? where id = ?",
+            [0, $sum->sum_id]
+        );
+        DB::update(
+            "update credit_collections set credit_collection_amount = ? where sum_id = ?",
+            [0, $sum->sum_id]
+        );
+        $creditCol += $sum->item_price;
+
+        DB::update(
+            "update pending_sum set credit_collection_sum = credit_collection_sum + ? where id = ?",
+            [$creditCol, $sum->sum_id]
+        );
             // DB::update('update credit_collections set credit_collection_amount = ? where id = ?', array( $request->get('ccAmount') , $request->get('id') ));
-        }
+    }
 
-        $credit_collection_table = DB::table("credit_collections")
-        ->where("sum_id", "=", $request->get("sum_id"))
-        ->get();
-        $credit_collection_table_sum = 0;
+    $credit_collection_table = DB::table("credit_collections")
+    ->where("sum_id", "=", $request->get("sum_id"))
+    ->get();
+    $credit_collection_table_sum = 0;
 
-        if (count($credit_collection_table) == 1) {
+    if (count($credit_collection_table) == 1) {
+        DB::update(
+            "update credit_collections set credit_collection_amount = ? where id = ?",
+            [$creditCol, $request->get("id")]
+        );
+    } else {
+        foreach ($creditcol_sum as $item_sum) {
             DB::update(
                 "update credit_collections set credit_collection_amount = ? where id = ?",
-                [$creditCol, $request->get("id")]
-            );
-        } else {
-            foreach ($creditcol_sum as $item_sum) {
-                DB::update(
-                    "update credit_collections set credit_collection_amount = ? where id = ?",
-                    [$item_sum->item_price, $item_sum->id]
-                );
-            }
-        }
-
-        if ($creditcol_sum) {
-            return response()->json(
-                ["data" => ["info" => $creditcol_sum, "error" => null]],
-                200
-            );
-        } else {
-            // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
+                [$item_sum->item_price, $item_sum->id]
             );
         }
     }
+
+    if ($creditcol_sum) {
+        return response()->json(
+            ["data" => ["info" => $creditcol_sum, "error" => null]],
+            200
+        );
+    } else {
+            // Oops.. Error Occured!
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
 
     // public function MobileEditCreditColSummary(Request $request){
 
@@ -2785,148 +2801,162 @@ class PassportAuthController extends Controller
 
     // }
 
-    public function MobileEditRetailerSummary(Request $request)
-    {
-        $retailer_update = DB::table("retailer_returns")
-        ->where("id", "=", $request->get("id"))
-        ->update([
-            "re_customer_name" => $request->get("reCustomerName"),
-            "re_item_id" => $request->get("reItemId"),
-            "re_item_qty" => $request->get("reQuantity"),
-            "re_item_amount" => $request->get("reAmount"),
+public function MobileEditRetailerSummary(Request $request)
+{
+    $retailer_update = DB::table("retailer_returns")
+    ->where("id", "=", $request->get("id"))
+    ->update([
+        "re_customer_name" => $request->get("reCustomerName"),
+        "re_item_id" => $request->get("reItemId"),
+        "re_item_qty" => $request->get("reQuantity"),
+        "re_item_amount" => $request->get("reAmount"),
+    ]);
+
+    $credit_sum_id = DB::table("retailer_returns")
+    ->select("sum_id")
+    ->where("id", "=", $request->get("id"))
+    ->get();
+    $sum_id = 0;
+    $retailerTot = 0;
+
+    foreach ($credit_sum_id as $sum) {
+            // set amount to 0 in pending sum->sales_sum
+        DB::update("update pending_sum set retialer_sum = ? where id = ?", [
+            0,
+            $sum->sum_id,
         ]);
 
-        $credit_sum_id = DB::table("retailer_returns")
-        ->select("sum_id")
-        ->where("id", "=", $request->get("id"))
+        $getCreditTotal = DB::table("retailer_returns")
+        ->select("re_item_amount", "re_item_qty")
+        ->where("sum_id", "=", $sum->sum_id)
+        ->where("status", "!=", 0)
         ->get();
-        $sum_id = 0;
-        $retailerTot = 0;
 
-        foreach ($credit_sum_id as $sum) {
-            // set amount to 0 in pending sum->sales_sum
-            DB::update("update pending_sum set retialer_sum = ? where id = ?", [
-                0,
-                $sum->sum_id,
-            ]);
-
-            $getCreditTotal = DB::table("retailer_returns")
-            ->select("re_item_amount", "re_item_qty")
-            ->where("sum_id", "=", $sum->sum_id)
-            ->where("status", "!=", 0)
-            ->get();
-
-            foreach ($getCreditTotal as $tot) {
-                $sum_id = $sum->sum_id;
-                $retailerTot += $tot->re_item_amount * $tot->re_item_qty;
-            }
+        foreach ($getCreditTotal as $tot) {
+            $sum_id = $sum->sum_id;
+            $retailerTot += $tot->re_item_amount * $tot->re_item_qty;
+        }
 
             // set new amount in pending sum->sales_sum
-            DB::update(
-                "update pending_sum set retialer_sum = retialer_sum + ? where id = ?",
-                [$retailerTot, $sum_id]
-            );
-        }
-
-        if ($retailer_update) {
-            return response()->json(
-                ["data" => ["info" => $retailer_update, "error" => null]],
-                200
-            );
-        } else {
-            // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
-        }
-    }
-
-    public function MobileBanks(Request $request)
-    {
-        $bank_data = DB::table("banks")
-        ->where("status", 1)
-        ->get();
-        if ($bank_data) {
-            return response()->json(
-                ["data" => ["info" => $bank_data, "error" => null]],
-                200
-            );
-        } else {
-            // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
-        }
-    }
-
-    public function MobileDsrChequeList(Request $request)
-    {
-        $cheque_data = DB::table("drs_cheques")
-        ->where("status", 1)
-        ->where("dsrs_id", $request->get("dsr_id"))
-        ->whereDate("created_at", $request->get("date"))
-        ->get();
-        if ($cheque_data) {
-            return response()->json(
-                ["data" => ["info" => $cheque_data, "error" => null]],
-                200
-            );
-        } else {
-            // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
-        }
-    }
-
-    public function MobileRemoveCheque(Request $request)
-    {
-        $remove_cheque = DB::table("drs_cheques")
-        ->where("id", "=", $request->get("id"))
-        ->update(["status" => 0]);
-
-
-        $remove_cheque_from_dsrs = DB::update(
-            'update dsrs set cheque = cheque - ? ,
-            in_hand = in_hand - ? 
-            where sum_id = ?
-            and dsr_user_id = ?',
-            [
-                $request->get("cheque_amount"),
-                $request->get("cheque_amount"),
-                $request->get("sum_id"),
-                $request->get("dsr_id"),
-            ]
+        DB::update(
+            "update pending_sum set retialer_sum = retialer_sum + ? where id = ?",
+            [$retailerTot, $sum_id]
         );
-
-
-        $remove_cheque_from_pending_sum = DB::update(
-            'update pending_sum set inhand_cheque = inhand_cheque - ? ,
-            inhand_sum = inhand_sum - ? 
-            where id = ?',
-            [
-                $request->get("cheque_amount"),
-                $request->get("cheque_amount"),
-                $request->get("sum_id"),
-            ]
-        );
-
-
-
-        if (count($request->all())) {
-            return response()->json(
-                ["data" => ["info" => $request->all(), "error" => null]],
-                200
-            );
-        } else {
-            // Oops.. Error Occured!
-            return response()->json(
-                ["data" => ["info" => [], "error" => 0]],
-                401
-            );
-        }
     }
+
+    if ($retailer_update) {
+        return response()->json(
+            ["data" => ["info" => $retailer_update, "error" => null]],
+            200
+        );
+    } else {
+            // Oops.. Error Occured!
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
+
+public function MobileBanks(Request $request)
+{
+    $bank_data = DB::table("banks")
+    ->where("status", 1)
+    ->get();
+    if ($bank_data) {
+        return response()->json(
+            ["data" => ["info" => $bank_data, "error" => null]],
+            200
+        );
+    } else {
+            // Oops.. Error Occured!
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
+
+public function MobileDsrChequeList(Request $request)
+{
+    $cheque_data = DB::table("drs_cheques")
+    ->where("status", 1)
+    ->where("dsrs_id", $request->get("dsr_id"))
+    ->whereDate("created_at", $request->get("date"))
+    ->get();
+    if ($cheque_data) {
+        return response()->json(
+            ["data" => ["info" => $cheque_data, "error" => null]],
+            200
+        );
+    } else {
+            // Oops.. Error Occured!
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
+
+public function MobileRemoveCheque(Request $request)
+{
+    $remove_cheque = DB::table("drs_cheques")
+    ->where("id", "=", $request->get("id"))
+    ->update(["status" => 0]);
+
+
+    $remove_cheque_from_dsrs = DB::update(
+        'update dsrs set cheque = cheque - ? ,
+        in_hand = in_hand - ? 
+        where sum_id = ?
+        and dsr_user_id = ?',
+        [
+            $request->get("cheque_amount"),
+            $request->get("cheque_amount"),
+            $request->get("sum_id"),
+            $request->get("dsr_id"),
+        ]
+    );
+
+
+    $remove_cheque_from_pending_sum = DB::update(
+        'update pending_sum set inhand_cheque = inhand_cheque - ? ,
+        inhand_sum = inhand_sum - ? 
+        where id = ?',
+        [
+            $request->get("cheque_amount"),
+            $request->get("cheque_amount"),
+            $request->get("sum_id"),
+        ]
+    );
+
+
+        // $get_all_inhand = Dsr::where('sum_id',)->where('dsr_user_id',)->whereDate('created_at',)->get();
+
+        // $update_pending_sum_status = DB::update(
+        //     'update pending_sum set inhand_cheque = inhand_cheque - ? ,
+        //     inhand_sum = inhand_sum - ? 
+        //     where id = ?',
+        //     [
+        //         $request->get("cheque_amount"),
+        //         $request->get("cheque_amount"),
+        //         $request->get("sum_id"),
+        //     ]
+        // );
+
+
+
+    if (count($request->all())) {
+        return response()->json(
+            ["data" => ["info" => $request->all(), "error" => null]],
+            200
+        );
+    } else {
+            // Oops.. Error Occured!
+        return response()->json(
+            ["data" => ["info" => [], "error" => 0]],
+            401
+        );
+    }
+}
 }

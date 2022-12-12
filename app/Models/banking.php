@@ -16,6 +16,7 @@ class banking extends Model
         'sum_id',
         'dsr_id',
         'status',
+        'created_at',
     ];
 
 }
