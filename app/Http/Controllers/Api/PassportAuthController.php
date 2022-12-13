@@ -799,36 +799,22 @@ class PassportAuthController extends Controller
         $sum_id = 0;
 
         // check if there is data in pending sum table for dsr today
-        $csum = DB::table("pending_sum")
-        ->select("id", "dsr_id", "date")
-        ->where("dsr_id", "=", $dsrId)
-        ->where("date", "=", $todayDate)
-        ->get();
-        $pstatus = DB::table("pending_sum_status")
-        ->select("dsr_id", "date")
-        ->where("dsr_id", "=", $dsrId)
-        ->where("date", "=", $todayDate)
-        ->get();
+        $csum = DB::table("pending_sum")->select("id", "dsr_id", "date")->where("dsr_id", "=", $dsrId)->where("date", "=", $todayDate)->get();
+
+        $pstatus = DB::table("pending_sum_status")->select("dsr_id", "date")->where("dsr_id", "=", $dsrId)->where("date", "=", $todayDate)->get();
 
         foreach ($creditcollections as $cc) {
             $creditColSum += $cc["ccAmount"];
         }
 
         if (count($csum) == 0) {
-            // insert
-            DB::insert(
-                "insert into pending_sum (dsr_id, date, credit_collection_sum) values (?,?,?)",
-                [$dsrId, $todayDate, $creditColSum]
-            );
-            $sum_id = DB::table("pending_sum")
-            ->latest("id")
-            ->first();
+            //insert
+            DB::insert("insert into pending_sum (dsr_id, date, credit_collection_sum) values (?,?,?)",[$dsrId, $todayDate, $creditColSum]);
+            $sum_id = DB::table("pending_sum")->latest("id")->first();
         } else {
-            // update
-            DB::update(
-                "update pending_sum set credit_collection_sum = credit_collection_sum + ? where dsr_id = ? and date = ?",
-                [$creditColSum, $dsrId, $todayDate]
-            );
+            //update
+            DB::update("update pending_sum set credit_collection_sum = credit_collection_sum + ? where dsr_id = ? and date = ?",[$creditColSum, $dsrId, $todayDate]
+        );
             foreach ($csum as $sum) {
                 $sum_id = $sum;
             }
@@ -836,32 +822,16 @@ class PassportAuthController extends Controller
 
         if (count($pstatus) == 0) {
             // insert
-            DB::insert(
-                "insert into pending_sum_status (sum_id,dsr_id, date,credit_collection_sum) values (?,?,?,?)",
-                [$sum_id->id, $dsrId, $todayDate, 1]
-            );
+            DB::insert("insert into pending_sum_status (sum_id,dsr_id, date,credit_collection_sum) values (?,?,?,?)",[$sum_id->id, $dsrId, $todayDate, 1]);
         } else {
             // update
-            DB::update(
-                "update pending_sum_status set credit_collection_sum = ? where dsr_id = ? and date = ?",
-                [1, $dsrId, $todayDate]
-            );
+            DB::update("update pending_sum_status set credit_collection_sum = ? where dsr_id = ? and date = ?",[1, $dsrId, $todayDate]);
         }
 
-        // CreditCollectionItem
 
+        // CreditCollectionItem
         foreach ($creditcollections as $creditcol) {
-            $existing_creditcol_customer = CreditCollection::whereDate(
-                "created_at",
-                "=",
-                date($system_date)
-            )
-            ->where(
-                "credit_collection_customer_name",
-                "like",
-                "%" . $creditcol["ccName"] . "%"
-            )
-            ->get();
+            $existing_creditcol_customer = CreditCollection::whereDate("created_at","=",date($system_date))->where("credit_collection_customer_name","like","%" . $creditcol["ccName"] . "%")->get();
 
             if (count($existing_creditcol_customer) == 0) {
                 $creditcollection = new CreditCollection([
@@ -879,10 +849,7 @@ class PassportAuthController extends Controller
                 ]);
                 $creditcollection_items->save();
 
-                DB::update(
-                    "update credit_collections set credit_collection_amount = credit_collection_amount + ? where id = ?",
-                    [$creditcol["ccAmount"], $creditcollection_items->id]
-                );
+                DB::update("update credit_collections set credit_collection_amount = credit_collection_amount + ? where id = ?",[$creditcol["ccAmount"], $creditcollection_items->id]);
             } else {
                 foreach ($existing_creditcol_customer as $customer) {
                     $credit_collection_item = new CreditCollectionItem([
@@ -893,10 +860,7 @@ class PassportAuthController extends Controller
                     $credit_collection_item->save();
                 }
 
-                DB::update(
-                    "update credit_collections set credit_collection_amount = credit_collection_amount + ? where id = ?",
-                    [$creditcol["ccAmount"], $customer->id]
-                );
+                DB::update("update credit_collections set credit_collection_amount = credit_collection_amount + ? where id = ?",[$creditcol["ccAmount"], $customer->id]);
             }
         }
 
@@ -2153,17 +2117,17 @@ class PassportAuthController extends Controller
         $get_banking_details = banking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
         if(count($get_banking_details) == 0){
-           DB::update(
+         DB::update(
             "update pending_sum_status set banking_sum = ? where sum_id = ?",
             [
                 0,
                 $request->get("sum_id"),
             ]
         );
-       }
+     }
 
 
-       if ($get_banking_details) {
+     if ($get_banking_details) {
         return response()->json(
             ["data" => ["info" => $remove_sales, "error" => null]],
             200
@@ -2259,16 +2223,16 @@ public function MobileRemoveDBankingSummary(Request $request)
     $get_banking_details = directbanking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-       DB::update(
+     DB::update(
         "update pending_sum_status set direct_banking_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
-   }
+ }
 
-   if ($get_dbanking_details) {
+ if ($get_dbanking_details) {
     return response()->json(
         ["data" => ["info" => $remove_dbankings, "error" => null]],
         200
@@ -2341,16 +2305,16 @@ public function MobileRemoveCreditColSummary(Request $request)
     $get_banking_details = CreditCollection::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-       DB::update(
+     DB::update(
         "update pending_sum_status set credit_collection_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
-   }
+ }
 
-   if ($get_col_credits) {
+ if ($get_col_credits) {
     return response()->json(
         ["data" => ["info" => $remove_col_credits, "error" => null]],
         200
@@ -2716,75 +2680,76 @@ public function MobileEditCreditSummary(Request $request)
 
 public function MobileEditCreditColSummary(Request $request)
 {
-    $creditcol_update = DB::table("credit_collections")
+     $credit_update = DB::table("credit_collections")
     ->where("id", "=", $request->get("id"))
-    ->update([
-        "credit_collection_customer_name" => $request->get("ccName"),
-        "option_id" => $request->get("option_id"),
-    ]);
+    ->update(["credit_collection_customer_name" => $request->get("customerName")]);
 
-    $creditcol_item_update = DB::table("credit_collection_items")
-    ->where("id", "=", $request->get("cc_item_id"))
-    ->update([
-        "item_id" => $request->get("item_id"),
-        "item_price" => $request->get("ccAmount"),
-    ]);
+    DB::update(
+        "update credit_collection_items set item_id = ?, item_price = ? where id = ?",
+        [
+            $request->get("item_id"),
+            $request->get("amount"),
+            $request->get("citemid"),
+        ]
+    );
 
-    $creditcol_sum = DB::table("credit_collections")
-    ->join(
-        "credit_collection_items",
-        "credit_collection_items.credit_collection_id",
-        "credit_collections.id"
-    )
-    ->select(
-        "credit_collections.sum_id",
-        "credit_collection_items.item_id",
-        "credit_collections.id",
-        "credit_collection_items.item_price"
-    )
-    ->where("credit_collections.sum_id", "=", $request->get("sum_id"))
+    $credit_sum_id = DB::table("credit_collections")
+    ->select("id", "sum_id")
+    ->where("id", "=", $request->get("id"))
     ->get();
+    $sum_id = 0;
+    $credit_total = 0;
 
-    $creditCol = 0;
-
-    foreach ($creditcol_sum as $sum) {
-        DB::update(
-            "update pending_sum set credit_collection_sum = ? where id = ?",
-            [0, $sum->sum_id]
-        );
+    foreach ($credit_sum_id as $sum) {
+            // set amount to 0 in pending sum->sales_sum
+        DB::update("update pending_sum set credit_collection_sum = ? where id = ?", [
+            0,
+            $sum->sum_id,
+        ]);
         DB::update(
             "update credit_collections set credit_collection_amount = ? where sum_id = ?",
             [0, $sum->sum_id]
         );
-        $creditCol += $sum->item_price;
 
+        $getCreditTotal = DB::table("credit_collections")
+        ->join("credit_collection_items", "credit_collection_items.credit_collection_id", "credit_collections.id")
+        ->select("sum_id", "item_price", "credit_collection_items.credit_collection_id")
+        ->where("sum_id", "=", $sum->sum_id)
+        ->where("credit_collections.status", "!=", 0)
+        ->get();
+
+        foreach ($getCreditTotal as $tot) {
+            $sum_id = $sum->sum_id;
+            $credit_total += $tot->item_price;
+        }
         DB::update(
             "update pending_sum set credit_collection_sum = credit_collection_sum + ? where id = ?",
-            [$creditCol, $sum->sum_id]
+            [$credit_total, $sum_id]
         );
-            // DB::update('update credit_collections set credit_collection_amount = ? where id = ?', array( $request->get('ccAmount') , $request->get('id') ));
     }
 
-    $credit_collection_table = DB::table("credit_collections")
-    ->where("sum_id", "=", $request->get("sum_id"))
+    $credit_total_all = DB::table("credit_collections")
+    ->join("credit_collection_items", "credit_collection_items.credit_collection_id", "credit_collections.id")
+    ->select("sum_id", "item_price", "credit_items.credit_id")
+    ->where("sum_id", "=", $sum->sum_id)
+    ->where("credit_collections.status", "!=", 0)
     ->get();
-    $credit_collection_table_sum = 0;
 
-    if (count($credit_collection_table) == 1) {
-        DB::update(
-            "update credit_collections set credit_collection_amount = ? where id = ?",
-            [$creditCol, $request->get("id")]
-        );
-    } else {
-        foreach ($creditcol_sum as $item_sum) {
+    foreach ($credit_total_all as $credit_total) {
+        if (count($credit_total_all) == 1) {
             DB::update(
                 "update credit_collections set credit_collection_amount = ? where id = ?",
-                [$item_sum->item_price, $item_sum->id]
+                [$credit_total->item_price, $credit_total->credit_id]
+            );
+        } else {
+            DB::update(
+                "update credit_collections set credit_collection_amount = credit_amount + ? where id = ?",
+                [$credit_total->item_price, $credit_total->credit_id]
             );
         }
     }
 
-    if ($creditcol_sum) {
+    if ($credit_total_all) {
         return response()->json(
             ["data" => ["info" => $creditcol_sum, "error" => null]],
             200
