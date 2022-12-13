@@ -1784,6 +1784,7 @@ class PassportAuthController extends Controller
         ->where("pending_sum.date", "=", $request->get("date"))
         ->where("pending_sum.dsr_id", "=", $request->get("dsr_id"))
         ->where("credits.status", "!=", 0)
+        ->where("credit_items.status", "!=", 0)
         ->get();
 
         if ($credit_summery_items) {
