@@ -1294,21 +1294,14 @@ class PassportAuthController extends Controller
         $cheque_amount = 0;
 
         // check if there is data in pending sum table for dsr today
-        $csum = DB::table("pending_sum")
-        ->select("id", "dsr_id", "date")
-        ->where("dsr_id", "=", $request->get("dsr_id"))
-        ->where("date", "=", $todayDate)
-        ->get();
-        $pstatus = DB::table("pending_sum_status")
-        ->select("dsr_id", "date")
-        ->where("dsr_id", "=", $request->get("dsr_id"))
-        ->where("date", "=", $todayDate)
-        ->get();
+        $csum = DB::table("pending_sum")->select("id", "dsr_id", "date")->where("dsr_id", "=", $request->get("dsr_id"))->where("date", "=", $todayDate)->get();
+
+
+        $pstatus = DB::table("pending_sum_status")->select("dsr_id", "date")->where("dsr_id", "=", $request->get("dsr_id"))->where("date", "=", $todayDate)->get();
 
         if (count($csum) == 0) {
             // insert
-            DB::insert(
-                "insert into pending_sum (dsr_id, date, inhand_cash, inhand_cheque) values (?,?,?,?)",
+            DB::insert("insert into pending_sum (dsr_id, date, inhand_cash, inhand_cheque) values (?,?,?,?)",
                 [
                     $request->get("dsr_id"),
                     $todayDate,
@@ -1316,9 +1309,7 @@ class PassportAuthController extends Controller
                     $cheque,
                 ]
             );
-            $sum_id = DB::table("pending_sum")
-            ->latest("id")
-            ->first();
+            $sum_id = DB::table("pending_sum")->latest("id")->first();
         } else {
             // update
             DB::update(
@@ -1351,10 +1342,7 @@ class PassportAuthController extends Controller
             );
         }
 
-        $check_data = DB::table("dsrs")
-        ->select("sum_id", "dsr_user_id", "in_hand", "cash", "cheque")
-        ->where("dsrs.sum_id", "=", $sum_id->id)
-        ->get();
+        $check_data = DB::table("dsrs")->select("sum_id", "dsr_user_id", "in_hand", "cash", "cheque")->where("dsrs.sum_id", "=", $sum_id->id)->get();
 
         if (count($check_data) == 0) {
             $inhand = new Dsr([
@@ -1392,11 +1380,11 @@ class PassportAuthController extends Controller
                 ]
             );
         } else {
-            $cheques_is_exist = DrsCheque::where("sum_id", $sum_id->id)->get();
+            $cheques_is_exist = DrsCheque::where("sum_id", $sum_id->id)->where("status", 1)->get();
 
             if (count($cheques_is_exist) != 0) {
                 if (count($chequeArr) != 0) {
-                    // DB::table('drs_cheques')->where('sum_id', $sum_id->id)->delete();
+                    DB::table('drs_cheques')->where('sum_id', $sum_id->id)->delete();
 
                     foreach ($chequeArr as $cheque) {
                         $inhand_cheque = new DrsCheque([
@@ -1408,10 +1396,7 @@ class PassportAuthController extends Controller
                         $inhand_cheque->save();
                     }
 
-                    $cheque_list = DrsCheque::where(
-                        "sum_id",
-                        $sum_id->id
-                    )->get();
+                    $cheque_list = DrsCheque::where("sum_id",$sum_id->id)->where("status", 1)->get();
 
                     foreach ($cheque_list as $che) {
                         $cheque_amount += $che->cheque_amount;
@@ -1433,7 +1418,7 @@ class PassportAuthController extends Controller
                     $sum_id->id,
                 ]);
 
-                $dsrs_table_data = Dsr::where("sum_id", $sum_id->id)->get();
+                $dsrs_table_data = Dsr::where("sum_id", $sum_id->id)->where("status", 1)->get();
 
                 foreach ($dsrs_table_data as $dsr_data) {
                     DB::update(
@@ -1475,6 +1460,12 @@ class PassportAuthController extends Controller
                     ]
                 );
             }
+
+
+
+
+
+
         }
 
         $array = (object) [
@@ -1487,6 +1478,10 @@ class PassportAuthController extends Controller
             200
         );
     }
+
+
+
+
 
     public function MobileDsrSumery(Request $request)
     {
@@ -2117,17 +2112,17 @@ class PassportAuthController extends Controller
         $get_banking_details = banking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
         if(count($get_banking_details) == 0){
-         DB::update(
+           DB::update(
             "update pending_sum_status set banking_sum = ? where sum_id = ?",
             [
                 0,
                 $request->get("sum_id"),
             ]
         );
-     }
+       }
 
 
-     if ($get_banking_details) {
+       if ($get_banking_details) {
         return response()->json(
             ["data" => ["info" => $remove_sales, "error" => null]],
             200
@@ -2143,40 +2138,12 @@ class PassportAuthController extends Controller
 
 public function MobileRemoveDBankingSummary(Request $request)
 {
-    $remove_dbankings = DB::table("directbankings")
-    ->where("id", "=", $request->get("id"))
-    ->update(["status" => 0]);
-    $get_dbanking_details = DB::table("directbankings")
-    ->where("id", "=", $request->get("id"))
-    ->where("sum_id", "=", $request->get("sum_id"))
-    ->get();
+    $remove_dbankings = DB::table("directbankings")->where("id", "=", $request->get("id"))->update(["status" => 0]);
 
-    $sampath = 0;
-    $peoples = 0;
-    $cargils = 0;
+    $get_dbanking_details = DB::table("directbankings")->where("id", "=", $request->get("id"))->where("sum_id", "=", $request->get("sum_id"))->get();
 
-        //     if($request->get('bank_name') == "Sampath Bank"){
-        //         foreach($get_dbanking_details as $bdata){
-        //             DB::update('update pending_sum set direct_banking_sum = direct_banking_sum - ?, direct_banking_sampath = direct_banking_sampath - ? where id = ?', array($bdata->direct_bank_amount,$bdata->direct_bank_amount,$bdata->sum_id));
-        //         }
-        //     }
 
-        //     if($request->get('bank_name') == "People's Bank"){
-        //        foreach($get_dbanking_details as $bdata){
-        //         DB::update('update pending_sum set direct_banking_sum = direct_banking_sum - ?, direct_banking_peoples = direct_banking_peoples - ? where id = ?', array($bdata->direct_bank_amount,$bdata->direct_bank_amount,$bdata->sum_id));
-        //     }
-        // }
-
-        // if($request->get('bank_name') == "Cargills Bank"){
-        //     foreach($get_dbanking_details as $bdata){
-        //         DB::update('update pending_sum set direct_banking_sum = direct_banking_sum - ?, direct_banking_cargils = direct_banking_cargils - ? where id = ?', array($bdata->direct_bank_amount,$bdata->direct_bank_amount,$bdata->sum_id));
-        //     }
-        // }
-
-    $single_bank = DB::table("banks")
-    ->where("id", $request->get("bank_id"))
-    ->where("status", 1)
-    ->get();
+    $single_bank = DB::table("banks")->where("id", $request->get("bank_id"))->where("status", 1)->get();
 
     foreach ($single_bank as $sbank) {
         if ($sbank->bank_name == "Sampath Bank") {
@@ -2217,22 +2184,38 @@ public function MobileRemoveDBankingSummary(Request $request)
                 );
             }
         }
+
+
+        if ($sbank->bank_name == "Sampath Bank - Online") {
+            foreach ($get_dbanking_details as $bdata) {
+                DB::update(
+                    "update pending_sum set banking_sum = banking_sum - ?, direct_banking_sampth_online = direct_banking_sampth_online - ? where id = ?",
+                    [
+                        $bdata->bank_amount,
+                        $bdata->bank_amount,
+                        $bdata->sum_id,
+                    ]
+                );
+            }
+        }
+
+        
     }
 
 
     $get_banking_details = directbanking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-     DB::update(
+       DB::update(
         "update pending_sum_status set direct_banking_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
- }
+   }
 
- if ($get_dbanking_details) {
+   if ($get_dbanking_details) {
     return response()->json(
         ["data" => ["info" => $remove_dbankings, "error" => null]],
         200
@@ -2306,18 +2289,18 @@ public function MobileRemoveCreditColSummary(Request $request)
     $get_banking_details = CreditCollection::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-     DB::update(
+       DB::update(
         "update pending_sum_status set credit_collection_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
- }
+   }
 
- if ($get_col_credits) {
+   if ($get_col_credits) {
     return response()->json(
-        ["data" => ["info" => "update pending_sum_status set credit_collection_sum = 0 where sum_id = ".$request->get("sum_id"), "error" => null]],
+        ["data" => ["info" => $get_banking_details, "error" => null]],
         200
     );
 } else {
