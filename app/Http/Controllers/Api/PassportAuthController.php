@@ -2680,76 +2680,75 @@ public function MobileEditCreditSummary(Request $request)
 
 public function MobileEditCreditColSummary(Request $request)
 {
-     $credit_update = DB::table("credit_collections")
+    $creditcol_update = DB::table("credit_collections")
     ->where("id", "=", $request->get("id"))
-    ->update(["credit_collection_customer_name" => $request->get("customerName")]);
+    ->update([
+        "credit_collection_customer_name" => $request->get("ccName"),
+        "option_id" => $request->get("option_id"),
+    ]);
 
-    DB::update(
-        "update credit_collection_items set item_id = ?, item_price = ? where id = ?",
-        [
-            $request->get("item_id"),
-            $request->get("amount"),
-            $request->get("citemid"),
-        ]
-    );
+    $creditcol_item_update = DB::table("credit_collection_items")
+    ->where("id", "=", $request->get("cc_item_id"))
+    ->update([
+        "item_id" => $request->get("item_id"),
+        "item_price" => $request->get("ccAmount"),
+    ]);
 
-    $credit_sum_id = DB::table("credit_collections")
-    ->select("id", "sum_id")
-    ->where("id", "=", $request->get("id"))
+    $creditcol_sum = DB::table("credit_collections")
+    ->join(
+        "credit_collection_items",
+        "credit_collection_items.credit_collection_id",
+        "credit_collections.id"
+    )
+    ->select(
+        "credit_collections.sum_id",
+        "credit_collection_items.item_id",
+        "credit_collections.id",
+        "credit_collection_items.item_price"
+    )
+    ->where("credit_collections.sum_id", "=", $request->get("sum_id"))
     ->get();
-    $sum_id = 0;
-    $credit_total = 0;
 
-    foreach ($credit_sum_id as $sum) {
-            // set amount to 0 in pending sum->sales_sum
-        DB::update("update pending_sum set credit_collection_sum = ? where id = ?", [
-            0,
-            $sum->sum_id,
-        ]);
+    $creditCol = 0;
+
+    foreach ($creditcol_sum as $sum) {
+        DB::update(
+            "update pending_sum set credit_collection_sum = ? where id = ?",
+            [0, $sum->sum_id]
+        );
         DB::update(
             "update credit_collections set credit_collection_amount = ? where sum_id = ?",
             [0, $sum->sum_id]
         );
+        $creditCol += $sum->item_price;
 
-        $getCreditTotal = DB::table("credit_collections")
-        ->join("credit_collection_items", "credit_collection_items.credit_collection_id", "credit_collections.id")
-        ->select("sum_id", "item_price", "credit_collection_items.credit_collection_id")
-        ->where("sum_id", "=", $sum->sum_id)
-        ->where("credit_collections.status", "!=", 0)
-        ->get();
-
-        foreach ($getCreditTotal as $tot) {
-            $sum_id = $sum->sum_id;
-            $credit_total += $tot->item_price;
-        }
         DB::update(
             "update pending_sum set credit_collection_sum = credit_collection_sum + ? where id = ?",
-            [$credit_total, $sum_id]
+            [$creditCol, $sum->sum_id]
         );
+            // DB::update('update credit_collections set credit_collection_amount = ? where id = ?', array( $request->get('ccAmount') , $request->get('id') ));
     }
 
-    $credit_total_all = DB::table("credit_collections")
-    ->join("credit_collection_items", "credit_collection_items.credit_collection_id", "credit_collections.id")
-    ->select("sum_id", "item_price", "credit_items.credit_id")
-    ->where("sum_id", "=", $sum->sum_id)
-    ->where("credit_collections.status", "!=", 0)
+    $credit_collection_table = DB::table("credit_collections")
+    ->where("sum_id", "=", $request->get("sum_id"))
     ->get();
+    $credit_collection_table_sum = 0;
 
-    foreach ($credit_total_all as $credit_total) {
-        if (count($credit_total_all) == 1) {
+    if (count($credit_collection_table) == 1) {
+        DB::update(
+            "update credit_collections set credit_collection_amount = ? where id = ?",
+            [$creditCol, $request->get("id")]
+        );
+    } else {
+        foreach ($creditcol_sum as $item_sum) {
             DB::update(
                 "update credit_collections set credit_collection_amount = ? where id = ?",
-                [$credit_total->item_price, $credit_total->credit_id]
-            );
-        } else {
-            DB::update(
-                "update credit_collections set credit_collection_amount = credit_amount + ? where id = ?",
-                [$credit_total->item_price, $credit_total->credit_id]
+                [$item_sum->item_price, $item_sum->id]
             );
         }
     }
 
-    if ($credit_total_all) {
+    if ($creditcol_sum) {
         return response()->json(
             ["data" => ["info" => $creditcol_sum, "error" => null]],
             200
