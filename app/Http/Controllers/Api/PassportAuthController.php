@@ -2290,6 +2290,7 @@ public function MobileRemoveCreditColSummary(Request $request)
     $remove_col_credits = DB::table("credit_collections")
     ->where("id", "=", $request->get("id"))
     ->update(["status" => 0]);
+    
     $get_col_credits = DB::table("credit_collections")
     ->where("id", "=", $request->get("id"))
     ->get();
