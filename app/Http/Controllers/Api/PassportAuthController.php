@@ -2290,7 +2290,7 @@ public function MobileRemoveCreditColSummary(Request $request)
     $remove_col_credits = DB::table("credit_collections")
     ->where("id", "=", $request->get("id"))
     ->update(["status" => 0]);
-    
+
     $get_col_credits = DB::table("credit_collections")
     ->where("id", "=", $request->get("id"))
     ->get();
@@ -2317,7 +2317,7 @@ public function MobileRemoveCreditColSummary(Request $request)
 
  if ($get_col_credits) {
     return response()->json(
-        ["data" => ["info" => $remove_col_credits, "error" => null]],
+        ["data" => ["info" => "update pending_sum_status set credit_collection_sum = 0 where sum_id = ".$request->get("sum_id"), "error" => null]],
         200
     );
 } else {
