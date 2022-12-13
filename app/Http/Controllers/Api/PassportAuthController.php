@@ -2306,7 +2306,7 @@ public function MobileRemoveCreditSummary(Request $request)
         DB::update("update pending_sum_status set credit_sum = ? where sum_id = ?",[0, $request->get("sum_id")]);
     }
 
-    if ($get_credits) {
+    if ($get_banking_details) {
         return response()->json(["data" => ["info" => $remove_credits, "error" => null]],200);
     } else {
         return response()->json(["data" => ["info" => [], "error" => 0]],401);
