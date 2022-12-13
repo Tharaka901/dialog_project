@@ -2286,49 +2286,31 @@ public function MobileRemoveCreditSummary(Request $request)
 
     $remove_credits = DB::table("credit_items")->where("id", "=", $request->get("citemid"))->update(["status" => 0]);
 
-    $get_credit_items = DB::table("credit_items")->where("credit_id", "=", $request->get("id"))->get();
+    $get_credit_items = DB::table("credit_items")->where("credit_id", "=", $request->get("id"))->where("status", "=", 1)->get();
 
     if(count($get_credit_items) == 0){
         $delete_credits = DB::table("credits")->where("id", "=", $request->get("id"))->update(["status" => 0]);
     }else{
-       DB::update("update credits set credit_amount = ? where id = ?",[$request->get("id"), 0]);
-       foreach ($get_credit_items as $get_credit_item) {
-        DB::update("update credits set credit_amount = credit_amount - ? where id = ?",[$request->get("id"), $get_credit_item['item_price']]);
+        DB::update("update credits set credit_amount = ? where id = ?",[0, $request->get("id")]);
+        DB::update("update pending_sum set credit_sum = ? where id = ?",[0, $request->get("sum_id")]);
+
+        foreach ($get_credit_items as $get_credit_item) {
+            DB::update("update credits set credit_amount = credit_amount + ? where id = ?",[$get_credit_item->item_price, $request->get("id")]);
+            DB::update("update pending_sum set credit_sum = credit_sum + ? where id = ?",[$get_credit_item->item_price, $request->get("sum_id")]);
+        }
     }
-}
 
+    $get_banking_details = Credit::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
-$get_credits = DB::table("credits")->where("id", "=", $request->get("id"))->get();
+    if(count($get_banking_details) == 0){
+        DB::update("update pending_sum_status set credit_sum = ? where sum_id = ?",[0, $request->get("sum_id")]);
+    }
 
-foreach ($get_credits as $cdata) {
-    DB::update("update pending_sum set credit_sum = credit_sum - ? where id = ?",[$cdata->credit_amount, $cdata->sum_id]);
-}
-
-
-$get_banking_details = Credit::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
-
-if(count($get_banking_details) == 0){
-   DB::update(
-    "update pending_sum_status set credit_sum = ? where sum_id = ?",
-    [
-        0,
-        $request->get("sum_id"),
-    ]
-);
-}
-
-if ($get_credits) {
-    return response()->json(
-        ["data" => ["info" => $remove_credits, "error" => null]],
-        200
-    );
-} else {
-            // Oops.. Error Occured!
-    return response()->json(
-        ["data" => ["info" => [], "error" => 0]],
-        401
-    );
-}
+    if ($get_credits) {
+        return response()->json(["data" => ["info" => $remove_credits, "error" => null]],200);
+    } else {
+        return response()->json(["data" => ["info" => [], "error" => 0]],401);
+    }
 }
 
 public function MobileRemoveCreditColSummary(Request $request)
