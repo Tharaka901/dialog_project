@@ -49,6 +49,7 @@ Route::post('mobile_get_sale_summary',[PassportAuthController::class,'MobileGetS
 Route::post('mobile_get_inhand_summary',[PassportAuthController::class,'MobileGetInhandSumery'])->name('mobile_get_inhand_summary');
 Route::post('mobile_get_banking_summary',[PassportAuthController::class,'MobileGetBankingSumery'])->name('mobile_get_banking_summary');
 Route::post('mobile_get_direct_banking_summary',[PassportAuthController::class,'MobileGetDirectBankingSumery'])->name('mobile_get_direct_banking_summary');
+
 Route::post('mobile_get_credit_summary',[PassportAuthController::class,'MobileGetCreditSumery'])->name('mobile_get_credit_summary');
 Route::post('mobile_get_creditcol_summary',[PassportAuthController::class,'MobileGetCreditColSumery'])->name('mobile_get_creditcol_summary');
 Route::post('mobile_get_retailer_summary',[PassportAuthController::class,'MobileGetRetailerSumery'])->name('mobile_get_retailer_summary');
