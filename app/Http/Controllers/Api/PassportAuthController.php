@@ -2304,7 +2304,7 @@ public function MobileRemoveCreditColSummary(Request $request)
 
     $get_banking_details = CreditCollection::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
-    if(count($get_banking_details) == 1){
+    if(count($get_banking_details) == 0){
      DB::update(
         "update pending_sum_status set credit_collection_sum = ? where sum_id = ?",
         [
