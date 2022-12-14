@@ -1429,7 +1429,7 @@ class PassportAuthController extends Controller
 
         }
 
-        if ($request->get("cash") == "") {
+        if ($request->get("cash") == "" || $request->get("cash") == -1) {
             DB::update(
                 "update pending_sum set inhand_cheque = ? WHERE id =?",
                 [$cheque_amount, $sum_id->id]
