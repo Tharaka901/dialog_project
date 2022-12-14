@@ -2616,6 +2616,7 @@ public function MobileEditCreditSummary(Request $request)
     $credit_sum_id = DB::table("credits")
     ->select("id", "sum_id")
     ->where("id", "=", $request->get("id"))
+    ->where("credits.status", "!=", 0)
     ->get();
     $sum_id = 0;
     $credit_total = 0;

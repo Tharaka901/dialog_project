@@ -240,7 +240,7 @@ public function GetBankDetails(Request $request){
 
   $banks = Bank::where('status',1)->get();
 
-  return view('admin.report.banking',["bankData"=>$bankData, "directBankData"=>$directBankData]);
+  return view('admin.report.banking',["bankData"=>$bankData, "directBankData"=>$directBankData,"banks"=>$banks]);
 
 
 }
