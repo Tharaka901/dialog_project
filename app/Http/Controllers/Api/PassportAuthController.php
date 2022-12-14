@@ -2637,6 +2637,7 @@ public function MobileEditCreditSummary(Request $request)
         ->select("sum_id", "item_price", "credit_items.credit_id")
         ->where("sum_id", "=", $sum->sum_id)
         ->where("credits.status", "!=", 0)
+        ->where("credit_items.status", "!=", 0)
         ->get();
 
         foreach ($getCreditTotal as $tot) {
