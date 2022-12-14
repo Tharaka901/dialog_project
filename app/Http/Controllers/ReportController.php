@@ -238,6 +238,7 @@ public function GetBankDetails(Request $request){
   ->where('directbankings.direct_bank_id',$request->id)
   ->paginate(5);
 
+  $banks = Bank::where('status',1)->get();
 
   return view('admin.report.banking',["bankData"=>$bankData, "directBankData"=>$directBankData]);
 
