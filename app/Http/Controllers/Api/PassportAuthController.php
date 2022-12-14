@@ -1411,7 +1411,7 @@ class PassportAuthController extends Controller
                 }
             }else{
 
-               foreach ($chequeArr as $cheque) {
+             foreach ($chequeArr as $cheque) {
                 $inhand_cheque = new DrsCheque([
                     "sum_id" => $sum_id->id,
                     "dsrs_id" => 1,
@@ -1429,7 +1429,7 @@ class PassportAuthController extends Controller
 
         }
 
-        if ($request->get("cash") == "" || $request->get("cash") == -1) {
+        if ($request->get("cash") == "") {
             DB::update(
                 "update pending_sum set inhand_cheque = ? WHERE id =?",
                 [$cheque_amount, $sum_id->id]
@@ -2133,17 +2133,17 @@ public function MobileRemoveBankingSummary(Request $request)
     $get_banking_details = banking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-     DB::update(
+       DB::update(
         "update pending_sum_status set banking_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
- }
+   }
 
 
- if ($get_banking_details) {
+   if ($get_banking_details) {
     return response()->json(
         ["data" => ["info" => $remove_sales, "error" => null]],
         200
@@ -2227,16 +2227,16 @@ public function MobileRemoveDBankingSummary(Request $request)
     $get_banking_details = directbanking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-     DB::update(
+       DB::update(
         "update pending_sum_status set direct_banking_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
- }
+   }
 
- if ($get_dbanking_details) {
+   if ($get_dbanking_details) {
     return response()->json(
         ["data" => ["info" => $remove_dbankings, "error" => null]],
         200
@@ -2310,16 +2310,16 @@ public function MobileRemoveCreditColSummary(Request $request)
     $get_banking_details = CreditCollection::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-     DB::update(
+       DB::update(
         "update pending_sum_status set credit_collection_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
- }
+   }
 
- if ($get_col_credits) {
+   if ($get_col_credits) {
     return response()->json(
         ["data" => ["info" => $get_banking_details, "error" => null]],
         200
