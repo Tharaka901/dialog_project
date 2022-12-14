@@ -31,7 +31,7 @@ class DsrController extends Controller
         // ->where('date', '=', $todayDate)
         ->where('pending_sum.status', '!=', 2)
         ->orderBy('pending_sum.date','desc')
-        ->paginate(10);
+        ->paginate(20);
 
         return view('admin.dsr.pending_dsr',["dsrData"=>$pdsr]);
     }
@@ -53,7 +53,7 @@ class DsrController extends Controller
         ->where('users.name', 'like', '%' . $request->session()->get('pending_dsr_name') . '%' )
         ->where('pending_sum.status', '!=', 2)
         ->orderBy('pending_sum.date','desc')
-        ->paginate(10);
+        ->paginate(20);
 
         return view('admin.dsr.search_dsr1',["dsrData"=>$pdsr]);
     }
@@ -564,7 +564,7 @@ public function CompleteDsr(){
     ->where('date', '=', $todayDate)
     ->where('pending_sum.status', '=', 2)
     ->orderBy('pending_sum.date','desc')
-    ->paginate(10);
+    ->paginate(20);
 
     return view('admin.dsr.complete_dsr',["dsrData"=>$pdsr]);
 }
@@ -599,7 +599,7 @@ if($request->session()->get('dsr_name') != ""){
     ->where('users.name', 'like', '%' . $request->session()->get('dsr_name') . '%' )
     ->where('pending_sum.status', '=', 2)
     ->orderBy('pending_sum.date','desc')
-    ->paginate(10);
+    ->paginate(20);
 
     return view('admin.dsr.search_dsr',["dsrData"=>$pdsr]);
 }
@@ -612,7 +612,7 @@ if($request->session()->get('dsr_from') != "" && $request->session()->get('dsr_t
     ->where('pending_sum.status', '=', 2)
     ->whereBetween('date', [$request->session()->get('dsr_from'), $request->session()->get('dsr_to')])
     ->orderBy('pending_sum.date','desc')
-    ->paginate(10);
+    ->paginate(20);
 
     return view('admin.dsr.search_dsr',["dsrData"=>$pdsr]);
 }
@@ -626,7 +626,7 @@ if($request->session()->get('dsr_name') != "" && $request->session()->get('dsr_f
     ->where('pending_sum.status', '=', 2)
     ->whereBetween('date',[$request->session()->get('dsr_from'), $request->session()->get('dsr_to')])
     ->orderBy('pending_sum.date','desc')
-    ->paginate(10);
+    ->paginate(20);
 
     return view('admin.dsr.search_dsr',["dsrData"=>$pdsr]);
 }

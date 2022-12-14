@@ -70,11 +70,11 @@
                                         @if(isset($bankData))
                                         @foreach($bankData as $bank)
                                         <tr>
-                                            <th style="min-width: 50px">{{ $bank->created_at }}</th>
-                                            <th style="min-width: 50px">{{ $bank->bankname }}</th>
-                                            <th style="min-width: 50px">{{ $bank->name }}</th>
-                                            <th style="min-width: 50px">{{ $bank->ref_no }}</th>
-                                            <th style="min-width: 50px">{{ $bank->amount }}</th>
+                                            <td style="min-width: 50px">{{ $bank->created_at }}</td>
+                                            <td style="min-width: 50px">{{ $bank->bankname }}</td>
+                                            <td style="min-width: 50px">{{ $bank->name }}</td>
+                                            <td style="min-width: 50px">{{ $bank->ref_no }}</td>
+                                            <td style="min-width: 50px">{{ $bank->amount }}</td>
                                         </tr>
                                         @endforeach
                                         @endif
@@ -105,11 +105,11 @@
                                  @if(isset($directBankData))
                                  @foreach($directBankData as $dbank)
                                  <tr>
-                                    <th style="min-width: 50px">{{ $dbank->created_at }}</th>
-                                    <th style="min-width: 50px">{{ $dbank->bankname }}</th>
-                                    <th style="min-width: 50px">{{ $dbank->name }}</th>
-                                    <th style="min-width: 50px">{{ $dbank->ref_no }}</th>
-                                    <th style="min-width: 50px">{{ $dbank->amount }}</th>
+                                    <td style="min-width: 50px">{{ $dbank->created_at }}</td>
+                                    <td style="min-width: 50px">{{ $dbank->bankname }}</td>
+                                    <td style="min-width: 50px">{{ $dbank->name }}</td>
+                                    <td style="min-width: 50px">{{ $dbank->ref_no }}</td>
+                                    <td style="min-width: 50px">{{ $dbank->amount }}</td>
                                 </tr>
                                 @endforeach
                                 @endif
