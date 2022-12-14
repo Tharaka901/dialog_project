@@ -2725,7 +2725,7 @@ public function MobileEditCreditColSummary(Request $request)
         $creditCol += $sum->item_price;
 
         DB::update(
-            "update pending_sum set credit_collection_sum = credit_collection_sum + ? where id = ?",
+            "update pending_sum set credit_collection_sum = ? where id = ?",
             [$creditCol, $sum->sum_id]
         );
             // DB::update('update credit_collections set credit_collection_amount = ? where id = ?', array( $request->get('ccAmount') , $request->get('id') ));
