@@ -2641,12 +2641,13 @@ public function MobileEditCreditSummary(Request $request)
         foreach ($getCreditTotal as $tot) {
             $sum_id = $sum->sum_id;
             $credit_total += $tot->item_price;
-        }
-        DB::update(
+        } 
+    }
+
+    DB::update(
             "update pending_sum set credit_sum = credit_sum + ? where id = ?",
             [$credit_total, $sum_id]
         );
-    }
 
     $credit_total_all = DB::table("credits")
     ->join("credit_items", "credit_items.credit_id", "credits.id")
