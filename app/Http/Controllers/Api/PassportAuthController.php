@@ -1345,6 +1345,7 @@ class PassportAuthController extends Controller
         $check_data = DB::table("dsrs")->select("sum_id", "dsr_user_id", "in_hand", "cash", "cheque")->where("dsrs.sum_id", "=", $sum_id->id)->get();
 
         if (count($check_data) == 0) {
+             //insert
             $inhand = new Dsr([
                 "cash" => $request->get("cash"),
                 "cheque" => $cheque,
@@ -1380,11 +1381,13 @@ class PassportAuthController extends Controller
                 ]
             );
         } else {
+
+            //update
             $cheques_is_exist = DrsCheque::where("sum_id", $sum_id->id)->where("status", 1)->get();
 
             if (count($cheques_is_exist) != 0) {
                 if (count($chequeArr) != 0) {
-                    DB::table('drs_cheques')->where('sum_id', $sum_id->id)->delete();
+                    // DB::table('drs_cheques')->where('sum_id', $sum_id->id)->delete();
 
                     foreach ($chequeArr as $cheque) {
                         $inhand_cheque = new DrsCheque([
