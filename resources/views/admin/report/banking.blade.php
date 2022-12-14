@@ -28,7 +28,7 @@
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-6 form-group">
-                                            <select class="form-control" id="id" name="id">
+                                            <select class="form-control" id="id" name="id" value="{{ request()->get('id') }}">
                                                 <option value="">-select a bank-</option>
                                                 @foreach($banks as $bank)
                                                 <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
@@ -60,6 +60,7 @@
                                     <thead class="back_table_color">
                                         <tr>
                                             <th style="min-width: 50px">Date</th>
+                                            <th style="min-width: 50px">Bank Name</th>
                                             <th style="min-width: 50px">DSR Name</th>
                                             <th style="min-width: 50px">Ref Number</th>
                                             <th style="min-width: 50px">Amount</th>
@@ -70,6 +71,7 @@
                                         @foreach($bankData as $bank)
                                         <tr>
                                             <th style="min-width: 50px">{{ $bank->created_at }}</th>
+                                            <th style="min-width: 50px">{{ $bank->bankname }}</th>
                                             <th style="min-width: 50px">{{ $bank->name }}</th>
                                             <th style="min-width: 50px">{{ $bank->ref_no }}</th>
                                             <th style="min-width: 50px">{{ $bank->amount }}</th>
@@ -79,42 +81,53 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
 
-                        <div class="tab-pane fade" id="direct_banking" role="tabpanel" aria-labelledby="contact-tab">
+                            <div class="d-flex justify-content-center">
+                               <div>{!! $bankData->links() !!}</div>
+                           </div>
 
-                            <div class="table-responsive">
-                                <table id="bankingDetailsTable" class="table table-bordered table-striped table-hover">
-                                    <thead class="back_table_color">
-                                        <tr>
-                                            <th style="min-width: 50px">Date</th>
-                                            <th style="min-width: 50px">DSR Name</th>
-                                            <th style="min-width: 50px">Ref Number</th>
-                                            <th style="min-width: 50px">Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                     @if(isset($directBankData))
-                                     @foreach($directBankData as $dbank)
-                                     <tr>
-                                        <th style="min-width: 50px">{{ $dbank->created_at }}</th>
-                                        <th style="min-width: 50px">{{ $dbank->name }}</th>
-                                        <th style="min-width: 50px">{{ $dbank->ref_no }}</th>
-                                        <th style="min-width: 50px">{{ $dbank->amount }}</th>
+                       </div>
+
+                       <div class="tab-pane fade" id="direct_banking" role="tabpanel" aria-labelledby="contact-tab">
+
+                        <div class="table-responsive">
+                            <table id="bankingDetailsTable" class="table table-bordered table-striped table-hover">
+                                <thead class="back_table_color">
+                                    <tr>
+                                        <th style="min-width: 50px">Date</th>
+                                        <th style="min-width: 50px">Bank Name</th>
+                                        <th style="min-width: 50px">DSR Name</th>
+                                        <th style="min-width: 50px">Ref Number</th>
+                                        <th style="min-width: 50px">Amount</th>
                                     </tr>
-                                    @endforeach
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-
+                                </thead>
+                                <tbody>
+                                 @if(isset($directBankData))
+                                 @foreach($directBankData as $dbank)
+                                 <tr>
+                                    <th style="min-width: 50px">{{ $dbank->created_at }}</th>
+                                    <th style="min-width: 50px">{{ $dbank->bankname }}</th>
+                                    <th style="min-width: 50px">{{ $dbank->name }}</th>
+                                    <th style="min-width: 50px">{{ $dbank->ref_no }}</th>
+                                    <th style="min-width: 50px">{{ $dbank->amount }}</th>
+                                </tr>
+                                @endforeach
+                                @endif
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+
+                    <div class="d-flex justify-content-center">
+                       <div>{!! $directBankData->links() !!}</div>
+                   </div>
+
+               </div>
+           </div>
 
 
-            </div>
-        </div>
-    </div>
+       </div>
+   </div>
+</div>
 </div>
 </section>
 </div>
