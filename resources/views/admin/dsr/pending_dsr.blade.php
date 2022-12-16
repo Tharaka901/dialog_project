@@ -193,7 +193,7 @@
          <div class="tab-pane fade" id="day" role="tabpanel" aria-labelledby="contact-tab">
 
             <div class="row">
-               <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+               <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                   <div class="table-responsive mt-3">
                     <table id="inHandTable" class="table table-bordered table-striped table-hover">
                        <thead class="back_table_color">
@@ -202,7 +202,7 @@
                              <th style='display:none;'>Id</th>
                              <th>In-Hand</th>
                              <th>Cash</th>
-                             <th style='display:none;'>Cheque</th>
+                             <th>Cheque</th>
                              <th>Action</th>
                           </tr>
                        </thead>
@@ -211,7 +211,7 @@
                     </table>
                  </div>
               </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                <div class="table-responsive mt-3">
                  <table id="inHandChequeTable" class="table table-bordered table-striped table-hover">
                     <thead class="back_table_color">
@@ -242,7 +242,7 @@
   <div class="tab-pane fade" id="credit" role="tabpanel" aria-labelledby="home-tab">
 
     <div class="row">
-       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+       <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
           <div class="table-responsive mt-3">
            <table id="creditTable" class="table table-bordered table-striped table-hover">
               <thead class="back_table_color">
@@ -261,7 +261,7 @@
           </table>
        </div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
        <div class="table-responsive mt-3">
          <table id="creditItemTable" class="table table-bordered table-striped table-hover">
            <thead class="back_table_color">
@@ -293,7 +293,7 @@
 <div class="tab-pane fade" id="credit_collection" role="tabpanel" aria-labelledby="profile-tab">
 
  <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
        <div class="table-responsive mt-3">
         <table id="creditCollectionTable" class="table table-bordered table-striped table-hover">
            <thead class="back_table_color">
@@ -304,6 +304,7 @@
                 <th>Customer Name</th>
                 <th style='display: none'>Old Amount</th>
                 <th>Amount</th>
+                <th>Option</th>
                 <th>Remove</th>
              </tr>
           </thead>
@@ -312,7 +313,7 @@
        </table>
     </div>
  </div>
- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+ <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
     <div class="table-responsive mt-3">
       <table id="creditCollectionItemTable" class="table table-bordered table-striped table-hover">
         <thead class="back_table_color">

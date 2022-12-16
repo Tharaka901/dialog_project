@@ -198,9 +198,9 @@ function viewDsr(psum_id,dsr_id,status){
           "<td style='display:none;'>"+data.inhandData[i].id+"</td>"+
           "<td><input type='text' class='form-control' value="+data.inhandData[i].in_hand+"></td>"+
           "<td><input type='text' class='form-control' value="+data.inhandData[i].cash+"></td>"+
-          "<td style='display:none;'><input type='text' class='form-control' value="+data.inhandData[i].cheque+"></td>"+
+          "<td><input type='text' class='form-control' value="+data.inhandData[i].cheque+"><a class='btn btn-warning btn-sm' onclick='viewInhandCheques(this,"+status+","+psum_id+")'><i class='fa fa-eye'></i></a></td>"+
           "<td><a class='btn btn-danger btn-sm' "+disableValue+" onclick='removeInhandRow(this,"+status+")'><i class='fa fa-trash'></i></a>"+
-          "<a class='btn btn-warning btn-sm' onclick='viewInhandCheques(this,"+status+","+psum_id+")'><i class='fa fa-eye'></i></a></td>"+
+          "</td>"+
           "</tr>");
         inhandcount++;
       }
@@ -219,12 +219,23 @@ function viewDsr(psum_id,dsr_id,status){
       }
 
       for (var i = 0; i < data.creditcolData.length; i++) {
+
+        var option = "";
+        if(data.creditcolData[i].option_id == 1){
+          option = "Dsr Banking";
+        }else if(data.creditcolData[i].option_id == 2){
+          option = "Direct Banking";
+        }else{
+          option = "Inhand";
+        }
+
         $("#creditCollectionTable tbody").append("<tr><td>"+creditcolcount+"</td>"+
          "<td style='display:none'>"+data.creditcolData[i].id+"</td>"+
          "<td style='display: none'>"+data.creditcolData[i].credit_collection_customer_name+"</td>"+
          "<td><input type='text' class='form-control' value="+JSON.stringify(data.creditcolData[i].credit_collection_customer_name)+"></td>"+
          "<td style='display: none'>"+data.creditcolData[i].credit_collection_amount+"</td>"+
          "<td><input type='text' class='form-control' value="+data.creditcolData[i].credit_collection_amount+"></td>"+
+         "<td><input type='text' class='form-control' value="+JSON.stringify(option)+"></td>"+
          "<td><a class='btn btn-danger btn-sm' "+disableValue+" onclick='removeCreditColRow(this,"+status+")'><i class='fa fa-trash'></i></a>"+
          "<a class='btn btn-warning btn-sm' onclick='viewCreditColItems(this,"+status+","+data.creditcolData[i].id+")'><i class='fa fa-eye'></i></a></td>"+
          "</tr>");

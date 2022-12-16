@@ -87,7 +87,7 @@ class DsrController extends Controller
        ->get();
 
        $creditCollection = DB::table('credit_collections')
-       ->select('credit_collections.id','credit_collection_customer_name','credit_collection_amount')
+       ->select('credit_collections.id','credit_collection_customer_name','credit_collection_amount','option_id')
        ->where('credit_collections.status', '=', 1)
        ->where('credit_collections.sum_id',$request->id)
        ->get();
