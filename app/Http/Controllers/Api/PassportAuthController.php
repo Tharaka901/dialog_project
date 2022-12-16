@@ -669,7 +669,7 @@ class PassportAuthController extends Controller
         date_default_timezone_set("Asia/colombo");
         $system_date = date("Y-m-d");
         $system_time = date("h:i:s");
-        $custom_timestamp = $system_date." "$system_time;
+        $custom_timestamp = $system_date." ".$system_time;
 
         $dsrId = $request->get("dsr_id");
         $todayDate = $request->get("date");
