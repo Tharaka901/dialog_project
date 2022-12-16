@@ -1800,7 +1800,7 @@ public function MobileGetCreditColSumery(Request $request)
         "credit_collections.id",
         "credit_collections.sum_id",
         "credit_collection_customer_name",
-        "credit_collection_amount",
+        "credit_collection_items.item_price",
         "option_id",
         "items.name",
         "items.id as item_id",
