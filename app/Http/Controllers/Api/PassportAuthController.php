@@ -792,6 +792,7 @@ class PassportAuthController extends Controller
         date_default_timezone_set("Asia/colombo");
         $system_date = date("Y-m-d");
         $system_time = date("h:i:s");
+        $custom_timestamp = $system_date." ".$system_time;
 
         $dsrId = $request->get("dsr_id");
         $todayDate = $request->get("date");
@@ -811,7 +812,7 @@ class PassportAuthController extends Controller
 
         if (count($csum) == 0) {
             //insert
-            DB::insert("insert into pending_sum (dsr_id, date, credit_collection_sum) values (?,?,?)",[$dsrId, $todayDate, $creditColSum]);
+            DB::insert("insert into pending_sum (dsr_id, date, credit_collection_sum,created_at) values (?,?,?,?)",[$dsrId, $todayDate, $creditColSum, $custom_timestamp]);
             $sum_id = DB::table("pending_sum")->latest("id")->first();
         } else {
             //update
@@ -1014,6 +1015,9 @@ class PassportAuthController extends Controller
     public function MobileDsrBankings(Request $request)
     {
         date_default_timezone_set("Asia/colombo");
+        $system_date = date("Y-m-d");
+        $system_time = date("h:i:s");
+        $custom_timestamp = $system_date." ".$system_time;
 
         $dsrId = $request->get("dsr_id");
         $bankingItems = $request->get("bankings");
@@ -1031,6 +1035,7 @@ class PassportAuthController extends Controller
         ->where("dsr_id", "=", $dsrId)
         ->where("date", "=", $todayDate)
         ->get();
+
         $pstatus = DB::table("pending_sum_status")
         ->select("dsr_id", "date")
         ->where("dsr_id", "=", $dsrId)
@@ -1059,7 +1064,7 @@ class PassportAuthController extends Controller
             }
 
             DB::insert(
-                "insert into pending_sum (dsr_id, date,banking_sum,banking_sampath,banking_cargils,banking_peoples,banking_sampth_online) values (?,?,?,?,?,?,?)",
+                "insert into pending_sum (dsr_id, date,banking_sum,banking_sampath,banking_cargils,banking_peoples,banking_sampth_online,created_at) values (?,?,?,?,?,?,?,?)",
                 [
                     $dsrId,
                     $todayDate,
@@ -1068,6 +1073,7 @@ class PassportAuthController extends Controller
                     $cargils,
                     $peoples,
                     $sampathonline,
+                    $custom_timestamp,
                 ]
             );
             $sum_id = DB::table("pending_sum")
@@ -1142,222 +1148,264 @@ class PassportAuthController extends Controller
 
     public function MobileDsrDirectBankings(Request $request)
     {
-        date_default_timezone_set("Asia/colombo");
+       date_default_timezone_set("Asia/colombo");
+       $system_date = date("Y-m-d");
+       $system_time = date("h:i:s");
+       $custom_timestamp = $system_date." ".$system_time;
 
-        $dsrId = $request->get("dsr_id");
-        $dbankingItems = $request->get("dbankings");
-        $todayDate = $request->get("date");
-        $dbankingSum = 0;
-        $sum_id = 0;
+       $dsrId = $request->get("dsr_id");
+       $dbankingItems = $request->get("dbankings");
+       $todayDate = $request->get("date");
+       $dbankingSum = 0;
+       $sum_id = 0;
 
-        $sampath = 0;
-        $peoples = 0;
-        $cargils = 0;
-        $sampathonline = 0;
+       $sampath = 0;
+       $peoples = 0;
+       $cargils = 0;
+       $sampathonline = 0;
 
         // check if there is data in pending sum table for dsr today
-        $csum = DB::table("pending_sum")
-        ->select("id", "dsr_id", "date")
-        ->where("dsr_id", "=", $dsrId)
-        ->where("date", "=", $todayDate)
-        ->get();
-        $pstatus = DB::table("pending_sum_status")
-        ->select("dsr_id", "date")
-        ->where("dsr_id", "=", $dsrId)
-        ->where("date", "=", $todayDate)
-        ->get();
+       $csum = DB::table("pending_sum")
+       ->select("id", "dsr_id", "date")
+       ->where("dsr_id", "=", $dsrId)
+       ->where("date", "=", $todayDate)
+       ->get();
+       $pstatus = DB::table("pending_sum_status")
+       ->select("dsr_id", "date")
+       ->where("dsr_id", "=", $dsrId)
+       ->where("date", "=", $todayDate)
+       ->get();
 
-        if (count($csum) == 0) {
+       if (count($csum) == 0) {
             // insert
-            foreach ($dbankingItems as $dbank) {
-                $dbankingSum += floatval($dbank["amount"]);
-                $single_bank = DB::table("banks")
-                ->whereIN("id", [$dbank["bank_id"]])
-                ->where("status", 1)
-                ->get();
+        foreach ($dbankingItems as $dbank) {
+            $dbankingSum += floatval($dbank["amount"]);
+            $single_bank = DB::table("banks")
+            ->whereIN("id", [$dbank["bank_id"]])
+            ->where("status", 1)
+            ->get();
 
-                foreach ($single_bank as $sbank) {
-                    if ($sbank->bank_name == "Sampath Bank") {
-                        $sampath += $dbank["amount"];
-                    } elseif ($sbank->bank_name == "People's Bank") {
-                        $peoples += $dbank["amount"];
-                    } elseif ($sbank->bank_name == "Cargills Bank") {
-                        $cargils += $dbank["amount"];
-                    } else {
-                        $sampathonline += $dbank["amount"];
-                    }
+            foreach ($single_bank as $sbank) {
+                if ($sbank->bank_name == "Sampath Bank") {
+                    $sampath += $dbank["amount"];
+                } elseif ($sbank->bank_name == "People's Bank") {
+                    $peoples += $dbank["amount"];
+                } elseif ($sbank->bank_name == "Cargills Bank") {
+                    $cargils += $dbank["amount"];
+                } else {
+                    $sampathonline += $dbank["amount"];
                 }
             }
+        }
 
-            DB::insert(
-                "insert into pending_sum (dsr_id, date, direct_banking_sum, direct_banking_sampath, direct_banking_cargils, direct_banking_peoples, direct_banking_sampth_online) values (?,?,?,?,?,?,?)",
-                [
-                    $dsrId,
-                    $todayDate,
-                    $dbankingSum,
-                    $sampath,
-                    $cargils,
-                    $peoples,
-                    $sampathonline,
-                ]
-            );
-            $sum_id = DB::table("pending_sum")
-            ->latest("id")
-            ->first();
-        } else {
+        DB::insert(
+            "insert into pending_sum (dsr_id, date, direct_banking_sum, direct_banking_sampath, direct_banking_cargils, direct_banking_peoples, direct_banking_sampth_online,created_at) values (?,?,?,?,?,?,?,?)",
+            [
+                $dsrId,
+                $todayDate,
+                $dbankingSum,
+                $sampath,
+                $cargils,
+                $peoples,
+                $sampathonline,
+                $custom_timestamp
+            ]
+        );
+        $sum_id = DB::table("pending_sum")
+        ->latest("id")
+        ->first();
+    } else {
             // update
-            foreach ($dbankingItems as $dbank) {
-                $dbankingSum += floatval($dbank["amount"]);
-                $single_bank = DB::table("banks")
-                ->whereIN("id", [$dbank["bank_id"]])
-                ->where("status", 1)
-                ->get();
+        foreach ($dbankingItems as $dbank) {
+            $dbankingSum += floatval($dbank["amount"]);
+            $single_bank = DB::table("banks")
+            ->whereIN("id", [$dbank["bank_id"]])
+            ->where("status", 1)
+            ->get();
 
-                foreach ($single_bank as $sbank) {
-                    if ($sbank->bank_name == "Sampath Bank") {
-                        $sampath += $dbank["amount"];
-                    }
+            foreach ($single_bank as $sbank) {
+                if ($sbank->bank_name == "Sampath Bank") {
+                    $sampath += $dbank["amount"];
+                }
 
-                    if ($sbank->bank_name == "People's Bank") {
-                        $peoples += $dbank["amount"];
-                    }
+                if ($sbank->bank_name == "People's Bank") {
+                    $peoples += $dbank["amount"];
+                }
 
-                    if ($sbank->bank_name == "Cargills Bank") {
-                        $cargils += $dbank["amount"];
-                    }
+                if ($sbank->bank_name == "Cargills Bank") {
+                    $cargils += $dbank["amount"];
                 }
             }
-
-            DB::update(
-                'update pending_sum set 
-                direct_banking_sum = direct_banking_sum + ? ,
-                direct_banking_sampath = direct_banking_sampath + ?
-                ,direct_banking_cargils = direct_banking_cargils + ?
-                ,direct_banking_peoples = direct_banking_peoples + ?
-                ,direct_banking_sampth_online = direct_banking_sampth_online + ?
-                where dsr_id = ?
-                and date = ?',
-                [
-                    $dbankingSum,
-                    $sampath,
-                    $cargils,
-                    $peoples,
-                    $sampathonline,
-                    $dsrId,
-                    $todayDate,
-                ]
-            );
-
-            foreach ($csum as $sum) {
-                $sum_id = $sum;
-            }
         }
 
-        if (count($pstatus) == 0) {
+        DB::update(
+            'update pending_sum set 
+            direct_banking_sum = direct_banking_sum + ? ,
+            direct_banking_sampath = direct_banking_sampath + ?
+            ,direct_banking_cargils = direct_banking_cargils + ?
+            ,direct_banking_peoples = direct_banking_peoples + ?
+            ,direct_banking_sampth_online = direct_banking_sampth_online + ?
+            where dsr_id = ?
+            and date = ?',
+            [
+                $dbankingSum,
+                $sampath,
+                $cargils,
+                $peoples,
+                $sampathonline,
+                $dsrId,
+                $todayDate,
+            ]
+        );
+
+        foreach ($csum as $sum) {
+            $sum_id = $sum;
+        }
+    }
+
+    if (count($pstatus) == 0) {
             // insert
-            DB::insert(
-                "insert into pending_sum_status (sum_id, dsr_id, date,direct_banking_sum) values (?,?,?,?)",
-                [$sum_id->id, $dsrId, $todayDate, 1]
-            );
-        } else {
+        DB::insert(
+            "insert into pending_sum_status (sum_id, dsr_id, date,direct_banking_sum) values (?,?,?,?)",
+            [$sum_id->id, $dsrId, $todayDate, 1]
+        );
+    } else {
             // update
-            DB::update(
-                "update pending_sum_status set direct_banking_sum = ? where dsr_id = ? and date = ?",
-                [1, $dsrId, $todayDate]
-            );
-        }
-
-        foreach ($dbankingItems as $db) {
-            $direct_bankings = new directbanking([
-                "direct_bank_customer_name" => $db["customer_name"],
-                "direct_bank_id" => $db["bank_id"],
-                "direct_bank_ref_no" => $db["ref_no"],
-                "direct_bank_amount" => $db["amount"],
-                "sum_id" => $sum_id->id,
-                "dsr_id" => $dsrId,
-            ]);
-            $direct_bankings->save();
-        }
-
-        return response()->json(
-            ["data" => ["info" => $dbankingItems, "error" => null]],
-            200
+        DB::update(
+            "update pending_sum_status set direct_banking_sum = ? where dsr_id = ? and date = ?",
+            [1, $dsrId, $todayDate]
         );
     }
 
-    public function MobileDsrInhands(Request $request)
-    {
-        date_default_timezone_set("Asia/colombo");
-        // $todayDate = date('Y-m-d');
-        $todayDate = $request->get("date");
-        $cheque = 0;
-        $chequeArr = $request->get("cheques");
-        $inhandSum = 0;
-        $sum_id = 0;
-        $cheque_amount = 0;
+    foreach ($dbankingItems as $db) {
+        $direct_bankings = new directbanking([
+            "direct_bank_customer_name" => $db["customer_name"],
+            "direct_bank_id" => $db["bank_id"],
+            "direct_bank_ref_no" => $db["ref_no"],
+            "direct_bank_amount" => $db["amount"],
+            "sum_id" => $sum_id->id,
+            "dsr_id" => $dsrId,
+        ]);
+        $direct_bankings->save();
+    }
+
+    return response()->json(
+        ["data" => ["info" => $dbankingItems, "error" => null]],
+        200
+    );
+}
+
+public function MobileDsrInhands(Request $request)
+{
+ date_default_timezone_set("Asia/colombo");
+ $system_date = date("Y-m-d");
+ $system_time = date("h:i:s");
+ $custom_timestamp = $system_date." ".$system_time;
+
+ $todayDate = $request->get("date");
+ $cheque = 0;
+ $chequeArr = $request->get("cheques");
+ $inhandSum = 0;
+ $sum_id = 0;
+ $cheque_amount = 0;
 
         // check if there is data in pending sum table for dsr today
-        $csum = DB::table("pending_sum")->select("id", "dsr_id", "date")->where("dsr_id", "=", $request->get("dsr_id"))->where("date", "=", $todayDate)->get();
+ $csum = DB::table("pending_sum")->select("id", "dsr_id", "date")->where("dsr_id", "=", $request->get("dsr_id"))->where("date", "=", $todayDate)->get();
 
 
-        $pstatus = DB::table("pending_sum_status")->select("dsr_id", "date")->where("dsr_id", "=", $request->get("dsr_id"))->where("date", "=", $todayDate)->get();
+ $pstatus = DB::table("pending_sum_status")->select("dsr_id", "date")->where("dsr_id", "=", $request->get("dsr_id"))->where("date", "=", $todayDate)->get();
 
-        if (count($csum) == 0) {
+ if (count($csum) == 0) {
             // insert
-            DB::insert("insert into pending_sum (dsr_id, date, inhand_cash, inhand_cheque) values (?,?,?,?)",
-                [
-                    $request->get("dsr_id"),
-                    $todayDate,
-                    $request->get("cash"),
-                    $cheque,
-                ]
-            );
-            $sum_id = DB::table("pending_sum")->latest("id")->first();
-        } else {
+    DB::insert("insert into pending_sum (dsr_id, date, inhand_cash, inhand_cheque,created_at) values (?,?,?,?,?)",
+        [
+            $request->get("dsr_id"),
+            $todayDate,
+            $request->get("cash"),
+            $cheque,
+            $custom_timestamp
+        ]
+    );
+    $sum_id = DB::table("pending_sum")->latest("id")->first();
+} else {
             // update
-            DB::update(
-                "update pending_sum set inhand_sum = ? , inhand_cash = ? , inhand_cheque = ? where dsr_id = ? and date = ?",
-                [
-                    floatval($request->get("cash")) +
-                    floatval($request->get("cheque")),
-                    $request->get("cash"),
-                    $cheque,
-                    $request->get("dsr_id"),
-                    $todayDate,
-                ]
-            );
-            foreach ($csum as $sum) {
-                $sum_id = $sum;
-            }
-        }
+    DB::update(
+        "update pending_sum set inhand_sum = ? , inhand_cash = ? , inhand_cheque = ? where dsr_id = ? and date = ?",
+        [
+            floatval($request->get("cash")) +
+            floatval($request->get("cheque")),
+            $request->get("cash"),
+            $cheque,
+            $request->get("dsr_id"),
+            $todayDate,
+        ]
+    );
+    foreach ($csum as $sum) {
+        $sum_id = $sum;
+    }
+}
 
-        if (count($pstatus) == 0) {
+if (count($pstatus) == 0) {
             // insert
-            DB::insert(
-                "insert into pending_sum_status (sum_id,dsr_id, date,inhand_sum) values (?,?,?,?)",
-                [$sum_id->id, $request->get("dsr_id"), $todayDate, 1]
-            );
-        } else {
+    DB::insert(
+        "insert into pending_sum_status (sum_id,dsr_id, date,inhand_sum) values (?,?,?,?)",
+        [$sum_id->id, $request->get("dsr_id"), $todayDate, 1]
+    );
+} else {
             // update
-            DB::update(
-                "update pending_sum_status set inhand_sum = ? where dsr_id = ? and date = ?",
-                [1, $request->get("dsr_id"), $todayDate]
-            );
-        }
+    DB::update(
+        "update pending_sum_status set inhand_sum = ? where dsr_id = ? and date = ?",
+        [1, $request->get("dsr_id"), $todayDate]
+    );
+}
 
-        $check_data = DB::table("dsrs")->select("sum_id", "dsr_user_id", "in_hand", "cash", "cheque")->where("dsrs.sum_id", "=", $sum_id->id)->get();
+$check_data = DB::table("dsrs")->select("sum_id", "dsr_user_id", "in_hand", "cash", "cheque")->where("dsrs.sum_id", "=", $sum_id->id)->get();
 
-        if (count($check_data) == 0) {
+if (count($check_data) == 0) {
              //insert
-            $inhand = new Dsr([
-                "cash" => $request->get("cash"),
-                "cheque" => $cheque,
-                "sum_id" => $sum_id->id,
-                "dsr_user_id" => $request->get("dsr_id"),
-            ]);
-            $inhand->save();
+    $inhand = new Dsr([
+        "cash" => $request->get("cash"),
+        "cheque" => $cheque,
+        "sum_id" => $sum_id->id,
+        "dsr_user_id" => $request->get("dsr_id"),
+    ]);
+    $inhand->save();
 
             // save dsr cheques
+    foreach ($chequeArr as $cheque) {
+        $inhand_cheque = new DrsCheque([
+            "sum_id" => $sum_id->id,
+            "dsrs_id" => 1,
+            "cheque_no" => $cheque["cheque_no"],
+            "cheque_amount" => $cheque["cheque_amount"],
+        ]);
+        $inhand_cheque->save();
+        $cheque_amount += $cheque["cheque_amount"];
+    }
+
+            // update cheque amount in dsrs table
+    Dsr::where("id", $inhand->id)->update([
+        "cheque" => $cheque_amount,
+        "cash" => $request->get("cash"),
+        "in_hand" => $cheque_amount + $request->get("cash"),
+    ]);
+    DB::update(
+        "update pending_sum set inhand_sum =?, inhand_cheque = ? WHERE id =?",
+        [
+            $cheque_amount + $request->get("cash"),
+            $cheque_amount,
+            $sum_id->id,
+        ]
+    );
+} else {
+
+            //update
+    $cheques_is_exist = DrsCheque::where("sum_id", $sum_id->id)->where("status", 1)->get();
+
+    if (count($cheques_is_exist) != 0) {
+        if (count($chequeArr) != 0) {
+                    // DB::table('drs_cheques')->where('sum_id', $sum_id->id)->delete();
+
             foreach ($chequeArr as $cheque) {
                 $inhand_cheque = new DrsCheque([
                     "sum_id" => $sum_id->id,
@@ -1366,141 +1414,107 @@ class PassportAuthController extends Controller
                     "cheque_amount" => $cheque["cheque_amount"],
                 ]);
                 $inhand_cheque->save();
-                $cheque_amount += $cheque["cheque_amount"];
             }
 
-            // update cheque amount in dsrs table
-            Dsr::where("id", $inhand->id)->update([
-                "cheque" => $cheque_amount,
-                "cash" => $request->get("cash"),
-                "in_hand" => $cheque_amount + $request->get("cash"),
-            ]);
-            DB::update(
-                "update pending_sum set inhand_sum =?, inhand_cheque = ? WHERE id =?",
-                [
-                    $cheque_amount + $request->get("cash"),
-                    $cheque_amount,
-                    $sum_id->id,
-                ]
-            );
-        } else {
+            $cheque_list = DrsCheque::where("sum_id",$sum_id->id)->where("status", 1)->get();
 
-            //update
-            $cheques_is_exist = DrsCheque::where("sum_id", $sum_id->id)->where("status", 1)->get();
-
-            if (count($cheques_is_exist) != 0) {
-                if (count($chequeArr) != 0) {
-                    // DB::table('drs_cheques')->where('sum_id', $sum_id->id)->delete();
-
-                    foreach ($chequeArr as $cheque) {
-                        $inhand_cheque = new DrsCheque([
-                            "sum_id" => $sum_id->id,
-                            "dsrs_id" => 1,
-                            "cheque_no" => $cheque["cheque_no"],
-                            "cheque_amount" => $cheque["cheque_amount"],
-                        ]);
-                        $inhand_cheque->save();
-                    }
-
-                    $cheque_list = DrsCheque::where("sum_id",$sum_id->id)->where("status", 1)->get();
-
-                    foreach ($cheque_list as $che) {
-                        $cheque_amount += $che->cheque_amount;
-                    }
-                } else {
-                    foreach ($cheques_is_exist as $che) {
-                        $cheque_amount += $che->cheque_amount;
-                    }
-                }
-            }else{
-
-             foreach ($chequeArr as $cheque) {
-                $inhand_cheque = new DrsCheque([
-                    "sum_id" => $sum_id->id,
-                    "dsrs_id" => 1,
-                    "cheque_no" => $cheque["cheque_no"],
-                    "cheque_amount" => $cheque["cheque_amount"],
-                ]);
-                $inhand_cheque->save();
-            }
-
-            $cheques_is_exist1 = DrsCheque::where("sum_id", $sum_id->id)->where("status", 1)->get();
-
-            foreach ($cheques_is_exist1 as $che) {
+            foreach ($cheque_list as $che) {
                 $cheque_amount += $che->cheque_amount;
             }
-
-        }
-
-        if ($request->get("cash") == "") {
-            DB::update(
-                "update pending_sum set inhand_cheque = ? WHERE id =?",
-                [$cheque_amount, $sum_id->id]
-            );
-            DB::update("update dsrs set cheque = ? WHERE sum_id =?", [
-                $cheque_amount,
-                $sum_id->id,
-            ]);
-
-            $dsrs_table_data = Dsr::where("sum_id", $sum_id->id)->where("status", 1)->get();
-
-            foreach ($dsrs_table_data as $dsr_data) {
-                DB::update(
-                    "update dsrs set in_hand = ?, cash = ? WHERE id =?",
-                    [
-                        $dsr_data->cash + $cheque_amount,
-                        $dsr_data->cash,
-                        $sum_id->id,
-                    ]
-                );
-
-                DB::update(
-                    "update pending_sum set inhand_sum = ?,inhand_cash = ? WHERE id =?",
-                    [
-                        $dsr_data->cash + $cheque_amount,
-                        $dsr_data->cash,
-                        $sum_id->id,
-                    ]
-                );
-            }
         } else {
-            DB::update(
-                "update pending_sum set inhand_sum = ?, inhand_cash = ?, inhand_cheque = ? WHERE id =?",
-                [
-                    $request->get("cash") + $cheque_amount,
-                    $request->get("cash"),
-                    $cheque_amount,
-                    $sum_id->id,
-                ]
-            );
-
-            DB::update(
-                "update dsrs set in_hand = ?, cash = ?, cheque = ? WHERE sum_id =?",
-                [
-                    $request->get("cash") + $cheque_amount,
-                    $request->get("cash"),
-                    $cheque_amount,
-                    $sum_id->id,
-                ]
-            );
+            foreach ($cheques_is_exist as $che) {
+                $cheque_amount += $che->cheque_amount;
+            }
         }
+    }else{
 
-
-
-
-
-
+       foreach ($chequeArr as $cheque) {
+        $inhand_cheque = new DrsCheque([
+            "sum_id" => $sum_id->id,
+            "dsrs_id" => 1,
+            "cheque_no" => $cheque["cheque_no"],
+            "cheque_amount" => $cheque["cheque_amount"],
+        ]);
+        $inhand_cheque->save();
     }
 
-    $array = (object) [
-        "cash" => $request->get("cash"),
-        "cheque" => $cheque_amount,
-    ];
+    $cheques_is_exist1 = DrsCheque::where("sum_id", $sum_id->id)->where("status", 1)->get();
 
-    return response()->json(
-        ["data" => ["info" => $array, "error" => null]],
-        200
+    foreach ($cheques_is_exist1 as $che) {
+        $cheque_amount += $che->cheque_amount;
+    }
+
+}
+
+if ($request->get("cash") == "") {
+    DB::update(
+        "update pending_sum set inhand_cheque = ? WHERE id =?",
+        [$cheque_amount, $sum_id->id]
     );
+    DB::update("update dsrs set cheque = ? WHERE sum_id =?", [
+        $cheque_amount,
+        $sum_id->id,
+    ]);
+
+    $dsrs_table_data = Dsr::where("sum_id", $sum_id->id)->where("status", 1)->get();
+
+    foreach ($dsrs_table_data as $dsr_data) {
+        DB::update(
+            "update dsrs set in_hand = ?, cash = ? WHERE id =?",
+            [
+                $dsr_data->cash + $cheque_amount,
+                $dsr_data->cash,
+                $sum_id->id,
+            ]
+        );
+
+        DB::update(
+            "update pending_sum set inhand_sum = ?,inhand_cash = ? WHERE id =?",
+            [
+                $dsr_data->cash + $cheque_amount,
+                $dsr_data->cash,
+                $sum_id->id,
+            ]
+        );
+    }
+} else {
+    DB::update(
+        "update pending_sum set inhand_sum = ?, inhand_cash = ?, inhand_cheque = ? WHERE id =?",
+        [
+            $request->get("cash") + $cheque_amount,
+            $request->get("cash"),
+            $cheque_amount,
+            $sum_id->id,
+        ]
+    );
+
+    DB::update(
+        "update dsrs set in_hand = ?, cash = ?, cheque = ? WHERE sum_id =?",
+        [
+            $request->get("cash") + $cheque_amount,
+            $request->get("cash"),
+            $cheque_amount,
+            $sum_id->id,
+        ]
+    );
+}
+
+
+
+
+
+
+}
+
+$array = (object) [
+    "cash" => $request->get("cash"),
+    "cheque" => $cheque_amount,
+];
+
+return response()->json(
+    ["data" => ["info" => $array, "error" => null]],
+    200
+);
 }
 
 
@@ -1939,27 +1953,27 @@ public function MobileReturnBulkStock(Request $request)
 public function MobileApproveSumery(Request $request)
 {
 
-   date_default_timezone_set("Asia/colombo");
-   $system_date = date("Y-m-d");
-   $system_time = date("h:i:s");
-   $custom_timestamp = $system_date." ".$system_time;
+ date_default_timezone_set("Asia/colombo");
+ $system_date = date("Y-m-d");
+ $system_time = date("h:i:s");
+ $custom_timestamp = $system_date." ".$system_time;
 
-   $update_sum = DB::table("pending_sum")
-   ->where("dsr_id", "=", $request->get("dsr_id"))
-   ->where("date", "=", $request->get("date"))
-   ->update([
+ $update_sum = DB::table("pending_sum")
+ ->where("dsr_id", "=", $request->get("dsr_id"))
+ ->where("date", "=", $request->get("date"))
+ ->update([
     "status" => 1,
     "updated_at" => $custom_timestamp,
 ]);
 
-   $update_sum_status = DB::table("pending_sum_status")
-   ->where("dsr_id", "=", $request->get("dsr_id"))
-   ->where("date", "=", $request->get("date"))
-   ->update([
+ $update_sum_status = DB::table("pending_sum_status")
+ ->where("dsr_id", "=", $request->get("dsr_id"))
+ ->where("date", "=", $request->get("date"))
+ ->update([
     "status" => 1,
 ]);
 
-   if ($update_sum == 1 && $update_sum_status == 1) {
+ if ($update_sum == 1 && $update_sum_status == 1) {
     return response()->json(
         [
             "data" => [
@@ -2143,17 +2157,17 @@ public function MobileRemoveBankingSummary(Request $request)
     $get_banking_details = banking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-       DB::update(
+     DB::update(
         "update pending_sum_status set banking_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
-   }
+ }
 
 
-   if ($get_banking_details) {
+ if ($get_banking_details) {
     return response()->json(
         ["data" => ["info" => $remove_sales, "error" => null]],
         200
@@ -2237,16 +2251,16 @@ public function MobileRemoveDBankingSummary(Request $request)
     $get_banking_details = directbanking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-       DB::update(
+     DB::update(
         "update pending_sum_status set direct_banking_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
-   }
+ }
 
-   if ($get_dbanking_details) {
+ if ($get_dbanking_details) {
     return response()->json(
         ["data" => ["info" => $remove_dbankings, "error" => null]],
         200
@@ -2320,16 +2334,16 @@ public function MobileRemoveCreditColSummary(Request $request)
     $get_banking_details = CreditCollection::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-       DB::update(
+     DB::update(
         "update pending_sum_status set credit_collection_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
-   }
+ }
 
-   if ($get_col_credits) {
+ if ($get_col_credits) {
     return response()->json(
         ["data" => ["info" => $get_banking_details, "error" => null]],
         200
