@@ -1949,7 +1949,7 @@ public function MobileApproveSumery(Request $request)
    ->where("date", "=", $request->get("date"))
    ->update([
     "status" => 1,
-    "updated_at" => $custom_timestamp;
+    "updated_at" => $custom_timestamp,
 ]);
 
    $update_sum_status = DB::table("pending_sum_status")
