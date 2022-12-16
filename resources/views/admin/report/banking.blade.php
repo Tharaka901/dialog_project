@@ -22,12 +22,13 @@
                         </div>
                     </div>
                     <div class="card-body">
+
                         <div class="row mb-2">
-                            <div class="col-md-6">
+                            <div class="col-md-10">
                                 <form method="POST" action="{{ route('get_bank_details') }}">
                                     @csrf
                                     <div class="row">
-                                        <div class="col-md-6 form-group">
+                                        <div class="col-md-3 form-group">
                                             <select class="form-control" id="id" name="id" value="{{ request()->get('id') }}">
                                                 <option value="">-select a bank-</option>
                                                 @foreach($banks as $bank)
@@ -35,12 +36,40 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-md-6 form-group user-form-group">
+                                        <div class="col-md-3 form-group">
+                                            <input type="date" class="form-control" id="fromdate" name="fromdate" value="{{ request()->get('fromdate') }}" >
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <input type="date" class="form-control" id="todate" name="todate" value="{{ request()->get('todate') }}" >
+                                        </div>  
+                                        <div class="col-md-3 form-group user-form-group">
                                             <button type="submit" class="btn btn-add btn-sm">Submit</button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-exp btn-sm" data-toggle="dropdown" style="width:200px"><i class="fa fa-bars"></i> Export Banking Data</button>
+                          <ul class="dropdown-menu exp-drop" role="menu">
+                            <li class="dropdown-divider"></li>
+                            <li>
+                                <a href="#" onclick="$('#bankingDetailsTable').tableExport({type:'xlsx',escape:'false'});">
+                                    <img src="assets/dist/img/excel.png" width="24" alt="logo">Excel</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn btn-exp btn-sm" data-toggle="dropdown" style="width:200px"><i class="fa fa-bars"></i> Export Direct Banking Data</button>
+                          <ul class="dropdown-menu exp-drop" role="menu">
+                            <li class="dropdown-divider"></li>
+                            <li>
+                                <a href="#" onclick="$('#directBankingDetailsTable').tableExport({type:'xlsx',escape:'false'});">
+                                    <img src="assets/dist/img/excel.png" width="24" alt="logo">Excel</a>
+                                </li>
+                            </ul>
                         </div>
 
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -55,7 +84,7 @@
                         <div class="tab-content" id="myTabContent">
 
                             <div class="tab-pane fade show active" id="banking" role="tabpanel" aria-labelledby="contact-tab">
-                               <div class="table-responsive">
+                             <div class="table-responsive">
                                 <table id="bankingDetailsTable" class="table table-bordered table-striped table-hover">
                                     <thead class="back_table_color">
                                         <tr>
@@ -83,15 +112,15 @@
                             </div>
 
                             <div class="d-flex justify-content-center">
-                               <div>{!! $bankData->links() !!}</div>
-                           </div>
+                             <div>{!! $bankData->links() !!}</div>
+                         </div>
 
-                       </div>
+                     </div>
 
-                       <div class="tab-pane fade" id="direct_banking" role="tabpanel" aria-labelledby="contact-tab">
+                     <div class="tab-pane fade" id="direct_banking" role="tabpanel" aria-labelledby="contact-tab">
 
                         <div class="table-responsive">
-                            <table id="bankingDetailsTable" class="table table-bordered table-striped table-hover">
+                            <table id="directBankingDetailsTable" class="table table-bordered table-striped table-hover">
                                 <thead class="back_table_color">
                                     <tr>
                                         <th style="min-width: 50px">Date</th>
@@ -102,9 +131,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                 @if(isset($directBankData))
-                                 @foreach($directBankData as $dbank)
-                                 <tr>
+                                   @if(isset($directBankData))
+                                   @foreach($directBankData as $dbank)
+                                   <tr>
                                     <td style="min-width: 50px">{{ $dbank->created_at }}</td>
                                     <td style="min-width: 50px">{{ $dbank->bankname }}</td>
                                     <td style="min-width: 50px">{{ $dbank->name }}</td>
@@ -118,15 +147,15 @@
                     </div>
 
                     <div class="d-flex justify-content-center">
-                       <div>{!! $directBankData->links() !!}</div>
-                   </div>
+                     <div>{!! $directBankData->links() !!}</div>
+                 </div>
 
-               </div>
-           </div>
+             </div>
+         </div>
 
 
-       </div>
-   </div>
+     </div>
+ </div>
 </div>
 </div>
 </section>

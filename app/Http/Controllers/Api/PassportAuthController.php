@@ -669,6 +669,7 @@ class PassportAuthController extends Controller
         date_default_timezone_set("Asia/colombo");
         $system_date = date("Y-m-d");
         $system_time = date("h:i:s");
+        $custom_timestamp = $system_date." "$system_time
 
         $dsrId = $request->get("dsr_id");
         $todayDate = $request->get("date");
@@ -696,8 +697,8 @@ class PassportAuthController extends Controller
         if (count($crsum) == 0) {
             // insert
             DB::insert(
-                "insert into pending_sum (dsr_id, date, credit_sum) values (?,?,?)",
-                [$dsrId, $todayDate, $creditSum]
+                "insert into pending_sum (dsr_id, date, credit_sum,created_at) values (?,?,?,?)",
+                [$dsrId, $todayDate, $creditSum,$custom_timestamp]
             );
             $sum_id = DB::table("pending_sum")
             ->latest("id")
@@ -705,8 +706,8 @@ class PassportAuthController extends Controller
         } else {
             // update
             DB::update(
-                "update pending_sum set credit_sum = credit_sum + ? where dsr_id = ? and date = ?",
-                [$creditSum, $dsrId, $todayDate]
+                "update pending_sum set credit_sum = credit_sum + ?, updated_at = ? where dsr_id = ? and date = ?",
+                [$creditSum, $custom_timestamp, $dsrId, $todayDate]
             );
             foreach ($crsum as $sum) {
                 $sum_id = $sum;

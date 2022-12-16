@@ -254,6 +254,7 @@ public function GetBankDetails(Request $request){
   ->select('bankings.created_at','bankings.bank_ref_no as ref_no','bankings.bank_amount as amount','bu.name','banks.bank_name as bankname')
   ->where('bankings.bank_id',$request->id)
   ->where('pending_sum.status',1)
+  ->whereBetween('bankings.created_at', [$request->fromdate, $request->todate])
   ->distinct()
   ->paginate(20);
 
@@ -264,6 +265,7 @@ public function GetBankDetails(Request $request){
   ->select('directbankings.created_at','direct_bank_ref_no as ref_no','direct_bank_amount as amount','dbu.name','banks.bank_name as bankname')
   ->where('directbankings.direct_bank_id',$request->id)
   ->where('pending_sum.status',1)
+  ->whereBetween('directbankings.created_at', [$request->fromdate, $request->todate])
   ->distinct()
   ->paginate(20);
 
