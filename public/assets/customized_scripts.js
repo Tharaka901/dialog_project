@@ -198,7 +198,8 @@ function viewDsr(psum_id,dsr_id,status){
           "<td style='display:none;'>"+data.inhandData[i].id+"</td>"+
           "<td><input type='text' class='form-control' value="+data.inhandData[i].in_hand+"></td>"+
           "<td><input type='text' class='form-control' value="+data.inhandData[i].cash+"></td>"+
-          "<td><input type='text' class='form-control' value="+data.inhandData[i].cheque+"><a class='btn btn-warning btn-sm' onclick='viewInhandCheques(this,"+status+","+psum_id+")'><i class='fa fa-eye'></i></a></td>"+
+          // "<td><input type='text' class='form-control' value="+data.inhandData[i].cheque+"><a class='btn btn-warning btn-sm' onclick='viewInhandCheques(this,"+status+","+psum_id+")'><i class='fa fa-eye'></i></a></td>"+
+          "<td><div class='input-group mb-3'><input type='text' class='form-control' value="+data.inhandData[i].cheque+"><div class='input-group-append'><span class='input-group-text'><a class='btn btn-warning btn-sm' onclick='viewInhandCheques(this,"+status+","+psum_id+")'><i class='fa fa-eye'></i></a></span></div></div></td>"+
           "<td><a class='btn btn-danger btn-sm' "+disableValue+" onclick='removeInhandRow(this,"+status+")'><i class='fa fa-trash'></i></a>"+
           "</td>"+
           "</tr>");
