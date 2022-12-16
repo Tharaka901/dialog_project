@@ -860,10 +860,10 @@ class PassportAuthController extends Controller
                         "item_price" => $creditcol["ccAmount"],
                     ]);
                     $credit_collection_item->save();
-                    $creditColSum1 += $cc["ccAmount"];
+                    // $creditColSum1 += $cc["ccAmount"];
                 }
 
-                DB::update("update credit_collections set credit_collection_amount = ? where id = ?",[$creditColSum1, $customer->id]);
+                DB::update("update credit_collections set credit_collection_amount = credit_collection_amount + ? where id = ?",[$cc["ccAmount"], $customer->id]);
             }
         }
 
