@@ -1148,35 +1148,35 @@ class PassportAuthController extends Controller
 
     public function MobileDsrDirectBankings(Request $request)
     {
-       date_default_timezone_set("Asia/colombo");
-       $system_date = date("Y-m-d");
-       $system_time = date("h:i:s");
-       $custom_timestamp = $system_date." ".$system_time;
+     date_default_timezone_set("Asia/colombo");
+     $system_date = date("Y-m-d");
+     $system_time = date("h:i:s");
+     $custom_timestamp = $system_date." ".$system_time;
 
-       $dsrId = $request->get("dsr_id");
-       $dbankingItems = $request->get("dbankings");
-       $todayDate = $request->get("date");
-       $dbankingSum = 0;
-       $sum_id = 0;
+     $dsrId = $request->get("dsr_id");
+     $dbankingItems = $request->get("dbankings");
+     $todayDate = $request->get("date");
+     $dbankingSum = 0;
+     $sum_id = 0;
 
-       $sampath = 0;
-       $peoples = 0;
-       $cargils = 0;
-       $sampathonline = 0;
+     $sampath = 0;
+     $peoples = 0;
+     $cargils = 0;
+     $sampathonline = 0;
 
         // check if there is data in pending sum table for dsr today
-       $csum = DB::table("pending_sum")
-       ->select("id", "dsr_id", "date")
-       ->where("dsr_id", "=", $dsrId)
-       ->where("date", "=", $todayDate)
-       ->get();
-       $pstatus = DB::table("pending_sum_status")
-       ->select("dsr_id", "date")
-       ->where("dsr_id", "=", $dsrId)
-       ->where("date", "=", $todayDate)
-       ->get();
+     $csum = DB::table("pending_sum")
+     ->select("id", "dsr_id", "date")
+     ->where("dsr_id", "=", $dsrId)
+     ->where("date", "=", $todayDate)
+     ->get();
+     $pstatus = DB::table("pending_sum_status")
+     ->select("dsr_id", "date")
+     ->where("dsr_id", "=", $dsrId)
+     ->where("date", "=", $todayDate)
+     ->get();
 
-       if (count($csum) == 0) {
+     if (count($csum) == 0) {
             // insert
         foreach ($dbankingItems as $dbank) {
             $dbankingSum += floatval($dbank["amount"]);
@@ -1226,14 +1226,12 @@ class PassportAuthController extends Controller
             foreach ($single_bank as $sbank) {
                 if ($sbank->bank_name == "Sampath Bank") {
                     $sampath += $dbank["amount"];
-                }
-
-                if ($sbank->bank_name == "People's Bank") {
+                }elseif ($sbank->bank_name == "People's Bank") {
                     $peoples += $dbank["amount"];
-                }
-
-                if ($sbank->bank_name == "Cargills Bank") {
+                }elseif ($sbank->bank_name == "Cargills Bank") {
                     $cargils += $dbank["amount"];
+                }else {
+                    $sampathonline += $dbank["amount"];
                 }
             }
         }
@@ -1297,25 +1295,25 @@ class PassportAuthController extends Controller
 
 public function MobileDsrInhands(Request $request)
 {
- date_default_timezone_set("Asia/colombo");
- $system_date = date("Y-m-d");
- $system_time = date("h:i:s");
- $custom_timestamp = $system_date." ".$system_time;
+   date_default_timezone_set("Asia/colombo");
+   $system_date = date("Y-m-d");
+   $system_time = date("h:i:s");
+   $custom_timestamp = $system_date." ".$system_time;
 
- $todayDate = $request->get("date");
- $cheque = 0;
- $chequeArr = $request->get("cheques");
- $inhandSum = 0;
- $sum_id = 0;
- $cheque_amount = 0;
+   $todayDate = $request->get("date");
+   $cheque = 0;
+   $chequeArr = $request->get("cheques");
+   $inhandSum = 0;
+   $sum_id = 0;
+   $cheque_amount = 0;
 
         // check if there is data in pending sum table for dsr today
- $csum = DB::table("pending_sum")->select("id", "dsr_id", "date")->where("dsr_id", "=", $request->get("dsr_id"))->where("date", "=", $todayDate)->get();
+   $csum = DB::table("pending_sum")->select("id", "dsr_id", "date")->where("dsr_id", "=", $request->get("dsr_id"))->where("date", "=", $todayDate)->get();
 
 
- $pstatus = DB::table("pending_sum_status")->select("dsr_id", "date")->where("dsr_id", "=", $request->get("dsr_id"))->where("date", "=", $todayDate)->get();
+   $pstatus = DB::table("pending_sum_status")->select("dsr_id", "date")->where("dsr_id", "=", $request->get("dsr_id"))->where("date", "=", $todayDate)->get();
 
- if (count($csum) == 0) {
+   if (count($csum) == 0) {
             // insert
     DB::insert("insert into pending_sum (dsr_id, date, inhand_cash, inhand_cheque,created_at) values (?,?,?,?,?)",
         [
@@ -1428,7 +1426,7 @@ if (count($check_data) == 0) {
         }
     }else{
 
-       foreach ($chequeArr as $cheque) {
+     foreach ($chequeArr as $cheque) {
         $inhand_cheque = new DrsCheque([
             "sum_id" => $sum_id->id,
             "dsrs_id" => 1,
@@ -1953,27 +1951,27 @@ public function MobileReturnBulkStock(Request $request)
 public function MobileApproveSumery(Request $request)
 {
 
- date_default_timezone_set("Asia/colombo");
- $system_date = date("Y-m-d");
- $system_time = date("h:i:s");
- $custom_timestamp = $system_date." ".$system_time;
+   date_default_timezone_set("Asia/colombo");
+   $system_date = date("Y-m-d");
+   $system_time = date("h:i:s");
+   $custom_timestamp = $system_date." ".$system_time;
 
- $update_sum = DB::table("pending_sum")
- ->where("dsr_id", "=", $request->get("dsr_id"))
- ->where("date", "=", $request->get("date"))
- ->update([
+   $update_sum = DB::table("pending_sum")
+   ->where("dsr_id", "=", $request->get("dsr_id"))
+   ->where("date", "=", $request->get("date"))
+   ->update([
     "status" => 1,
     "updated_at" => $custom_timestamp,
 ]);
 
- $update_sum_status = DB::table("pending_sum_status")
- ->where("dsr_id", "=", $request->get("dsr_id"))
- ->where("date", "=", $request->get("date"))
- ->update([
+   $update_sum_status = DB::table("pending_sum_status")
+   ->where("dsr_id", "=", $request->get("dsr_id"))
+   ->where("date", "=", $request->get("date"))
+   ->update([
     "status" => 1,
 ]);
 
- if ($update_sum == 1 && $update_sum_status == 1) {
+   if ($update_sum == 1 && $update_sum_status == 1) {
     return response()->json(
         [
             "data" => [
@@ -2157,17 +2155,17 @@ public function MobileRemoveBankingSummary(Request $request)
     $get_banking_details = banking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-     DB::update(
+       DB::update(
         "update pending_sum_status set banking_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
- }
+   }
 
 
- if ($get_banking_details) {
+   if ($get_banking_details) {
     return response()->json(
         ["data" => ["info" => $remove_sales, "error" => null]],
         200
@@ -2251,16 +2249,16 @@ public function MobileRemoveDBankingSummary(Request $request)
     $get_banking_details = directbanking::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-     DB::update(
+       DB::update(
         "update pending_sum_status set direct_banking_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
- }
+   }
 
- if ($get_dbanking_details) {
+   if ($get_dbanking_details) {
     return response()->json(
         ["data" => ["info" => $remove_dbankings, "error" => null]],
         200
@@ -2334,16 +2332,16 @@ public function MobileRemoveCreditColSummary(Request $request)
     $get_banking_details = CreditCollection::where('status',1)->where('dsr_id',$request->get("dsr_id"))->where('sum_id',$request->get("sum_id"))->get();
 
     if(count($get_banking_details) == 0){
-     DB::update(
+       DB::update(
         "update pending_sum_status set credit_collection_sum = ? where sum_id = ?",
         [
             0,
             $request->get("sum_id"),
         ]
     );
- }
+   }
 
- if ($get_col_credits) {
+   if ($get_col_credits) {
     return response()->json(
         ["data" => ["info" => $get_banking_details, "error" => null]],
         200

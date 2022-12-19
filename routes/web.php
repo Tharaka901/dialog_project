@@ -76,17 +76,23 @@ Route::post('get_dsr',[DsrController::class,'GetDsr'])->name('get_dsr');
 Route::post('get_complete_dsr',[DsrController::class,'getCompleteDsr'])->name('get_complete_dsr');
 Route::post('remove_sale',[DsrController::class,'RemoveSale'])->name('remove_sale');
 Route::post('remove_inhand',[DsrController::class,'RemoveInhand'])->name('remove_inhand');
+Route::post('remove_inhand_cheque',[DsrController::class,'removeInhandCheque'])->name('remove_inhand_cheque');
 Route::post('remove_bank',[DsrController::class,'RemoveBank'])->name('remove_bank');
 Route::post('remove_dbank',[DsrController::class,'RemoveDBank'])->name('remove_dbank');
 Route::post('remove_credit',[DsrController::class,'RemoveCredit'])->name('remove_credit');
+Route::post('remove_credit_items',[DsrController::class,'removeCreditItems'])->name('remove_credit_items');
 Route::post('remove_retailer',[DsrController::class,'RemoveRetailer'])->name('remove_retailer');
 Route::post('remove_creditCol',[DsrController::class,'RemoveCreditCol'])->name('remove_creditCol');
+Route::post('remove_credit_collection_items',[DsrController::class,'removeCreditCollectionItems'])->name('remove_credit_collection_items');
 Route::post('approve_dsr',[DsrController::class,'ApproveDsr'])->name('approve_dsr');
 Route::get('reject_approve/{id}',[DsrController::class,'rejectApprove'])->name('reject_approve');
 
 Route::post('inhand_cheques',[DsrController::class,'InhandCheques'])->name('inhand_cheques');
+Route::post('view_inhand_cheques',[DsrController::class,'ViewInhandCheques'])->name('view_inhand_cheques');
 Route::post('credit_items',[DsrController::class,'CreditItems'])->name('credit_items');
+Route::post('view_credit_items',[DsrController::class,'ViewCreditItems'])->name('view_credit_items');
 Route::post('creditcol_items',[DsrController::class,'CreditCollectionItems'])->name('creditcol_items');
+Route::post('view_creditcol_items',[DsrController::class,'ViewCreditCollectionItems'])->name('view_creditcol_items');
 
 Route::get('search_pending_dsr',[DsrController::class,'SearchPendingDsr'])->name('search_pending_dsr');
 Route::get('/complete_dsr',[DsrController::class,'CompleteDsr']);

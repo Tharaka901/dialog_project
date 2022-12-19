@@ -219,29 +219,35 @@ public function getAdditionalData(Request $request){
 
 
 public function BankingDetails(){
- $bankData = DB::table('bankings')
- ->join('users as bu','bankings.dsr_id','bu.id')
- ->join('pending_sum','pending_sum.dsr_id','bu.id')
- ->join('banks','bankings.bank_id','banks.id')
- ->select('bankings.created_at','bankings.bank_ref_no as ref_no','bankings.bank_amount as amount','bu.name','banks.bank_name as bankname')
- ->where('bankings.bank_id',1)
- ->where('pending_sum.status',1)
- ->distinct()
- ->paginate(20);
 
- $directBankData = DB::table('directbankings')
- ->join('users as dbu','directbankings.dsr_id','dbu.id')
- ->join('pending_sum','pending_sum.dsr_id','dbu.id')
- ->join('banks','directbankings.direct_bank_id','banks.id')
- ->select('directbankings.created_at','direct_bank_ref_no as ref_no','direct_bank_amount as amount','dbu.name','banks.bank_name as bankname')
- ->where('directbankings.direct_bank_id',1)
- ->where('pending_sum.status',1)
- ->distinct()
- ->paginate(20);
+  date_default_timezone_set("Asia/colombo");
+  $system_date = date("Y-m-d");
+  $system_time = date("h:i:s");
+  $custom_timestamp = $system_date." ".$system_time;
 
- $banks = Bank::where('status',1)->get();
+  $bankData = DB::table('bankings')
+  ->join('users as bu','bankings.dsr_id','bu.id')
+  ->join('pending_sum','pending_sum.dsr_id','bu.id')
+  ->join('banks','bankings.bank_id','banks.id')
+  ->select('bankings.created_at','bankings.bank_ref_no as ref_no','bankings.bank_amount as amount','bu.name','banks.bank_name as bankname')
+  ->whereDate('bankings.created_at',$system_date)
+  ->where('pending_sum.status',2)
+  ->distinct()
+  ->paginate(20);
 
- return view('admin.report.banking',["bankData"=>$bankData, "directBankData"=>$directBankData,"banks"=>$banks]);
+  $directBankData = DB::table('directbankings')
+  ->join('users as dbu','directbankings.dsr_id','dbu.id')
+  ->join('pending_sum','pending_sum.dsr_id','dbu.id')
+  ->join('banks','directbankings.direct_bank_id','banks.id')
+  ->select('directbankings.created_at','direct_bank_ref_no as ref_no','direct_bank_amount as amount','dbu.name','banks.bank_name as bankname')
+  ->whereDate('directbankings.created_at',$system_date)
+  ->where('pending_sum.status',2)
+  ->distinct()
+  ->paginate(20);
+
+  $banks = Bank::where('status',1)->get();
+
+  return view('admin.report.banking',["bankData"=>$bankData, "directBankData"=>$directBankData,"banks"=>$banks]);
 }
 
 public function GetBankDetails(Request $request){
@@ -253,7 +259,7 @@ public function GetBankDetails(Request $request){
   ->join('banks','bankings.bank_id','banks.id')
   ->select('bankings.created_at','bankings.bank_ref_no as ref_no','bankings.bank_amount as amount','bu.name','banks.bank_name as bankname')
   ->where('bankings.bank_id',$request->id)
-  ->where('pending_sum.status',1)
+  ->where('pending_sum.status',2)
   ->whereBetween('bankings.created_at', [$request->fromdate, $request->todate])
   ->distinct()
   ->paginate(20);
@@ -264,7 +270,7 @@ public function GetBankDetails(Request $request){
   ->join('banks','directbankings.direct_bank_id','banks.id')
   ->select('directbankings.created_at','direct_bank_ref_no as ref_no','direct_bank_amount as amount','dbu.name','banks.bank_name as bankname')
   ->where('directbankings.direct_bank_id',$request->id)
-  ->where('pending_sum.status',1)
+  ->where('pending_sum.status',2)
   ->whereBetween('directbankings.created_at', [$request->fromdate, $request->todate])
   ->distinct()
   ->paginate(20);

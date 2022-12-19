@@ -194,12 +194,17 @@ function viewDsr(psum_id,dsr_id,status){
       }
 
       for (var i = 0; i < data.inhandData.length; i++) {
+
+        var content = "<input type='text' class='form-control disabled' value="+data.inhandData[i].cheque+">";
+        if(data.inhandData[i].cheque !=0){
+          content = "<div class='input-group mb-3'><input type='text' class='input-sm form-control' disabled value="+data.inhandData[i].cheque+"><div class='input-group-append'><span class='input-group-text btn-warning' onclick='viewInhandCheques(this,"+status+","+psum_id+")'><i class='fa fa-eye'></i></span></div></div>";
+        }
+
         $("#inHandTable tbody").append("<tr><td>"+inhandcount+"</td>"+
           "<td style='display:none;'>"+data.inhandData[i].id+"</td>"+
-          "<td><input type='text' class='form-control' value="+data.inhandData[i].in_hand+"></td>"+
+          "<td><input type='text' disabled class='form-control' value="+data.inhandData[i].in_hand+"></td>"+
           "<td><input type='text' class='form-control' value="+data.inhandData[i].cash+"></td>"+
-          // "<td><input type='text' class='form-control' value="+data.inhandData[i].cheque+"><a class='btn btn-warning btn-sm' onclick='viewInhandCheques(this,"+status+","+psum_id+")'><i class='fa fa-eye'></i></a></td>"+
-          "<td><div class='input-group mb-3'><input type='text' class='form-control' value="+data.inhandData[i].cheque+"><div class='input-group-append'><span class='input-group-text'><a class='btn btn-warning btn-sm' onclick='viewInhandCheques(this,"+status+","+psum_id+")'><i class='fa fa-eye'></i></a></span></div></div></td>"+
+          "<td>"+content+"</td>"+
           "<td><a class='btn btn-danger btn-sm' "+disableValue+" onclick='removeInhandRow(this,"+status+")'><i class='fa fa-trash'></i></a>"+
           "</td>"+
           "</tr>");
@@ -207,15 +212,17 @@ function viewDsr(psum_id,dsr_id,status){
       }
 
       for (var i = 0; i < data.creditData.length; i++) {
-        $("#creditTable tbody").append("<tr><td>"+creditcount+"</td>"+
-         "<td style='display: none'>"+data.creditData[i].id+"</td>"+
-         "<td style='display: none'>"+data.creditData[i].credit_customer_name+"</td>"+
-         "<td><input type='text' class='form-control' value="+JSON.stringify(data.creditData[i].credit_customer_name)+"></td>"+
-         "<td style='display: none'>"+data.creditData[i].credit_amount+"</td>"+
-         "<td><input type='text' class='form-control' value="+data.creditData[i].credit_amount+"></td>"+
-         "<td><a class='btn btn-danger btn-sm' "+disableValue+" onclick='removeCreditRow(this,"+status+")'><i class='fa fa-trash'></i></a>"+
-         "<a class='btn btn-warning btn-sm' onclick='viewCreditItems(this,"+status+","+data.creditData[i].id+")'><i class='fa fa-eye'></i></a></td>"+
-         "</tr>");
+        if(data.creditData[i].credit_amount !=0){
+          $("#creditTable tbody").append("<tr><td>"+creditcount+"</td>"+
+           "<td style='display: none'>"+data.creditData[i].id+"</td>"+
+           "<td style='display: none'>"+data.creditData[i].credit_customer_name+"</td>"+
+           "<td><input type='text' class='form-control' value="+JSON.stringify(data.creditData[i].credit_customer_name)+"></td>"+
+           "<td style='display: none'>"+data.creditData[i].credit_amount+"</td>"+
+           "<td><input type='text' class='form-control' disabled value="+data.creditData[i].credit_amount+"></td>"+
+           "<td><a class='btn btn-danger btn-sm' "+disableValue+" onclick='removeCreditRow(this,"+status+")'><i class='fa fa-trash'></i></a>"+
+           "<a class='btn btn-warning btn-sm' onclick='viewCreditItems(this,"+status+","+data.creditData[i].id+")'><i class='fa fa-eye'></i></a></td>"+
+           "</tr>");
+        }
         creditcount++;
       }
 
@@ -235,8 +242,8 @@ function viewDsr(psum_id,dsr_id,status){
          "<td style='display: none'>"+data.creditcolData[i].credit_collection_customer_name+"</td>"+
          "<td><input type='text' class='form-control' value="+JSON.stringify(data.creditcolData[i].credit_collection_customer_name)+"></td>"+
          "<td style='display: none'>"+data.creditcolData[i].credit_collection_amount+"</td>"+
-         "<td><input type='text' class='form-control' value="+data.creditcolData[i].credit_collection_amount+"></td>"+
-         "<td><input type='text' class='form-control' value="+JSON.stringify(option)+"></td>"+
+         "<td><input type='text' class='form-control' disabled value="+data.creditcolData[i].credit_collection_amount+"></td>"+
+         "<td><input type='text' class='form-control' disabled value="+JSON.stringify(option)+"></td>"+
          "<td><a class='btn btn-danger btn-sm' "+disableValue+" onclick='removeCreditColRow(this,"+status+")'><i class='fa fa-trash'></i></a>"+
          "<a class='btn btn-warning btn-sm' onclick='viewCreditColItems(this,"+status+","+data.creditcolData[i].id+")'><i class='fa fa-eye'></i></a></td>"+
          "</tr>");
@@ -343,9 +350,47 @@ function viewInhandCheques(thisval,status,psum_id){
       for (var i = 0; i < data.length; i++) {
         $("#inHandChequeTable tbody").append("<tr><td>"+count+"</td>"+
           "<td style='display:none;'>"+data[i].id+"</td>"+
-          "<td><input type='text' class='form-control' value="+data[i].cheque_no+"></td>"+
-          "<td><input type='text' class='form-control' value="+data[i].cheque_amount+"></td>"+
-          // "<td><a class='btn btn-danger' "+disableValue+" onclick='removDbankRow(this,"+status+")'><i class='fa fa-trash'></i></a></td>"+
+          "<td><input type='text' class='form-control' value="+data[i].cheque_no+" readonly></td>"+
+          "<td><input type='text' class='form-control' value="+data[i].cheque_amount+" readonly></td>"+
+          "<td><a class='btn btn-danger btn-sm' onclick='removeInhandChequeRow(this,"+status+")'><i class='fa fa-trash'></i></a></td>"+
+          "</tr>");
+        count++;
+      }
+    }else{
+      swal_warning("No cheques for this inhand")
+    }
+
+
+  },
+  error: function(error) {
+    alert("error occured " + JSON.stringify(error));
+  }
+});
+
+}
+
+
+function viewInhandCheques1(id){
+
+  $.ajax({
+    type: 'post',
+    url: "view_inhand_cheques",
+    dataType: 'json',
+    data: {
+      "id": id
+    },
+    beforeSend: function() {
+     $("#inHandChequeTable tbody tr").remove();
+   },
+   success: function(data) {
+
+    if(data.length != 0){
+      var count = 1;
+      for (var i = 0; i < data.length; i++) {
+        $("#inHandChequeTable tbody").append("<tr><td>"+count+"</td>"+
+          "<td style='display:none;'>"+data[i].id+"</td>"+
+          "<td>"+data[i].cheque_no+"</td>"+
+          "<td>"+data[i].cheque_amount+"</td>"+
           "</tr>");
         count++;
       }
@@ -385,7 +430,45 @@ function viewCreditItems(thisval,status,credit_id){
           "<td style='display:none;'>"+data[i].credit_id+"</td>"+
           "<td><input type='text' class='form-control' disabled value="+JSON.stringify(data[i].name)+"></td>"+
           "<td><input type='text' class='form-control' readonly value="+data[i].item_price+"></td>"+
-          // "<td><a class='btn btn-danger' "+disableValue+" onclick='removDbankRow(this,"+status+")'><i class='fa fa-trash'></i></a></td>"+
+          "<td><input type='text' class='form-control' readonly value="+data[i].item_price+"></td>"+
+          "<td><a class='btn btn-danger btn-sm' onclick='removeCreditItemRow(this,"+status+")'><i class='fa fa-trash'></i></a></td>"+
+          "</tr>");
+        count++;
+      }
+    }else{
+      swal_warning("No items for this credit")
+    }
+
+
+  },
+  error: function(error) {
+    alert("error occured " + JSON.stringify(error));
+  }
+});
+
+}
+
+
+function viewCreditItems1(credit_id){
+
+  $.ajax({
+    type: 'post',
+    url: "view_credit_items",
+    dataType: 'json',
+    data: {
+      "id": credit_id
+    },
+    beforeSend: function() {
+     $("#creditItemTable tbody tr").remove();
+   },
+   success: function(data) {
+
+    if(data.length != 0){
+      var count = 1;
+      for (var i = 0; i < data.length; i++) {
+        $("#creditItemTable tbody").append("<tr><td>"+count+"</td>"+
+          "<td>"+data[i].name+"</td>"+
+          "<td>"+data[i].item_price+"</td>"+
           "</tr>");
         count++;
       }
@@ -425,7 +508,45 @@ function viewCreditColItems(thisval,status,creditcol_id){
           "<td style='display:none;'>"+data[i].credit_collection_id+"</td>"+
           "<td><input type='text' class='form-control' disabled value="+JSON.stringify(data[i].name)+"></td>"+
           "<td><input type='text' class='form-control' readonly value="+data[i].item_price+"></td>"+
-          // "<td><a class='btn btn-danger' "+disableValue+" onclick='removDbankRow(this,"+status+")'><i class='fa fa-trash'></i></a></td>"+
+          "<td><input type='text' class='form-control' readonly value="+data[i].item_price+"></td>"+
+          "<td><a class='btn btn-danger btn-sm' onclick='removeCreditColItemRow(this,"+status+")'><i class='fa fa-trash'></i></a></td>"+
+          "</tr>");
+        count++;
+      }
+    }else{
+      swal_warning("No items for this credit collection")
+    }
+
+
+  },
+  error: function(error) {
+    alert("error occured " + JSON.stringify(error));
+  }
+});
+
+}
+
+
+function viewCreditColItems1(creditcol_id){
+
+  $.ajax({
+    type: 'post',
+    url: "view_creditcol_items",
+    dataType: 'json',
+    data: {
+      "id": creditcol_id
+    },
+    beforeSend: function() {
+     $("#creditCollectionItemTable tbody tr").remove();
+   },
+   success: function(data) {
+
+    if(data.length != 0){
+      var count = 1;
+      for (var i = 0; i < data.length; i++) {
+        $("#creditCollectionItemTable tbody").append("<tr><td>"+count+"</td>"+
+          "<td>"+data[i].name+"</td>"+
+          "<td>"+data[i].item_price+"</td>"+
           "</tr>");
         count++;
       }
@@ -501,6 +622,33 @@ function removeInhandRow(thisval,status) {
 }
 
 
+function removeInhandChequeRow(thisval,status) {
+
+  if(status !=0){
+    var chequeId = $(thisval).closest("tr").find('td:eq(1)').text();
+    var chequeAmount = $(thisval).closest("tr").find('td:eq(3)').find('input').val();
+    var sum_id = $("#txt_pending_sum_id").val();
+
+    $.ajax({
+      type: 'post',
+      url: "/remove_inhand_cheque",
+      dataType: 'json',
+      data: {
+        "id": chequeId, "chequeAmount":chequeAmount, "sum_id":sum_id
+      },
+      success: function(data) {
+       $(thisval).closest("tr").remove();
+       swal_success("Cheque Removed!!");
+     },
+     error: function(error) {
+      alert("error occured " + JSON.stringify(error));
+    }
+  });
+  }
+
+}
+
+
 function removeBankRow(thisval,status) {
 
   if(status !=0){
@@ -561,7 +709,7 @@ function removeCreditRow(thisval,status) {
 
  if(status !=0){
   var creditId = $(thisval).closest("tr").find('td:eq(1)').text();
-  var deductQty = $(thisval).closest("tr").find('td:eq(3)').find('input').val();
+  var deductQty = $(thisval).closest("tr").find('td:eq(5)').find('input').val();
   var psum_id = $("#txt_pending_sum_id").val();
 
   $.ajax({
@@ -573,13 +721,74 @@ function removeCreditRow(thisval,status) {
     },
     success: function(data) {
      $(thisval).closest("tr").remove();
-     swal_success("Item Removed!!");
-   },
-   error: function(error) {
+     swal_success("Credit Removed!!");
+
+     if($("#creditTable").length == 0){
+      $("#creditItemTable").empty();
+    }
+  },
+  error: function(error) {
     alert("error occured " + JSON.stringify(error));
   }
 });   
 }
+
+}
+
+
+function removeCreditItemRow(thisval,status) {
+
+  if(status !=0){
+    var creditItemsId = $(thisval).closest("tr").find('td:eq(1)').text();
+    var creditId = $(thisval).closest("tr").find('td:eq(2)').text();
+    var amount = $(thisval).closest("tr").find('td:eq(4)').find('input').val();
+    var sum_id = $("#txt_pending_sum_id").val();
+
+    $.ajax({
+      type: 'post',
+      url: "/remove_credit_items",
+      dataType: 'json',
+      data: {
+        "creditItemsId": creditItemsId, "creditId":creditId, "amount":amount, "sum_id":sum_id
+      },
+      success: function(data) {
+       $(thisval).closest("tr").remove();
+       swal_success("Credit Item Removed!!");
+     },
+     error: function(error) {
+      alert("error occured " + JSON.stringify(error));
+    }
+  });
+  }
+
+}
+
+
+function removeCreditColItemRow(thisval,status) {
+
+  if(status !=0){
+
+    var credit_col_items_id = $(thisval).closest("tr").find('td:eq(1)').text();
+    var credit_col_id = $(thisval).closest("tr").find('td:eq(2)').text();
+    var amount = $(thisval).closest("tr").find('td:eq(4)').find('input').val();
+    var sum_id = $("#txt_pending_sum_id").val();
+
+    $.ajax({
+      type: 'post',
+      url: "/remove_credit_collection_items",
+      dataType: 'json',
+      data: {
+        "credit_col_items_id": credit_col_items_id, "credit_col_id":credit_col_id, "amount":amount, "sum_id":sum_id
+      },
+      success: function(data) {
+       $(thisval).closest("tr").remove();
+       swal_success("Collection Item Removed!!");
+     },
+     error: function(error) {
+      alert("error occured " + JSON.stringify(error));
+    }
+  });
+  }
 
 }
 
@@ -628,7 +837,7 @@ function removeCreditColRow(thisval,status) {
     },
     success: function(data) {
      $(thisval).closest("tr").remove();
-     swal_success("Item Removed!!");
+     swal_success("Collection Removed!!");
    },
    error: function(error) {
     alert("error occured " + JSON.stringify(error));
@@ -653,6 +862,7 @@ $("#btnSaleEdit").click(function(e) {
 $("#btnInhandEdit").click(function(e) {
   e.preventDefault();
   $('#inHandTable tbody input').prop('readonly', false);
+  $('#inHandChequeTable tbody input').prop('readonly', false);
 });
 
 $("#btnCreditEdit").click(function(e) {
@@ -690,6 +900,7 @@ $("#btnDsrApprove").click(function() {
   var psum_id = $("#txt_pending_sum_id").val();
   var saleTable = JSON.stringify(saleTableValues());
   var inHandTable = JSON.stringify(inHandTableValues());
+  var inHandChequeTable = JSON.stringify(inHandChequeTableValues());
   var creditTable = JSON.stringify(creditTableValues());
   var creditItemTable = JSON.stringify(creditItemTableValues());
   var creditCollectionTable = JSON.stringify(creditCollectionTableValues());
@@ -698,7 +909,7 @@ $("#btnDsrApprove").click(function() {
   var bankingTable = JSON.stringify(bankingTableValues());
   var directBankingTable = JSON.stringify(directBankingTableValues());
   
-  
+
   $.ajax({
     type: 'post',
     url: "/approve_dsr",
@@ -706,6 +917,7 @@ $("#btnDsrApprove").click(function() {
     data: {
       "saleTable": saleTable,
       "inHandTable": inHandTable,
+      "inHandChequeTable": inHandChequeTable,
       "creditTable": creditTable,
       "creditItemTable": creditItemTable,
       "creditCollectionTable": creditCollectionTable,
@@ -768,6 +980,19 @@ function inHandTableValues(){
  return TableData;
 }
 
+function inHandChequeTableValues(){
+ var TableData = new Array();
+ $('#inHandChequeTable tr').each(function(row, tr){
+  TableData[row]={
+    "id" : $(tr).find('td:eq(1)').text(),
+    "chequeNo" : $(tr).find('td:eq(2)').find('input').val(),
+    "chequeAmount" : $(tr).find('td:eq(3)').find('input').val(),
+  }     
+}); 
+ TableData.shift();
+ return TableData;
+}
+
 // credit table (values).
 function creditTableValues(){
  var TableData = new Array();
@@ -789,9 +1014,10 @@ function creditItemTableValues(){
  $('#creditItemTable tr').each(function(row, tr){
   TableData[row]={
    "item_id" : $(tr).find('td:eq(1)').text(),
-   "credit_id" : $(tr).find('td:eq(1)').text(),
+   "credit_id" : $(tr).find('td:eq(2)').text(),
    "item" : $(tr).find('td:eq(3)').text(),
    "price" : $(tr).find('td:eq(4)').find('input').val(),
+   "old_price" : $(tr).find('td:eq(5)').find('input').val(),
  }     
 }); 
  TableData.shift();
@@ -819,10 +1045,11 @@ function creditCollectionItemTableValues(){
  var TableData = new Array();
  $('#creditCollectionItemTable tr').each(function(row, tr){
   TableData[row]={
-   "item_id" : $(tr).find('td:eq(1)').text(),
+   "collection_item_id" : $(tr).find('td:eq(1)').text(),
    "collection_id" : $(tr).find('td:eq(2)').text(),
    "item_name" : $(tr).find('td:eq(3)').find('input').val(),
    "price" : $(tr).find('td:eq(4)').find('input').val(),
+   "old_price" : $(tr).find('td:eq(5)').find('input').val(),
  }     
 }); 
  TableData.shift();
@@ -1304,6 +1531,7 @@ function viewCompleteDsr(psum_id,dsr_id,status){
           "<td>"+data.inhandData[i].in_hand+"</td>"+
           "<td>"+data.inhandData[i].cash+"</td>"+
           "<td>"+data.inhandData[i].cheque+"</td>"+
+          "<td><button type='button' class='btn btn-warning btn-sm' onclick='viewInhandCheques1("+data.inhandData[i].id+")'><i class='fa fa-eye'></i></button></td>"+
           "</tr>");
         inhandcount++;
       }
@@ -1312,6 +1540,7 @@ function viewCompleteDsr(psum_id,dsr_id,status){
         $("#creditTable1 tbody").append("<tr><td>"+creditcount+"</td>"+
           "<td>"+data.creditData[i].credit_customer_name+"</td>"+
           "<td>"+data.creditData[i].credit_amount+"</td>"+
+          "<td><button type='button' class='btn btn-warning btn-sm' onclick='viewCreditItems1("+data.creditData[i].id+")'><i class='fa fa-eye'></i></button></td>"+
           "</tr>");
         creditcount++;
       }
@@ -1320,6 +1549,7 @@ function viewCompleteDsr(psum_id,dsr_id,status){
         $("#creditCollectionTable1 tbody").append("<tr><td>"+creditcolcount+"</td>"+
           "<td>"+data.creditcolData[i].credit_collection_customer_name+"</td>"+
           "<td>"+data.creditcolData[i].credit_collection_amount+"</td>"+
+          "<td><button type='button' class='btn btn-warning btn-sm' onclick='viewCreditColItems1("+data.creditcolData[i].id+")'><i class='fa fa-eye'></i></button></td>"+
           "</tr>");
         creditcolcount++;
       }
