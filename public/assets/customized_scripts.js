@@ -237,16 +237,20 @@ function viewDsr(psum_id,dsr_id,status){
           option = "Inhand";
         }
 
-        $("#creditCollectionTable tbody").append("<tr><td>"+creditcolcount+"</td>"+
-         "<td style='display:none'>"+data.creditcolData[i].id+"</td>"+
-         "<td style='display: none'>"+data.creditcolData[i].credit_collection_customer_name+"</td>"+
-         "<td><input type='text' class='form-control' value="+JSON.stringify(data.creditcolData[i].credit_collection_customer_name)+"></td>"+
-         "<td style='display: none'>"+data.creditcolData[i].credit_collection_amount+"</td>"+
-         "<td><input type='text' class='form-control' disabled value="+data.creditcolData[i].credit_collection_amount+"></td>"+
-         "<td><input type='text' class='form-control' disabled value="+JSON.stringify(option)+"></td>"+
-         "<td><a class='btn btn-danger btn-sm' "+disableValue+" onclick='removeCreditColRow(this,"+status+")'><i class='fa fa-trash'></i></a>"+
-         "<a class='btn btn-warning btn-sm' onclick='viewCreditColItems(this,"+status+","+data.creditcolData[i].id+")'><i class='fa fa-eye'></i></a></td>"+
-         "</tr>");
+        if(data.creditcolData[i].credit_collection_amount !=0){
+          $("#creditCollectionTable tbody").append("<tr><td>"+creditcolcount+"</td>"+
+           "<td style='display:none'>"+data.creditcolData[i].id+"</td>"+
+           "<td style='display: none'>"+data.creditcolData[i].credit_collection_customer_name+"</td>"+
+           "<td><input type='text' class='form-control' value="+JSON.stringify(data.creditcolData[i].credit_collection_customer_name)+"></td>"+
+           "<td style='display: none'>"+data.creditcolData[i].credit_collection_amount+"</td>"+
+           "<td><input type='text' class='form-control' disabled value="+data.creditcolData[i].credit_collection_amount+"></td>"+
+           "<td><input type='text' class='form-control' disabled value="+JSON.stringify(option)+"></td>"+
+           "<td><a class='btn btn-danger btn-sm' "+disableValue+" onclick='removeCreditColRow(this,"+status+")'><i class='fa fa-trash'></i></a>"+
+           "<a class='btn btn-warning btn-sm' onclick='viewCreditColItems(this,"+status+","+data.creditcolData[i].id+")'><i class='fa fa-eye'></i></a></td>"+
+           "</tr>");
+        }
+
+        
         creditcolcount++;
       }
 
@@ -296,6 +300,7 @@ function viewDsr(psum_id,dsr_id,status){
 
       if(status == 0){
         $("#btnDsrApprove").prop('disabled', true);
+        $("#btnDsrChange").prop('disabled', true);
 
         $('#btnSaleEdit').prop('disabled', true);
         $('#btnInhandEdit').prop('disabled', true);
@@ -307,6 +312,7 @@ function viewDsr(psum_id,dsr_id,status){
 
       }else{
         $("#btnDsrApprove").prop('disabled', false);
+        $("#btnDsrChange").prop('disabled', false);
 
         $('#btnSaleEdit').prop('disabled', false);
         $('#btnInhandEdit').prop('disabled', false);
@@ -893,6 +899,58 @@ $("#btnDBankEdit").click(function(e) {
 });
 
 
+$("#btnCollectionChange").click(function() {
+  var dsr_id =$("#txt_drs_id").val();
+  var psum_id = $("#txt_pending_sum_id").val();
+  var creditCollectionTable = JSON.stringify(creditCollectionTableValues());
+  var creditCollectionItemTable = JSON.stringify(creditCollectionItemTableValues());
+
+  $.ajax({
+    type: 'post',
+    url: "collection_approve",
+    dataType: 'json',
+    data: {
+      "id": dsr_id,
+      "pending_sum_id": psum_id,
+      "creditCollectionTable": creditCollectionTable,
+      "creditCollectionItemTable": creditCollectionItemTable,
+    },
+    success: function(data) {
+      swal_success("Credit Collection Changed Successfully");
+    },
+    error: function(error) {
+      alert("error occured " + JSON.stringify(error));
+    }
+  });
+});
+
+
+$("#btnCreditChange").click(function() {
+  var dsr_id =$("#txt_drs_id").val();
+  var psum_id = $("#txt_pending_sum_id").val();
+  var creditTable = JSON.stringify(creditTableValues());
+  var creditItemTable = JSON.stringify(creditItemTableValues());
+
+  $.ajax({
+    type: 'post',
+    url: "credit_approve",
+    dataType: 'json',
+    data: {
+      "id": dsr_id,
+      "pending_sum_id": psum_id,
+      "creditTable": creditTable,
+      "creditItemTable": creditItemTable,
+    },
+    success: function(data) {
+      swal_success("Credit Changed Successfully");
+    },
+    error: function(error) {
+      alert("error occured " + JSON.stringify(error));
+    }
+  });
+});
+
+
 
 $("#btnDsrApprove").click(function() {
 
@@ -901,10 +959,6 @@ $("#btnDsrApprove").click(function() {
   var saleTable = JSON.stringify(saleTableValues());
   var inHandTable = JSON.stringify(inHandTableValues());
   var inHandChequeTable = JSON.stringify(inHandChequeTableValues());
-  var creditTable = JSON.stringify(creditTableValues());
-  var creditItemTable = JSON.stringify(creditItemTableValues());
-  var creditCollectionTable = JSON.stringify(creditCollectionTableValues());
-  var creditCollectionItemTable = JSON.stringify(creditCollectionItemTableValues());
   var retailerTable = JSON.stringify(retailerTableValues());
   var bankingTable = JSON.stringify(bankingTableValues());
   var directBankingTable = JSON.stringify(directBankingTableValues());
@@ -918,10 +972,6 @@ $("#btnDsrApprove").click(function() {
       "saleTable": saleTable,
       "inHandTable": inHandTable,
       "inHandChequeTable": inHandChequeTable,
-      "creditTable": creditTable,
-      "creditItemTable": creditItemTable,
-      "creditCollectionTable": creditCollectionTable,
-      "creditCollectionItemTable": creditCollectionItemTable,
       "retailerTable": retailerTable,
       "bankingTable": bankingTable,
       "directBankingTable": directBankingTable,
@@ -1537,61 +1587,65 @@ function viewCompleteDsr(psum_id,dsr_id,status){
       }
 
       for (var i = 0; i < data.creditData.length; i++) {
-        $("#creditTable1 tbody").append("<tr><td>"+creditcount+"</td>"+
-          "<td>"+data.creditData[i].credit_customer_name+"</td>"+
-          "<td>"+data.creditData[i].credit_amount+"</td>"+
-          "<td><button type='button' class='btn btn-warning btn-sm' onclick='viewCreditItems1("+data.creditData[i].id+")'><i class='fa fa-eye'></i></button></td>"+
-          "</tr>");
+        if(data.creditData[i].credit_amount !=0){
+          $("#creditTable1 tbody").append("<tr><td>"+creditcount+"</td>"+
+            "<td>"+data.creditData[i].credit_customer_name+"</td>"+
+            "<td>"+data.creditData[i].credit_amount+"</td>"+
+            "<td><button type='button' class='btn btn-warning btn-sm' onclick='viewCreditItems1("+data.creditData[i].id+")'><i class='fa fa-eye'></i></button></td>"+
+            "</tr>");
+        }
         creditcount++;
       }
 
       for (var i = 0; i < data.creditcolData.length; i++) {
-        $("#creditCollectionTable1 tbody").append("<tr><td>"+creditcolcount+"</td>"+
+        if(data.creditcolData[i].credit_collection_amount !=0){
+         $("#creditCollectionTable1 tbody").append("<tr><td>"+creditcolcount+"</td>"+
           "<td>"+data.creditcolData[i].credit_collection_customer_name+"</td>"+
           "<td>"+data.creditcolData[i].credit_collection_amount+"</td>"+
           "<td><button type='button' class='btn btn-warning btn-sm' onclick='viewCreditColItems1("+data.creditcolData[i].id+")'><i class='fa fa-eye'></i></button></td>"+
           "</tr>");
-        creditcolcount++;
-      }
+       }
+       creditcolcount++;
+     }
 
-      for (var i = 0; i < data.reData.length; i++) {
-        $("#retailerTable1 tbody").append("<tr><td>"+recount+"</td>"+
-          "<td>"+data.reData[i].re_customer_name+"</td>"+
-          "<td>"+data.reData[i].name+"</td>"+
-          "<td>"+data.reData[i].re_item_qty+"</td>"+
-          "<td>"+data.reData[i].re_item_amount+"</td>"+
-          "<td>"+(data.reData[i].re_item_amount * data.reData[i].re_item_qty)+"</td>"+
-          "</tr>");
-        recount++;
-      }
-
-      for (var i = 0; i < data.bankData.length; i++) {
-        $("#bankTable1 tbody").append("<tr><td>"+bankcount+"</td>"+
-          "<td>"+data.bankData[i].bank_name+"</td>"+
-          "<td>"+data.bankData[i].bank_ref_no+"</td>"+
-          "<td>"+data.bankData[i].bank_amount+"</td>"+
-          "</tr>");
-        bankcount++;
-      }
-
-      for (var i = 0; i < data.directbankData.length; i++) {
-        $("#directBankTable1 tbody").append("<tr><td>"+directbankcount+"</td>"+
-          "<td>"+data.directbankData[i].direct_bank_customer_name+"</td>"+
-          "<td>"+data.directbankData[i].bank_name+"</td>"+
-          "<td>"+data.directbankData[i].direct_bank_ref_no+"</td>"+
-          "<td>"+data.directbankData[i].direct_bank_amount+"</td>"+
-          "</tr>");
-        directbankcount++;
-      }
-
-
-      $("#dsrCompleteModal").modal("show");
-
-    },
-    error: function(error) {
-      alert("error occured " + JSON.stringify(error));
+     for (var i = 0; i < data.reData.length; i++) {
+      $("#retailerTable1 tbody").append("<tr><td>"+recount+"</td>"+
+        "<td>"+data.reData[i].re_customer_name+"</td>"+
+        "<td>"+data.reData[i].name+"</td>"+
+        "<td>"+data.reData[i].re_item_qty+"</td>"+
+        "<td>"+data.reData[i].re_item_amount+"</td>"+
+        "<td>"+(data.reData[i].re_item_amount * data.reData[i].re_item_qty)+"</td>"+
+        "</tr>");
+      recount++;
     }
-  });
+
+    for (var i = 0; i < data.bankData.length; i++) {
+      $("#bankTable1 tbody").append("<tr><td>"+bankcount+"</td>"+
+        "<td>"+data.bankData[i].bank_name+"</td>"+
+        "<td>"+data.bankData[i].bank_ref_no+"</td>"+
+        "<td>"+data.bankData[i].bank_amount+"</td>"+
+        "</tr>");
+      bankcount++;
+    }
+
+    for (var i = 0; i < data.directbankData.length; i++) {
+      $("#directBankTable1 tbody").append("<tr><td>"+directbankcount+"</td>"+
+        "<td>"+data.directbankData[i].direct_bank_customer_name+"</td>"+
+        "<td>"+data.directbankData[i].bank_name+"</td>"+
+        "<td>"+data.directbankData[i].direct_bank_ref_no+"</td>"+
+        "<td>"+data.directbankData[i].direct_bank_amount+"</td>"+
+        "</tr>");
+      directbankcount++;
+    }
+
+
+    $("#dsrCompleteModal").modal("show");
+
+  },
+  error: function(error) {
+    alert("error occured " + JSON.stringify(error));
+  }
+});
 
 }
 

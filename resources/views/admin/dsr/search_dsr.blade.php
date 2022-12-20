@@ -139,31 +139,31 @@
 
    <form class="mt-3" method="post" id="dsrSave">
 
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-       <li class="nav-item">
-         <a class="nav-link active" id="contact-tab" data-toggle="tab" href="#sales" role="tab" aria-controls="contact" aria-selected="false">Sales</a>
+         <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="contact-tab" data-toggle="tab" href="#sales" role="tab" aria-controls="contact" aria-selected="false">Sales</a>
+         </li>
+         <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#day" role="tab" aria-controls="contact" aria-selected="false">In-Hand</a>
+         </li>
+         <li class="nav-item">
+           <a class="nav-link" id="contact-tab" data-toggle="tab" href="#banking" role="tab" aria-controls="contact" aria-selected="false">Banking</a>
+        </li>
+        <li class="nav-item">
+           <a class="nav-link" id="contact-tab" data-toggle="tab" href="#direct_banking" role="tab" aria-controls="contact" aria-selected="false">Direct Banking</a>
+        </li>
+        <li class="nav-item">
+         <a class="nav-link" id="home-tab" data-toggle="tab" href="#credit" role="tab" aria-controls="home" aria-selected="true">Credit</a>
       </li>
       <li class="nav-item">
-         <a class="nav-link" id="contact-tab" data-toggle="tab" href="#day" role="tab" aria-controls="contact" aria-selected="false">In-Hand</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#banking" role="tab" aria-controls="contact" aria-selected="false">Banking</a>
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#ret_return" role="tab" aria-controls="contact" aria-selected="false">Retailer Return</a>
      </li>
      <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#direct_banking" role="tab" aria-controls="contact" aria-selected="false">Direct Banking</a>
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#credit_collection" role="tab" aria-controls="profile" aria-selected="false">Credit Collection</a>
      </li>
-     <li class="nav-item">
-      <a class="nav-link" id="home-tab" data-toggle="tab" href="#credit" role="tab" aria-controls="home" aria-selected="true">Credit</a>
-   </li>
-   <li class="nav-item">
-     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#ret_return" role="tab" aria-controls="contact" aria-selected="false">Retailer Return</a>
-  </li>
-  <li class="nav-item">
-     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#credit_collection" role="tab" aria-controls="profile" aria-selected="false">Credit Collection</a>
-  </li>
-</ul>
+  </ul>
 
-<div class="tab-content" id="myTabContent">
+  <div class="tab-content" id="myTabContent">
 
    <input type="hidden" value="0" id="txt_drs_id">
    <input type="hidden" value="0" id="txt_pending_sum_id">
@@ -185,60 +185,127 @@
           </tbody>
        </table>
     </div>
-</div>
 
-<div class="tab-pane fade" id="day" role="tabpanel" aria-labelledby="contact-tab">
-
-   <div class="table-responsive mt-3">
-    <table id="inHandTable1" class="table table-bordered table-striped table-hover">
-       <thead class="back_table_color">
-          <tr class="info">
-             <th>#</th>
-             <th>In-Hand</th>
-             <th>Cash</th>
-             <th>Cheque</th>
-          </tr>
-       </thead>
-       <tbody>
-       </tbody>
-    </table>
  </div>
+
+ <div class="tab-pane fade" id="day" role="tabpanel" aria-labelledby="contact-tab">
+
+   <div class="row">
+      <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+         <div class="table-responsive mt-3">
+            <table id="inHandTable1" class="table table-bordered table-striped table-hover">
+               <thead class="back_table_color">
+                  <tr class="info">
+                     <th>#</th>
+                     <th>In-Hand</th>
+                     <th>Cash</th>
+                     <th>Cheque</th>
+                     <th>View</th>
+                  </tr>
+               </thead>
+               <tbody>
+               </tbody>
+            </table>
+         </div>
+      </div>
+
+
+      <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+         <div class="table-responsive mt-3">
+            <table id="inHandChequeTable" class="table table-bordered table-striped table-hover">
+               <thead class="back_table_color">
+                  <tr class="info">
+                     <th>#</th>
+                     <th style="display:none;">Id</th>
+                     <th>Cheque No</th>
+                     <th>Cheque Amount</th>
+                  </tr>
+               </thead>
+               <tbody></tbody>
+            </table>
+         </div>
+      </div>
+   </div>
 
 </div>
 
 <div class="tab-pane fade" id="credit" role="tabpanel" aria-labelledby="home-tab">
 
-  <div class="table-responsive mt-3">
-    <table id="creditTable1" class="table table-bordered table-striped table-hover">
+  <div class="row">
+     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+        <div class="table-responsive mt-3">
+          <table id="creditTable1" class="table table-bordered table-striped table-hover">
+             <thead class="back_table_color">
+                <tr class="info">
+                   <th>#</th>
+                   <th>Customer Name</th>
+                   <th>Amount</th>
+                   <th>View</th>
+                </tr>
+             </thead>
+             <tbody>
+             </tbody>
+          </table>
+       </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+     <div class="table-responsive mt-3">
+      <table id="creditItemTable" class="table table-bordered table-striped table-hover">
        <thead class="back_table_color">
           <tr class="info">
-             <th>#</th>
-             <th>Customer Name</th>
-             <th>Amount</th>
-          </tr>
-       </thead>
-       <tbody>
-       </tbody>
-    </table>
- </div>
+           <th>#</th>
+           <th style="display: none">id</th>
+           <th style="display: none">credit_id</th>
+           <th>Item</th>
+           <th>Price</th>
+        </tr>
+     </thead>
+     <tbody></tbody>
+  </table>
+</div>
+</div>
+</div>
 
 </div>
 
 <div class="tab-pane fade" id="credit_collection" role="tabpanel" aria-labelledby="profile-tab">
 
-  <div class="table-responsive mt-3">
-    <table id="creditCollectionTable1" class="table table-bordered table-striped table-hover">
-       <thead class="back_table_color">
-          <tr class="info">
-             <th>#</th>
-             <th>Customer Name</th>
-             <th>Amount</th>
-          </tr>
-       </thead>
-       <tbody>
-       </tbody>
-    </table>
+  <div class="row">
+
+   <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+      <div class="table-responsive mt-3">
+       <table id="creditCollectionTable1" class="table table-bordered table-striped table-hover">
+          <thead class="back_table_color">
+             <tr class="info">
+                <th>#</th>
+                <th>Customer Name</th>
+                <th>Amount</th>
+                <th>View</th>
+             </tr>
+          </thead>
+          <tbody>
+          </tbody>
+       </table>
+    </div>
  </div>
+
+ <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+  <div class="table-responsive mt-3">
+   <table id="creditCollectionItemTable" class="table table-bordered table-striped table-hover">
+    <thead class="back_table_color">
+       <tr class="info">
+        <th>#</th>
+        <th>Item</th>
+        <th>Price</th>
+     </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+</div>
+</div>
+
+</div>
 
 </div>
 

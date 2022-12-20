@@ -52,62 +52,74 @@
 
                         <div class="btn-group">
                             <button class="btn btn-exp btn-sm" data-toggle="dropdown" style="width:200px"><i class="fa fa-bars"></i> Export Banking Data</button>
-                          <ul class="dropdown-menu exp-drop" role="menu">
-                            <li class="dropdown-divider"></li>
-                            <li>
-                                <a href="#" onclick="$('#bankingDetailsTable').tableExport({type:'xlsx',escape:'false'});">
-                                    <img src="assets/dist/img/excel.png" width="24" alt="logo">Excel</a>
+                            <ul class="dropdown-menu exp-drop" role="menu">
+                                <li class="dropdown-divider"></li>
+                                <li>
+                                    <a href="#" onclick="$('#bankingDetailsTable').tableExport({type:'xlsx',escape:'false'});">
+                                        <img src="assets/dist/img/excel.png" width="24" alt="logo">Excel</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="btn-group">
+                              <button class="btn btn-exp btn-sm" data-toggle="dropdown" style="width:200px"><i class="fa fa-bars"></i> Export Direct Banking Data</button>
+                              <ul class="dropdown-menu exp-drop" role="menu">
+                                <li class="dropdown-divider"></li>
+                                <li>
+                                    <a href="#" onclick="$('#directBankingDetailsTable').tableExport({type:'xlsx',escape:'false'});">
+                                        <img src="assets/dist/img/excel.png" width="24" alt="logo">Excel</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="contact-tab" data-toggle="tab" href="#banking" role="tab" aria-controls="contact" aria-selected="false">Banking</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#direct_banking" role="tab" aria-controls="contact" aria-selected="false">Direct Banking</a>
                                 </li>
                             </ul>
-                        </div>
 
-                        <div class="btn-group">
-                          <button class="btn btn-exp btn-sm" data-toggle="dropdown" style="width:200px"><i class="fa fa-bars"></i> Export Direct Banking Data</button>
-                          <ul class="dropdown-menu exp-drop" role="menu">
-                            <li class="dropdown-divider"></li>
-                            <li>
-                                <a href="#" onclick="$('#directBankingDetailsTable').tableExport({type:'xlsx',escape:'false'});">
-                                    <img src="assets/dist/img/excel.png" width="24" alt="logo">Excel</a>
-                                </li>
-                            </ul>
-                        </div>
+                            <div class="tab-content" id="myTabContent">
 
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="contact-tab" data-toggle="tab" href="#banking" role="tab" aria-controls="contact" aria-selected="false">Banking</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#direct_banking" role="tab" aria-controls="contact" aria-selected="false">Direct Banking</a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content" id="myTabContent">
-
-                            <div class="tab-pane fade show active" id="banking" role="tabpanel" aria-labelledby="contact-tab">
-                             <div class="table-responsive">
-                                <table id="bankingDetailsTable" class="table table-bordered table-striped table-hover">
-                                    <thead class="back_table_color">
-                                        <tr>
-                                            <th style="min-width: 50px">Date</th>
-                                            <th style="min-width: 50px">Bank Name</th>
-                                            <th style="min-width: 50px">DSR Name</th>
-                                            <th style="min-width: 50px">Ref Number</th>
-                                            <th style="min-width: 50px">Amount</th>
+                                <div class="tab-pane fade show active" id="banking" role="tabpanel" aria-labelledby="contact-tab">
+                                 <div class="table-responsive">
+                                    <table id="bankingDetailsTable" class="table table-bordered table-striped table-hover">
+                                        <thead class="back_table_color">
+                                            <tr>
+                                                <th style="min-width: 50px">Date</th>
+                                                <th style="min-width: 50px">Bank Name</th>
+                                                <th style="min-width: 50px">DSR Name</th>
+                                                <th style="min-width: 50px">Ref Number</th>
+                                                <th style="min-width: 50px">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(isset($bankData))
+                                            @foreach($bankData as $bank)
+                                            <tr>
+                                                <td style="min-width: 50px">{{ $bank->created_at }}</td>
+                                                <td style="min-width: 50px">{{ $bank->bankname }}</td>
+                                                <td style="min-width: 50px">{{ $bank->name }}</td>
+                                                <td style="min-width: 50px">{{ $bank->ref_no }}</td>
+                                                <td style="min-width: 50px">{{ $bank->amount }}</td>
+                                            </tr>
+                                            @endforeach
+                                            @endif
+                                        </tbody>
+                                        <tfoot class="back_table_color" >
+                                         <tr>
+                                            <th colspan="4">Total</th>
+                                            <?php 
+                                            $amount_tot = 0;
+                                            foreach($bankData as $bank){
+                                                $amount_tot += $bank->amount;
+                                            }
+                                            ?>
+                                            <th><?php echo number_format($amount_tot,2)  ?></th>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if(isset($bankData))
-                                        @foreach($bankData as $bank)
-                                        <tr>
-                                            <td style="min-width: 50px">{{ $bank->created_at }}</td>
-                                            <td style="min-width: 50px">{{ $bank->bankname }}</td>
-                                            <td style="min-width: 50px">{{ $bank->name }}</td>
-                                            <td style="min-width: 50px">{{ $bank->ref_no }}</td>
-                                            <td style="min-width: 50px">{{ $bank->amount }}</td>
-                                        </tr>
-                                        @endforeach
-                                        @endif
-                                    </tbody>
+                                    </tfoot>
                                 </table>
                             </div>
 
@@ -143,19 +155,31 @@
                                 @endforeach
                                 @endif
                             </tbody>
-                        </table>
-                    </div>
+                            <tfoot class="back_table_color" >
+                             <tr>
+                                <th colspan="4">Total</th>
+                                <?php 
+                                $amount_tot1 = 0;
+                                foreach($directBankData as $dbank){
+                                    $amount_tot1 += $dbank->amount;
+                                }
+                                ?>
+                                <th><?php echo number_format($amount_tot1,2)  ?></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
 
-                    <div class="d-flex justify-content-center">
-                     <div>{!! $directBankData->links() !!}</div>
-                 </div>
-
+                <div class="d-flex justify-content-center">
+                 <div>{!! $directBankData->links() !!}</div>
              </div>
+
          </div>
-
-
      </div>
+
+
  </div>
+</div>
 </div>
 </div>
 </section>

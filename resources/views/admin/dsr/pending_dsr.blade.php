@@ -286,6 +286,7 @@
    <div class="input-group mb-3 group-end">
      <button class="btn btn-info text-white" id="btnCreditEdit">Edit</button>
      <a class="btn btn-danger btnPrevious text-white">Previous</a>
+     <button type="button" class="btn btn-primary btnSubmit text-white" id="btnCreditChange">Change</button>
      <a class="btn btn-add btnNext text-white">Next</a>
   </div>
 </div>
@@ -339,6 +340,7 @@
    <div class="input-group mb-3 group-end">
      <button class="btn btn-info text-white" id="btnCreditColEdit">Edit</button>
      <a class="btn btn-danger btnPrevious text-white">Previous</a>
+     <button type="button" class="btn btn-primary btnSubmit text-white" id="btnCollectionChange">Change</button>
      <button type="button" class="btn btn-add btnSubmit text-white" id="btnDsrApprove">Approve</button>
   </div>
 </div>

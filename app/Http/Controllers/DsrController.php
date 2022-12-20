@@ -127,7 +127,187 @@ class DsrController extends Controller
  }
 
 
- public function ApproveDsr(Request $request){
+ public function CollectionApprove(Request $request){
+
+    $pending_sum = $request->get('pending_sum_id');
+    $dsr_id = $request->get('id');
+    date_default_timezone_set("Asia/colombo");
+    $todayDate = date('Y-m-d');
+    $todayTime = date('h:i:s:a');
+    $user_id = $request->session()->get('user_id');
+
+    $creditCollectionTable = json_decode($request->get('creditCollectionTable'),true);
+    $creditCollectionItemTable = json_decode($request->get('creditCollectionItemTable'),true);
+    if($creditCollectionTable){
+
+        $credit_collection_sum = 0;
+        $credit_collection_item_total = 0;
+        $credit_id = 0;
+
+
+        foreach($creditCollectionItemTable as $credit_items){
+            $credit_collection_sum += $credit_items['price'];
+        }
+
+        foreach($creditCollectionItemTable as $credit_item){
+            DB::update('update credit_collection_items set item_price = ? where id = ?', array($credit_item['price'],$credit_item['collection_item_id']));
+            DB::update('update credit_collections set credit_collection_amount = ? where id = ?', array($credit_collection_sum , $credit_item['collection_id']));
+        }
+
+        $set_sum_default = DB::update('update pending_sum set credit_collection_sum = ? where id = ?', array(0, $pending_sum));
+
+        if($set_sum_default){
+
+            $credit_collection_total = DB::table('credit_collections')->select('credit_collection_amount')->where('status', '=', 1)->where('sum_id',$pending_sum)->get();
+
+            foreach($credit_collection_total as $credits){
+                $credit_collection_item_total += $credits->credit_collection_amount;
+            }
+
+            DB::update('update pending_sum set credit_collection_sum = ? where id = ?', array($credit_collection_item_total, $pending_sum));
+        }
+
+        foreach($creditCollectionTable as $credit){
+         DB::table('credit_collections')->where('id','=',$credit['id'])->update(['credit_collection_customer_name'=>$credit['ccName'] ]);
+     }
+
+     foreach($creditCollectionItemTable as $credit_collections){
+        if(floatval($credit_collections['old_price']) != floatval($credit_collections['price'])){
+
+            $lastInsertId = 0;
+            $check_additional_data = DB::table('additional')->where('sum_id', '=', $pending_sum)->where('dsr_id', '=', $dsr_id)->where('date', '=', $todayDate)->get();
+
+            if(count($check_additional_data) == 0){
+                DB::insert('insert into additional (dsr_id, sum_id, date, user_id, status, created_at) values (?, ?, ?, ?, ?, ?)', [$dsr_id, $pending_sum, $todayDate, $user_id, 1, $todayDate." ".$todayTime]);
+                $lastInsertId  = DB::table('additional')->latest('id')->first();
+            }else{
+                foreach($check_additional_data as $ad_data)
+                    $lastInsertId = $ad_data;
+            }
+
+            $accUpdate = DB::insert('insert into addtional_credit_collection (
+                additional_id,
+                credit_collection_customer_name,
+                edited_credit_collection_customer_name,
+                credit_collection_amount,
+                edited_credit_collection_amount
+            ) values (?, ?, ?, ?, ?)', 
+            [
+                $lastInsertId->id,
+                '',
+                '',
+                $credit_collections['old_price'],
+                $credit_collections['price'] 
+            ]
+        );
+            $last_additional  = DB::table('addtional_credit_collection')->latest('id')->first();
+
+            foreach($creditCollectionTable as $credit_collection_table){
+                if($credit_collection_table['oldccName']  !== $credit_collection_table['ccName']){
+                    DB::table('addtional_credit_collection')
+                    ->where('id','=',$last_additional->id)
+                    ->update([
+                        'credit_collection_customer_name'=>$credit_collection_table['oldccName'],
+                        'edited_credit_collection_customer_name'=>$credit_collection_table['ccName'] 
+                    ]);
+
+                }
+            }
+        }
+    }
+
+
+    return response(1);
+
+
+}
+}
+
+
+
+public function CreditApprove(Request $request){
+    $pending_sum = $request->get('pending_sum_id');
+    $dsr_id = $request->get('id');
+    date_default_timezone_set("Asia/colombo");
+    $todayDate = date('Y-m-d');
+    $todayTime = date('h:i:s:a');
+    $user_id = $request->session()->get('user_id');
+
+    $creditTables = json_decode($request->get('creditTable'),true);
+    $creditItemTable = json_decode($request->get('creditItemTable'),true);
+    if($creditTables){
+
+        $credit_sum = 0;
+        $credit_item_total = 0;
+        $credit_id = 0;
+
+
+        foreach($creditItemTable as $credit_items){
+            $credit_sum += $credit_items['price'];
+        }
+
+        foreach($creditItemTable as $credit_item){
+            DB::update('update credit_items set item_price = ? where id = ?', array($credit_item['price'],$credit_item['item_id']));
+            DB::update('update credits set credit_amount = ? where id = ?', array($credit_sum , $credit_item['credit_id']));
+        }
+
+        $set_sum_default = DB::update('update pending_sum set credit_sum = ? where id = ?', array(0, $pending_sum));
+
+        if($set_sum_default){
+
+            $credit_total = DB::table('credits')->select('credit_amount')->where('status', '=', 1)->where('sum_id',$pending_sum)->get();
+
+            foreach($credit_total as $credits){
+                $credit_item_total += $credits->credit_amount;
+            }
+
+            DB::update('update pending_sum set credit_sum = ? where id = ?', array($credit_item_total, $pending_sum));
+        }
+
+        foreach($creditTables as $credit){
+            DB::table('credits')->where('id','=',$credit['id'])->update(['credit_customer_name'=>$credit['customerName'] ]);  
+        }
+
+        foreach($creditItemTable as $credit_item){
+            if(floatval($credit_item['old_price']) != floatval($credit_item['price'])){
+               $lastInsertId = 0;
+               $check_additional_data = DB::table('additional')->where('sum_id', '=', $pending_sum)->where('dsr_id', '=', $dsr_id)->where('date', '=', $todayDate)->get();
+
+               if(count($check_additional_data) == 0){
+                DB::insert('insert into additional (dsr_id, sum_id, date, user_id, status, created_at) values (?, ?, ?, ?, ?, ?)', [$dsr_id, $pending_sum, $todayDate, $user_id, 1, $todayDate." ".$todayTime]);
+                $lastInsertId  = DB::table('additional')->latest('id')->first();
+            }else{
+                foreach($check_additional_data as $ad_data)
+                    $lastInsertId = $ad_data;
+            }
+
+
+            DB::insert('insert into addtional_credit (additional_id, credit_customer_name, edited_credit_customer_name, credit_amount, edited_credit_amount) values (?, ?, ?, ?, ?)', [$lastInsertId->id, '', '', $credit_item['old_price'], $credit_item['price'] ]);
+
+            $last_additional  = DB::table('addtional_credit')->latest('id')->first();
+
+            foreach($creditTables as $credit_table){
+                if($credit_table['oldcustomerName']  !== $credit_table['customerName']){
+                    DB::table('addtional_credit')
+                    ->where('id','=',$last_additional->id)
+                    ->update([
+                        'credit_customer_name'=>$credit_table['oldcustomerName'],
+                        'edited_credit_customer_name'=>$credit_table['customerName'] 
+                    ]);
+
+                }
+            }
+
+
+        }
+    }
+
+     return response(1);
+}
+}
+
+
+public function ApproveDsr(Request $request){
 
     $pending_sum = $request->get('pending_sum_id');
     $dsr_id = $request->get('id');
@@ -166,8 +346,6 @@ class DsrController extends Controller
     }
 
 
-
-
     $saleTable = json_decode($request->get('saleTable'),true);
     if($saleTable){
         $sale_sum = 0;
@@ -201,43 +379,57 @@ class DsrController extends Controller
     }
 
 
+    $retailerTable = json_decode($request->get('retailerTable'),true);
+    if($retailerTable){
+        $retailer_sum = 0;
+        foreach($retailerTable as $retailer){
+            $retailers = DB::table('retailer_returns')
+            ->where('id','=',$retailer['id'])
+            ->update(['re_customer_name'=>$retailer['reCustomerName'],'re_item_id'=>$retailer['reitemId'],'re_item_qty'=>$retailer['reQuantity'],'re_item_amount'=>$retailer['reAmount']]);
+            $retailer_sum += $retailer['reAmount'] * $retailer['reQuantity'];
+            //   DB::update('update dsr_stock_items set qty = ? where id = ?', array( $retailer['reQuantity'], $retailer['reStockId']) );
 
-
-    $creditTables = json_decode($request->get('creditTable'),true);
-    $creditItemTable = json_decode($request->get('creditItemTable'),true);
-    if($creditTables){
-
-        $credit_sum = 0;
-        $credit_item_total = 0;
-        $credit_id = 0;
-
-
-        foreach($creditItemTable as $credit_items){
-            $credit_sum += $credit_items['price'];
         }
+        $retailers_sum_update = DB::table('pending_sum')->where('id','=',$pending_sum)->update(['retialer_sum'=>  $retailer_sum]);
+    }
 
-        foreach($creditItemTable as $credit_item){
-            DB::update('update credit_items set item_price = ? where id = ?', array($credit_item['price'],$credit_item['item_id']));
-            DB::update('update credits set credit_amount = ? where id = ?', array($credit_sum , $credit_item['credit_id']));
-        }
 
-        $set_sum_default = DB::update('update pending_sum set credit_sum = ? where id = ?', array(0, $pending_sum));
+    $bankingTable = json_decode($request->get('bankingTable'),true);
+    if($bankingTable){
+        DB::update('update pending_sum set banking_sum = ?, banking_sampath = ?, banking_cargils = ?, banking_peoples = ? where id = ?', array( 0, 0, 0, 0, $pending_sum));
 
-        if($set_sum_default){
+        $banking_sum = 0;
+        $sampath = 0;
+        $peoples = 0;
+        $cargils = 0;
+        $sampthonline = 0;
 
-            $credit_total = DB::table('credits')->select('credit_amount')->where('status', '=', 1)->where('sum_id',$pending_sum)->get();
+        foreach($bankingTable as $banking){
 
-            foreach($credit_total as $credits){
-                $credit_item_total += $credits->credit_amount;
+            $banking_sum += $banking['amount'];
+
+            if($banking["bank"] == "Sampath Bank"){
+                $sampath += $banking['amount'];
             }
 
-            DB::update('update pending_sum set credit_sum = ? where id = ?', array($credit_item_total, $pending_sum));
-        }
+            if($banking["bank"] == "People's Bank"){
+                $peoples += $banking['amount'];
+            }
 
-        foreach($creditTables as $credit){
-            DB::table('credits')->where('id','=',$credit['id'])->update(['credit_customer_name'=>$credit['customerName'] ]);
+            if($banking["bank"] == "Cargills Bank"){
+                $cargils += $banking['amount'];
+            }
 
-            if(floatval($credit['oldamount']) != floatval($credit['amount'])){
+            if($banking["bank"] == "Sampath Bank - Online"){
+                $sampthonline += $banking['amount'];
+            }
+
+
+            $bankings = DB::table('bankings')->where('id','=',$banking['id'])->update(['bank_ref_no'=>$banking['refno'],'bank_amount'=>$banking['amount']]);
+
+        // set data to additional table
+            if(floatval($banking['oldamount']) != floatval($banking['amount']) ){
+
                 $lastInsertId = 0;
                 $check_additional_data = DB::table('additional')->where('sum_id', '=', $pending_sum)->where('dsr_id', '=', $dsr_id)->where('date', '=', $todayDate)->get();
 
@@ -249,229 +441,79 @@ class DsrController extends Controller
                         $lastInsertId = $ad_data;
                 }
 
+                DB::insert('insert into addtional_bank (additional_id, bank_id, bank_ref_no, edited_bank_ref_no, bank_amount, edited_bank_amount) values (?, ?, ?, ?, ?, ?)', [$lastInsertId->id, $banking["bankId"], $banking['oldrefno'], $banking['refno'], $banking['oldamount'], $banking['amount'] ]);
 
-                DB::insert('insert into addtional_credit (additional_id, credit_customer_name, edited_credit_customer_name, credit_amount, edited_credit_amount) values (?, ?, ?, ?, ?)', [$lastInsertId->id, $credit['oldcustomerName'], $credit['customerName'], $credit['oldamount'], $credit_item_total ]);
             }
+
+
+
+
         }
+
+        $bankings_sum_update = DB::update('update pending_sum set banking_sum = banking_sum + ? ,banking_sampath = banking_sampath+ ? ,banking_cargils = banking_cargils+ ? ,banking_peoples = banking_peoples + ?, banking_sampth_online = banking_sampth_online + ?  where id = ?', array($banking_sum, $sampath, $cargils, $peoples, $sampthonline, $pending_sum));
     }
 
 
+    $directBankingTable = json_decode($request->get('directBankingTable'),true);
+    if($directBankingTable){
+        DB::update('update pending_sum set direct_banking_sum = ?, direct_banking_sampath = ?, direct_banking_cargils = ?, direct_banking_peoples = ? where id = ?', array( 0, 0, 0, 0, $pending_sum));
+        $db_sum = 0;
+        $sampath = 0;
+        $peoples = 0;
+        $cargils = 0;
+        $sampthonline = 0;
+        foreach($directBankingTable as $db){
+            $db_sum += $db['amount'];
 
-    $creditCollectionTable = json_decode($request->get('creditCollectionTable'),true);
-    $creditCollectionItemTable = json_decode($request->get('creditCollectionItemTable'),true);
-    if($creditCollectionTable){
-
-        $credit_collection_sum = 0;
-        $credit_collection_item_total = 0;
-        $credit_id = 0;
-
-
-        foreach($creditCollectionItemTable as $credit_items){
-            $credit_sum += $credit_items['price'];
-        }
-
-        foreach($creditCollectionItemTable as $credit_item){
-            DB::update('update credit_collection_items set item_price = ? where id = ?', array($credit_item['price'],$credit_item['collection_item_id']));
-            DB::update('update credit_collections set credit_collection_amount = ? where id = ?', array($credit_sum , $credit_item['collection_id']));
-        }
-
-        $set_sum_default = DB::update('update pending_sum set credit_collection_sum = ? where id = ?', array(0, $pending_sum));
-
-        if($set_sum_default){
-
-            $credit_collection_total = DB::table('credit_collections')->select('credit_collection_amount')->where('status', '=', 1)->where('sum_id',$pending_sum)->get();
-
-            foreach($credit_collection_total as $credits){
-                $credit_item_total += $credits->credit_collection_amount;
+            if($db["bank"] == "Sampath Bank"){
+                $sampath += $db['amount'];
             }
 
-            DB::update('update pending_sum set credit_collection_sum = ? where id = ?', array($credit_item_total, $pending_sum));
-        }
+            if($db["bank"] == "People's Bank"){
+                $peoples += $db['amount'];
+            }
 
-        foreach($creditCollectionTable as $credit){
-         DB::table('credit_collections')->where('id','=',$credit['id'])->update(['credit_collection_customer_name'=>$credit['ccName'] ]);
-     }
+            if($db["bank"] == "Cargills Bank"){
+                $cargils += $db['amount'];
+            }
 
- }
-
-
- foreach($creditCollectionItemTable as $credit_collections){
-    if(floatval($credit_collections['old_price']) != floatval($credit_collections['price'])){
-
-        $lastInsertId = 0;
-        $check_additional_data = DB::table('additional')->where('sum_id', '=', $pending_sum)->where('dsr_id', '=', $dsr_id)->where('date', '=', $todayDate)->get();
-
-        if(count($check_additional_data) == 0){
-            DB::insert('insert into additional (dsr_id, sum_id, date, user_id, status, created_at) values (?, ?, ?, ?, ?, ?)', [$dsr_id, $pending_sum, $todayDate, $user_id, 1, $todayDate." ".$todayTime]);
-            $lastInsertId  = DB::table('additional')->latest('id')->first();
-        }else{
-            foreach($check_additional_data as $ad_data)
-                $lastInsertId = $ad_data;
-        }
-
-        DB::insert('insert into addtional_credit_collection (
-            additional_id,
-            credit_collection_customer_name,
-            edited_credit_collection_customer_name,
-            credit_collection_amount,
-            edited_credit_collection_amount
-        ) values (?, ?, ?, ?, ?)', 
-        [$lastInsertId->id,
-            '',
-            '',
-            $credit_collections['old_price'],
-            $credit_collections['price'] ]);
-
-        // foreach($creditCollectionTable as $credit_collection_table){
-        //     if($credit_collection_table['oldccName']  !== $credit_collection_table['ccName'] ){
-        //         DB::table('addtional_credit_collection')->where('additional_id','=',$lastInsertId->id)->update(['credit_collection_customer_name'=>$credit_collection_table['oldccName'], 'edited_credit_collection_customer_name'=>$credit_collection_table['ccName'] ]);
-        //  }
-     
-
- }
-}
-
-}
+            if($db["bank"] == "Sampath Bank - Online"){
+                $sampthonline += $db['amount'];
+            }
 
 
-
-$retailerTable = json_decode($request->get('retailerTable'),true);
-if($retailerTable){
-    $retailer_sum = 0;
-    foreach($retailerTable as $retailer){
-        $retailers = DB::table('retailer_returns')
-        ->where('id','=',$retailer['id'])
-        ->update(['re_customer_name'=>$retailer['reCustomerName'],'re_item_id'=>$retailer['reitemId'],'re_item_qty'=>$retailer['reQuantity'],'re_item_amount'=>$retailer['reAmount']]);
-        $retailer_sum += $retailer['reAmount'] * $retailer['reQuantity'];
-            //   DB::update('update dsr_stock_items set qty = ? where id = ?', array( $retailer['reQuantity'], $retailer['reStockId']) );
-
-    }
-    $retailers_sum_update = DB::table('pending_sum')->where('id','=',$pending_sum)->update(['retialer_sum'=>  $retailer_sum]);
-}
-
-
-
-$bankingTable = json_decode($request->get('bankingTable'),true);
-if($bankingTable){
-    DB::update('update pending_sum set banking_sum = ?, banking_sampath = ?, banking_cargils = ?, banking_peoples = ? where id = ?', array( 0, 0, 0, 0, $pending_sum));
-
-    $banking_sum = 0;
-    $sampath = 0;
-    $peoples = 0;
-    $cargils = 0;
-    $sampthonline = 0;
-
-    foreach($bankingTable as $banking){
-
-        $banking_sum += $banking['amount'];
-
-        if($banking["bank"] == "Sampath Bank"){
-            $sampath += $banking['amount'];
-        }
-
-        if($banking["bank"] == "People's Bank"){
-            $peoples += $banking['amount'];
-        }
-
-        if($banking["bank"] == "Cargills Bank"){
-            $cargils += $banking['amount'];
-        }
-
-        if($banking["bank"] == "Sampath Bank - Online"){
-            $sampthonline += $banking['amount'];
-        }
-
-
-        $bankings = DB::table('bankings')->where('id','=',$banking['id'])->update(['bank_ref_no'=>$banking['refno'],'bank_amount'=>$banking['amount']]);
+            $direct_bankings = DB::table('directbankings')->where('id','=',$db['id'])->update(['direct_bank_customer_name'=>$db['customerName'],'direct_bank_ref_no'=>$db['refno'],'direct_bank_amount'=>$db['amount']]);
 
         // set data to additional table
-        if(floatval($banking['oldamount']) != floatval($banking['amount']) ){
+            if(floatval($db['oldamount']) != floatval($db['amount'])){
 
-            $lastInsertId = 0;
-            $check_additional_data = DB::table('additional')->where('sum_id', '=', $pending_sum)->where('dsr_id', '=', $dsr_id)->where('date', '=', $todayDate)->get();
+                $lastInsertId = 0;
+                $check_additional_data = DB::table('additional')->where('sum_id', '=', $pending_sum)->where('dsr_id', '=', $dsr_id)->where('date', '=', $todayDate)->get();
 
-            if(count($check_additional_data) == 0){
-                DB::insert('insert into additional (dsr_id, sum_id, date, user_id, status, created_at) values (?, ?, ?, ?, ?, ?)', [$dsr_id, $pending_sum, $todayDate, $user_id, 1, $todayDate." ".$todayTime]);
-                $lastInsertId  = DB::table('additional')->latest('id')->first();
-            }else{
-                foreach($check_additional_data as $ad_data)
-                    $lastInsertId = $ad_data;
+                if(count($check_additional_data) == 0){
+                    DB::insert('insert into additional (dsr_id, sum_id, date, user_id, status, created_at) values (?, ?, ?, ?, ?, ?)', [$dsr_id, $pending_sum, $todayDate, $user_id, 1, $todayDate." ".$todayTime]);
+                    $lastInsertId  = DB::table('additional')->latest('id')->first();
+                }else{
+                    foreach($check_additional_data as $ad_data)
+                        $lastInsertId = $ad_data;
+                }
+
+                DB::insert('insert into addtional_directbank (additional_id, bank_id, direct_bank_ref_no, edited_direct_bank_ref_no, direct_bank_amount, edited_direct_bank_amount) values (?, ?, ?, ?, ?, ?)', [$lastInsertId->id, $db["bankId"], $db['oldrefno'], $db['refno'], $db['oldamount'], $db['amount'] ]);
             }
-
-            DB::insert('insert into addtional_bank (additional_id, bank_id, bank_ref_no, edited_bank_ref_no, bank_amount, edited_bank_amount) values (?, ?, ?, ?, ?, ?)', [$lastInsertId->id, $banking["bankId"], $banking['oldrefno'], $banking['refno'], $banking['oldamount'], $banking['amount'] ]);
-
         }
-
-
-
-
+        $bankings_sum_update = DB::update('update pending_sum set direct_banking_sum = direct_banking_sum + ? ,direct_banking_sampath = direct_banking_sampath+ ? ,direct_banking_cargils = direct_banking_cargils+ ? ,direct_banking_peoples = direct_banking_peoples + ?, direct_banking_sampth_online = direct_banking_sampth_online + ?  where id = ?', array($db_sum, $sampath, $cargils, $peoples, $sampthonline, $pending_sum));
     }
 
-    $bankings_sum_update = DB::update('update pending_sum set banking_sum = banking_sum + ? ,banking_sampath = banking_sampath+ ? ,banking_cargils = banking_cargils+ ? ,banking_peoples = banking_peoples + ?, banking_sampth_online = banking_sampth_online + ?  where id = ?', array($banking_sum, $sampath, $cargils, $peoples, $sampthonline, $pending_sum));
-}
 
 
 
-$directBankingTable = json_decode($request->get('directBankingTable'),true);
-if($directBankingTable){
-    DB::update('update pending_sum set direct_banking_sum = ?, direct_banking_sampath = ?, direct_banking_cargils = ?, direct_banking_peoples = ? where id = ?', array( 0, 0, 0, 0, $pending_sum));
-    $db_sum = 0;
-    $sampath = 0;
-    $peoples = 0;
-    $cargils = 0;
-    $sampthonline = 0;
-    foreach($directBankingTable as $db){
-        $db_sum += $db['amount'];
+$updateItemData = DB::table('pending_sum')
+->where('id','=',$request->get('pending_sum_id'))
+->update([
+    'status'=>2,
+]);
 
-        if($db["bank"] == "Sampath Bank"){
-            $sampath += $db['amount'];
-        }
-
-        if($db["bank"] == "People's Bank"){
-            $peoples += $db['amount'];
-        }
-
-        if($db["bank"] == "Cargills Bank"){
-            $cargils += $db['amount'];
-        }
-
-        if($db["bank"] == "Sampath Bank - Online"){
-            $sampthonline += $db['amount'];
-        }
-
-
-        $direct_bankings = DB::table('directbankings')->where('id','=',$db['id'])->update(['direct_bank_customer_name'=>$db['customerName'],'direct_bank_ref_no'=>$db['refno'],'direct_bank_amount'=>$db['amount']]);
-
-        // set data to additional table
-        if(floatval($db['oldamount']) != floatval($db['amount'])){
-
-            $lastInsertId = 0;
-            $check_additional_data = DB::table('additional')->where('sum_id', '=', $pending_sum)->where('dsr_id', '=', $dsr_id)->where('date', '=', $todayDate)->get();
-
-            if(count($check_additional_data) == 0){
-                DB::insert('insert into additional (dsr_id, sum_id, date, user_id, status, created_at) values (?, ?, ?, ?, ?, ?)', [$dsr_id, $pending_sum, $todayDate, $user_id, 1, $todayDate." ".$todayTime]);
-                $lastInsertId  = DB::table('additional')->latest('id')->first();
-            }else{
-                foreach($check_additional_data as $ad_data)
-                    $lastInsertId = $ad_data;
-            }
-
-            DB::insert('insert into addtional_directbank (additional_id, bank_id, direct_bank_ref_no, edited_direct_bank_ref_no, direct_bank_amount, edited_direct_bank_amount) values (?, ?, ?, ?, ?, ?)', [$lastInsertId->id, $db["bankId"], $db['oldrefno'], $db['refno'], $db['oldamount'], $db['amount'] ]);
-        }
-    }
-    $bankings_sum_update = DB::update('update pending_sum set direct_banking_sum = direct_banking_sum + ? ,direct_banking_sampath = direct_banking_sampath+ ? ,direct_banking_cargils = direct_banking_cargils+ ? ,direct_banking_peoples = direct_banking_peoples + ?, direct_banking_sampth_online = direct_banking_sampth_online + ?  where id = ?', array($db_sum, $sampath, $cargils, $peoples, $sampthonline, $pending_sum));
-}
-
-
-
-
-// $updateItemData = DB::table('pending_sum')
-// ->where('id','=',$request->get('pending_sum_id'))
-// ->update([
-//     'status'=>2,
-// ]);
-
-return response(1);
+    return response(1);
 
 
 }

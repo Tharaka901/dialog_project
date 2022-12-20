@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2022 at 03:13 AM
+-- Generation Time: Dec 20, 2022 at 04:31 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -43,7 +43,7 @@ CREATE TABLE `additional` (
 --
 
 INSERT INTO `additional` (`id`, `dsr_id`, `sum_id`, `date`, `user_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, '6', '2022-12-06', 1, 1, '2022-12-05 22:26:15', NULL);
+(1, 4, '1', '2022-12-20', 1, 1, '2022-12-20 02:42:14', NULL);
 
 -- --------------------------------------------------------
 
@@ -80,6 +80,13 @@ CREATE TABLE `addtional_credit` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `addtional_credit`
+--
+
+INSERT INTO `addtional_credit` (`id`, `additional_id`, `credit_customer_name`, `edited_credit_customer_name`, `credit_amount`, `edited_credit_amount`, `created_at`, `updated_at`) VALUES
+(1, 1, 'nuwan', 'nuwans', 30, 40, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -96,6 +103,15 @@ CREATE TABLE `addtional_credit_collection` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `addtional_credit_collection`
+--
+
+INSERT INTO `addtional_credit_collection` (`id`, `additional_id`, `credit_collection_customer_name`, `edited_credit_collection_customer_name`, `credit_collection_amount`, `edited_credit_collection_amount`, `created_at`, `updated_at`) VALUES
+(1, 1, 'doom', 'rehan', 80, 100, NULL, NULL),
+(2, 1, 'rehan', 'reHAN', 100, 80, NULL, NULL),
+(3, 1, 'rehan', 'reHAN', 20, 50, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -114,13 +130,6 @@ CREATE TABLE `addtional_directbank` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `addtional_directbank`
---
-
-INSERT INTO `addtional_directbank` (`id`, `additional_id`, `bank_id`, `direct_bank_ref_no`, `edited_direct_bank_ref_no`, `direct_bank_amount`, `edited_direct_bank_amount`, `created_at`, `updated_at`) VALUES
-(1, 1, 3, '741', '741', 100, 150, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -170,12 +179,8 @@ CREATE TABLE `bankings` (
 --
 
 INSERT INTO `bankings` (`id`, `bank_id`, `bank_ref_no`, `bank_amount`, `dsr_id`, `sum_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, '1234', 5000, 3, 3, 1, '2022-12-14 06:13:00', '2022-12-14 06:13:00'),
-(2, 2, '741', 100, 3, 3, 1, '2022-12-14 06:13:00', '2022-12-14 06:13:00'),
-(3, 3, '1234', 100, 3, 8, 1, '2022-12-14 07:09:11', '2022-12-14 07:09:11'),
-(4, 4, '741', 200, 3, 8, 1, '2022-12-14 07:09:11', '2022-12-14 07:09:11'),
-(5, 2, '1234', 500, 4, 9, 1, '2022-12-14 07:09:26', '2022-12-14 07:09:26'),
-(6, 3, '741', 1000, 4, 9, 1, '2022-12-14 07:09:26', '2022-12-14 07:09:26');
+(1, 2, '123', 10, 4, 1, 1, '2022-12-20 13:56:22', '2022-12-19 13:56:22'),
+(2, 4, '456', 20, 4, 1, 1, '2022-12-20 13:56:22', '2022-12-19 13:56:22');
 
 -- --------------------------------------------------------
 
@@ -223,8 +228,8 @@ CREATE TABLE `credits` (
 --
 
 INSERT INTO `credits` (`id`, `credit_customer_name`, `credit_amount`, `sum_id`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'rehan', 250, 1, 1, 1, '2022-12-14 06:12:55', '2022-12-14 06:12:55'),
-(2, 'abc', 50, 1, 1, 1, '2022-12-14 06:12:55', '2022-12-14 06:12:55');
+(1, 'nuwans', 60, 1, 4, 1, '2022-12-19 01:56:13', '2022-12-19 13:56:13'),
+(2, 'cheater', 150, 1, 4, 1, '2022-12-19 01:56:13', '2022-12-19 13:56:13');
 
 -- --------------------------------------------------------
 
@@ -249,9 +254,8 @@ CREATE TABLE `credit_collections` (
 --
 
 INSERT INTO `credit_collections` (`id`, `credit_collection_customer_name`, `credit_collection_amount`, `option_id`, `sum_id`, `dsr_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'rehan', 20, 1, 4, 4, 1, '2022-12-14 06:13:05', '2022-12-14 06:13:05'),
-(2, 'abc', 30, 2, 4, 4, 1, '2022-12-14 06:13:05', '2022-12-14 06:13:05'),
-(3, 'def', 50, 3, 4, 4, 1, '2022-12-14 06:13:05', '2022-12-14 06:13:05');
+(1, 'reHAN', 130, 1, 1, 4, 1, '2022-12-19 13:56:25', '2022-12-19 13:56:25'),
+(2, 'ccc', 0, 3, 1, 4, 1, '2022-12-19 13:56:25', '2022-12-19 13:56:25');
 
 -- --------------------------------------------------------
 
@@ -274,9 +278,10 @@ CREATE TABLE `credit_collection_items` (
 --
 
 INSERT INTO `credit_collection_items` (`id`, `credit_collection_id`, `item_id`, `item_price`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 20, 1, '2022-12-14 06:13:05', '2022-12-14 06:13:05'),
-(2, 2, 2, 30, 1, '2022-12-14 06:13:05', '2022-12-14 06:13:05'),
-(3, 3, 2, 50, 1, '2022-12-14 06:13:05', '2022-12-14 06:13:05');
+(1, 1, 1, 80, 1, '2022-12-19 13:56:25', '2022-12-19 13:56:25'),
+(2, 1, 2, 50, 1, '2022-12-19 13:56:25', '2022-12-19 13:56:25'),
+(3, 2, 3, 50, 0, '2022-12-19 13:56:25', '2022-12-19 13:56:25'),
+(4, 2, 4, 100, 0, '2022-12-19 13:56:25', '2022-12-19 13:56:25');
 
 -- --------------------------------------------------------
 
@@ -299,9 +304,9 @@ CREATE TABLE `credit_items` (
 --
 
 INSERT INTO `credit_items` (`id`, `credit_id`, `item_id`, `item_price`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 100, 1, '2022-12-14 06:12:55', '2022-12-14 06:12:55'),
-(2, 1, 2, 150, 1, '2022-12-14 06:12:55', '2022-12-14 06:12:55'),
-(3, 2, 3, 50, 1, '2022-12-14 06:12:55', '2022-12-14 06:12:55');
+(1, 1, 1, 40, 1, '2022-12-19 13:56:13', '2022-12-19 13:56:13'),
+(2, 1, 2, 20, 1, '2022-12-19 13:56:13', '2022-12-19 13:56:13'),
+(3, 2, 3, 150, 1, '2022-12-19 13:56:13', '2022-12-19 13:56:13');
 
 -- --------------------------------------------------------
 
@@ -327,12 +332,8 @@ CREATE TABLE `directbankings` (
 --
 
 INSERT INTO `directbankings` (`id`, `direct_bank_customer_name`, `direct_bank_id`, `direct_bank_ref_no`, `direct_bank_amount`, `dsr_id`, `sum_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'abc', 1, '1234', 200, 2, 2, 1, '2022-12-14 06:12:58', '2022-12-14 06:12:58'),
-(2, 'xyz', 3, '741', 100, 2, 2, 1, '2022-12-14 06:12:58', '2022-12-14 06:12:58'),
-(3, 'rehan', 1, '1234', 200, 1, 6, 1, '2022-12-14 07:04:07', '2022-12-14 07:04:07'),
-(4, 'charith', 3, '741', 100, 1, 6, 1, '2022-12-14 07:04:07', '2022-12-14 07:04:07'),
-(5, 'oshan', 1, '1234', 500, 2, 7, 1, '2022-12-14 07:04:27', '2022-12-14 07:04:27'),
-(6, 'kasun', 3, '741', 820, 2, 7, 1, '2022-12-14 07:04:27', '2022-12-14 07:04:27');
+(1, 'oshan', 1, '1234', 500, 4, 1, 1, '2022-12-20 13:56:22', '2022-12-19 13:56:18'),
+(2, 'kasun', 3, '741', 820, 4, 1, 1, '2022-12-20 13:56:22', '2022-12-19 13:56:18');
 
 -- --------------------------------------------------------
 
@@ -356,9 +357,8 @@ CREATE TABLE `drs_cheques` (
 --
 
 INSERT INTO `drs_cheques` (`id`, `sum_id`, `dsrs_id`, `cheque_no`, `cheque_amount`, `status`, `created_at`, `updated_at`) VALUES
-(1, 5, 1, '45896', 30, 1, '2022-12-14 06:13:10', '2022-12-14 06:13:10'),
-(2, 5, 1, '45896', 30, 1, '2022-12-14 06:13:48', '2022-12-14 06:13:48'),
-(3, 5, 1, '123', 70, 1, '2022-12-14 06:13:48', '2022-12-14 06:13:48');
+(1, 1, 1, '45896', 30, 0, '2022-12-19 13:56:29', '2022-12-19 13:56:29'),
+(2, 1, 1, '123', 70, 1, '2022-12-19 13:56:29', '2022-12-19 13:56:29');
 
 -- --------------------------------------------------------
 
@@ -383,7 +383,7 @@ CREATE TABLE `dsrs` (
 --
 
 INSERT INTO `dsrs` (`id`, `in_hand`, `cash`, `cheque`, `sum_id`, `dsr_user_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 230, 100, 130, 5, 5, 1, '2022-12-14 06:13:10', '2022-12-14 06:13:10');
+(1, 170, 100, 70, 1, 4, 1, '2022-12-19 13:56:29', '2022-12-19 13:56:29');
 
 -- --------------------------------------------------------
 
@@ -690,15 +690,7 @@ CREATE TABLE `pending_sum` (
 --
 
 INSERT INTO `pending_sum` (`id`, `dsr_id`, `date`, `inhand_sum`, `inhand_cash`, `inhand_cheque`, `sales_sum`, `credit_sum`, `credit_collection_sum`, `banking_sum`, `banking_sampath`, `banking_cargils`, `banking_peoples`, `banking_sampth_online`, `direct_banking_sum`, `direct_banking_sampath`, `direct_banking_cargils`, `direct_banking_peoples`, `direct_banking_sampth_online`, `retialer_sum`, `user_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, '2022-12-01', 0, 0, 0, 0, 300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, NULL, NULL),
-(2, 2, '2022-12-02', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 300, 0, 200, 0, 100, 0, 0, 1, NULL, NULL),
-(3, 3, '2022-12-03', 0, 0, 0, 0, 0, 0, 5100, 0, 5000, 0, 100, 0, 0, 0, 0, 0, 0, 0, 1, NULL, NULL),
-(4, 4, '2022-12-04', 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, NULL, NULL),
-(5, 5, '2022-12-05', 230, 100, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, NULL, NULL),
-(6, 1, '2022-12-06', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 300, 0, 200, 0, 100, 0, 0, 1, NULL, NULL),
-(7, 2, '2022-12-07', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1320, 0, 500, 0, 820, 0, 0, 1, NULL, NULL),
-(8, 3, '2022-12-08', 0, 0, 0, 0, 0, 0, 300, 100, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 1, NULL, NULL),
-(9, 4, '2022-12-09', 0, 0, 0, 0, 0, 0, 1500, 500, 0, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 1, NULL, NULL);
+(1, 4, '2022-12-20', 170, 100, 70, 0, 210, 130, 30, 10, 0, 20, 0, 1320, 0, 500, 0, 32800, 0, 0, 2, '2022-12-19 01:56:13', NULL);
 
 -- --------------------------------------------------------
 
@@ -728,15 +720,7 @@ CREATE TABLE `pending_sum_status` (
 --
 
 INSERT INTO `pending_sum_status` (`id`, `sum_id`, `dsr_id`, `date`, `inhand_sum`, `sales_sum`, `credit_sum`, `credit_collection_sum`, `banking_sum`, `direct_banking_sum`, `retialer_sum`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '2022-12-01', 0, 0, 1, 0, 0, 0, 0, 0, NULL, NULL),
-(2, 2, 2, '2022-12-02', 0, 0, 0, 0, 0, 1, 0, 0, NULL, NULL),
-(3, 3, 3, '2022-12-03', 0, 0, 0, 0, 1, 0, 0, 0, NULL, NULL),
-(4, 4, 4, '2022-12-04', 0, 0, 0, 1, 0, 0, 0, 0, NULL, NULL),
-(5, 5, 5, '2022-12-05', 1, 0, 0, 0, 0, 0, 0, 0, NULL, NULL),
-(6, 6, 1, '2022-12-06', 0, 0, 0, 0, 0, 1, 0, 0, NULL, NULL),
-(7, 7, 2, '2022-12-07', 0, 0, 0, 0, 0, 1, 0, 0, NULL, NULL),
-(8, 8, 3, '2022-12-08', 0, 0, 0, 0, 1, 0, 0, 0, NULL, NULL),
-(9, 9, 4, '2022-12-09', 0, 0, 0, 0, 1, 0, 0, 0, NULL, NULL);
+(1, 1, 4, '2022-12-19', 1, 0, 1, 1, 1, 1, 0, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1094,19 +1078,19 @@ ALTER TABLE `addtional_bank`
 -- AUTO_INCREMENT for table `addtional_credit`
 --
 ALTER TABLE `addtional_credit`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `addtional_credit_collection`
 --
 ALTER TABLE `addtional_credit_collection`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `addtional_directbank`
 --
 ALTER TABLE `addtional_directbank`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `admins`
@@ -1118,7 +1102,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `bankings`
 --
 ALTER TABLE `bankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `banks`
@@ -1136,13 +1120,13 @@ ALTER TABLE `credits`
 -- AUTO_INCREMENT for table `credit_collections`
 --
 ALTER TABLE `credit_collections`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `credit_collection_items`
 --
 ALTER TABLE `credit_collection_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `credit_items`
@@ -1154,13 +1138,13 @@ ALTER TABLE `credit_items`
 -- AUTO_INCREMENT for table `directbankings`
 --
 ALTER TABLE `directbankings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `drs_cheques`
 --
 ALTER TABLE `drs_cheques`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `dsrs`
@@ -1220,13 +1204,13 @@ ALTER TABLE `oauth_personal_access_clients`
 -- AUTO_INCREMENT for table `pending_sum`
 --
 ALTER TABLE `pending_sum`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `pending_sum_status`
 --
 ALTER TABLE `pending_sum_status`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`

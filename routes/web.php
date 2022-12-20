@@ -107,3 +107,8 @@ Route::get('/additional_details',[ReportController::class,'AdditionalDetails']);
 Route::post('/get_additional_data',[ReportController::class,'getAdditionalData']);
 Route::get('banking_details',[ReportController::class,'BankingDetails']);
 Route::post('get_bank_details',[ReportController::class,'GetBankDetails'])->name('get_bank_details');
+
+
+
+Route::post('collection_approve',[DsrController::class,'CollectionApprove'])->name('collection_approve');
+Route::post('credit_approve',[DsrController::class,'CreditApprove'])->name('credit_approve');
