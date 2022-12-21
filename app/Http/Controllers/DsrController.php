@@ -396,7 +396,7 @@ public function ApproveDsr(Request $request){
 
     $bankingTable = json_decode($request->get('bankingTable'),true);
     if($bankingTable){
-        DB::update('update pending_sum set banking_sum = ?, banking_sampath = ?, banking_cargils = ?, banking_peoples = ? where id = ?', array( 0, 0, 0, 0, $pending_sum));
+        DB::update('update pending_sum set banking_sum = ?, banking_sampath = ?, banking_cargils = ?, banking_peoples = ?, banking_sampth_online = ?  where id = ?', array( 0, 0, 0, 0, 0, $pending_sum));
 
         $banking_sum = 0;
         $sampath = 0;
@@ -456,7 +456,7 @@ public function ApproveDsr(Request $request){
 
     $directBankingTable = json_decode($request->get('directBankingTable'),true);
     if($directBankingTable){
-        DB::update('update pending_sum set direct_banking_sum = ?, direct_banking_sampath = ?, direct_banking_cargils = ?, direct_banking_peoples = ? where id = ?', array( 0, 0, 0, 0, $pending_sum));
+        DB::update('update pending_sum set direct_banking_sum = ?, direct_banking_sampath = ?, direct_banking_cargils = ?, direct_banking_peoples = ?, direct_banking_sampth_online = ? where id = ?', array( 0, 0, 0, 0, 0, $pending_sum));
         $db_sum = 0;
         $sampath = 0;
         $peoples = 0;
