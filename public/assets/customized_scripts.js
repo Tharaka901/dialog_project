@@ -660,7 +660,7 @@ function removeBankRow(thisval,status) {
   if(status !=0){
     var bankId = $(thisval).closest("tr").find('td:eq(1)').text();
     var bankName = $(thisval).closest("tr").find('td:eq(2)').find('input').val();
-    var deductQty = $(thisval).closest("tr").find('td:eq(4)').find('input').val();
+    var deductQty = $(thisval).closest("tr").find('td:eq(6)').find('input').val();
     var psum_id = $("#txt_pending_sum_id").val();
 
     $.ajax({
@@ -688,7 +688,7 @@ function removDbankRow(thisval,status) {
   if(status !=0){
     var dbankId = $(thisval).closest("tr").find('td:eq(1)').text();
     var bankName = $(thisval).closest("tr").find('td:eq(3)').find('input').val();
-    var deductQty = $(thisval).closest("tr").find('td:eq(5)').find('input').val();
+    var deductQty = $(thisval).closest("tr").find('td:eq(7)').find('input').val();
     var psum_id = $("#txt_pending_sum_id").val();
 
     $.ajax({
