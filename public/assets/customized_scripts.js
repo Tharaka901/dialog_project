@@ -1581,7 +1581,7 @@ function viewCompleteDsr(psum_id,dsr_id,status){
           "<td>"+data.inhandData[i].in_hand+"</td>"+
           "<td>"+data.inhandData[i].cash+"</td>"+
           "<td>"+data.inhandData[i].cheque+"</td>"+
-          "<td><button type='button' class='btn btn-warning btn-sm' onclick='viewInhandCheques1("+data.inhandData[i].id+")'><i class='fa fa-eye'></i></button></td>"+
+          "<td><button type='button' class='btn btn-warning btn-sm' onclick='viewInhandCheques1("+data.inhandData[i].sum_id+")'><i class='fa fa-eye'></i></button></td>"+
           "</tr>");
         inhandcount++;
       }
