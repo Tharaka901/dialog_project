@@ -834,7 +834,7 @@ class PassportAuthController extends Controller
 
         // CreditCollectionItem
         foreach ($creditcollections as $creditcol) {
-            $existing_creditcol_customer = CreditCollection::whereDate("created_at","=",date($system_date))->where("credit_collection_customer_name","like","%" . $creditcol["ccName"] . "%")->get();
+            $existing_creditcol_customer = CreditCollection::whereDate("created_at","=",date($system_date))->where("credit_collection_customer_name","like","%" . $creditcol["ccName"] . "%")->where('sum_id',$sum_id->id)->get();
 
             if (count($existing_creditcol_customer) == 0) {
                 $creditcollection = new CreditCollection([
