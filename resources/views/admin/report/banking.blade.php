@@ -29,7 +29,7 @@
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-3 form-group">
-                                            <select class="form-control" id="id" name="id" value="{{ request()->get('id') }}">
+                                            <select class="form-control" id="id" name="id" value="{{ request()->get('id') }}" required>
                                                 <option value="">-select a bank-</option>
                                                 @foreach($banks as $bank)
                                                 <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
@@ -37,10 +37,10 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3 form-group">
-                                            <input type="date" class="form-control" id="fromdate" name="fromdate" value="{{ request()->get('fromdate') }}" >
+                                            <input type="date" class="form-control" id="fromdate" name="fromdate" value="{{ request()->get('fromdate') }}" required>
                                         </div>
                                         <div class="col-md-3 form-group">
-                                            <input type="date" class="form-control" id="todate" name="todate" value="{{ request()->get('todate') }}" >
+                                            <input type="date" class="form-control" id="todate" name="todate" value="{{ request()->get('todate') }}" required>
                                         </div>  
                                         <div class="col-md-3 form-group user-form-group">
                                             <button type="submit" class="btn btn-add btn-sm">Submit</button>
