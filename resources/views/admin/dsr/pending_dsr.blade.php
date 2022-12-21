@@ -271,7 +271,7 @@
            <th style="display: none">credit_id</th>
            <th>Item</th>
            <th>Price</th>
-           <th>Old Price</th>
+           <th style='display: none'>Old Price</th>
            <th>Remove</th>
         </tr>
      </thead>
@@ -325,7 +325,7 @@
            <th style="display: none">credit_collection_id</th>
            <th>Item</th>
            <th>Price</th>
-           <th>Old Price</th>
+           <th style='display: none'>Old Price</th>
            <th>Remove</th>
         </tr>
      </thead>
