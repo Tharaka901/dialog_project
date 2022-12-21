@@ -738,7 +738,7 @@ class PassportAuthController extends Controller
                 "credit_customer_name",
                 "like",
                 "%" . $credit["customerName"] . "%"
-            )
+            )->where('sum_id',$sum_id->id)
             ->get();
 
             $credit_sum = 0;
