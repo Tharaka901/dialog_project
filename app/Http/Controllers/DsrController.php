@@ -507,11 +507,11 @@ public function ApproveDsr(Request $request){
 
 
 
-// $updateItemData = DB::table('pending_sum')
-// ->where('id','=',$request->get('pending_sum_id'))
-// ->update([
-//     'status'=>2,
-// ]);
+$updateItemData = DB::table('pending_sum')
+->where('id','=',$request->get('pending_sum_id'))
+->update([
+    'status'=>2,
+]);
 
     return response(1);
 
