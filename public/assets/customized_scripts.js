@@ -436,7 +436,7 @@ function viewCreditItems(thisval,status,credit_id){
           "<td style='display:none;'>"+data[i].credit_id+"</td>"+
           "<td><input type='text' class='form-control' disabled value="+JSON.stringify(data[i].name)+"></td>"+
           "<td><input type='text' class='form-control' readonly value="+data[i].item_price+"></td>"+
-          "<td style='display:none;'><input type='text' class='form-control' readonly value="+data[i].item_price+"></td>"+
+          "<td style='display:none;'><input type='text' class='form-control' value="+data[i].item_price+"></td>"+
           "<td><a class='btn btn-danger btn-sm' onclick='removeCreditItemRow(this,"+status+")'><i class='fa fa-trash'></i></a></td>"+
           "</tr>");
         count++;
@@ -514,7 +514,7 @@ function viewCreditColItems(thisval,status,creditcol_id){
           "<td style='display:none;'>"+data[i].credit_collection_id+"</td>"+
           "<td><input type='text' class='form-control' disabled value="+JSON.stringify(data[i].name)+"></td>"+
           "<td><input type='text' class='form-control' readonly value="+data[i].item_price+"></td>"+
-          "<td style='display:none;'><input type='text' class='form-control' readonly value="+data[i].item_price+"></td>"+
+          "<td style='display:none;'><input type='text' class='form-control' value="+data[i].item_price+"></td>"+
           "<td><a class='btn btn-danger btn-sm' onclick='removeCreditColItemRow(this,"+status+")'><i class='fa fa-trash'></i></a></td>"+
           "</tr>");
         count++;
