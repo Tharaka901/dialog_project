@@ -831,7 +831,7 @@ function removeCreditColRow(thisval,status) {
 
   if(status !=0){
    var creditColId = $(thisval).closest("tr").find('td:eq(1)').text();
-   var deductQty = $(thisval).closest("tr").find('td:eq(3)').find('input').val();
+   var deductQty = $(thisval).closest("tr").find('td:eq(5)').find('input').val();
    var psum_id = $("#txt_pending_sum_id").val();
 
    $.ajax({
