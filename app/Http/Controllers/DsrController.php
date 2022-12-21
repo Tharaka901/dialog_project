@@ -586,6 +586,10 @@ public function RemoveBank(Request $request){
     if($request->bank_name == "People's Bank"){
         DB::update('update pending_sum set banking_peoples = banking_peoples - ? where id = ?', array($request->deduction,$request->sum_id));
     }
+
+    if($request->bank_name == "Sampath Bank - Online"){
+        DB::update('update pending_sum set banking_sampth_online = banking_sampth_online - ? where id = ?', array($request->deduction,$request->sum_id));
+    }
     
     return response($updateBank);
 }
@@ -604,6 +608,10 @@ public function RemoveDBank(Request $request){
 
     if($request->dbank_name == "People's Bank"){
         DB::update('update pending_sum set direct_banking_peoples = direct_banking_peoples - ? where id = ?', array($request->deduction,$request->sum_id));
+    }
+
+     if($request->dbank_name == "Sampath Bank - Online"){
+        DB::update('update pending_sum set direct_banking_sampth_online = direct_banking_sampth_online - ? where id = ?', array($request->deduction,$request->sum_id));
     }
     
     return response($updateDBank);
