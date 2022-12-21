@@ -760,7 +760,7 @@ class PassportAuthController extends Controller
                 $credit_items->save();
 
                 DB::update(
-                    "update credits set credit_amount = ? where id = ?",
+                    "update credits set credit_amount = credit_amount +? where id = ?",
                     [$credit["price"], $credits->id]
                 );
             } else {
@@ -775,7 +775,7 @@ class PassportAuthController extends Controller
                 }
 
                 DB::update(
-                    "update credits set credit_amount =  ? where id = ?",
+                    "update credits set credit_amount = credit_amount + ? where id = ?",
                     [$credit["price"], $customer->id]
                 );
             }
