@@ -839,7 +839,7 @@ function InhandCheques(Request $request){
 
 
 }function ViewInhandCheques(Request $request){
-    $data = DB::table('drs_cheques')->where('status', '=', 1)->where('dsrs_id', '=', $request->id)->get();
+    $data = DB::table('drs_cheques')->where('status', '=', 1)->where('sum_id', '=', $request->id)->get();
     return response($data);
 }
 
