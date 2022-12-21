@@ -61,73 +61,73 @@ class DsrController extends Controller
 
     public function GetDsr(Request $request)
     {
-     date_default_timezone_set("Asia/colombo");
-     $todayDate = date('Y-m-d');
+       date_default_timezone_set("Asia/colombo");
+       $todayDate = date('Y-m-d');
 
-     $data = [];
+       $data = [];
 
-     $sales = DB::table('sales')
-     ->join('dsr_stock_items','sales.stock_id','dsr_stock_items.id')
-     ->select('sales.id','sales.item_id','sales.item_name', DB::raw('sum(sales.item_qty) as item_qty '),'sales.item_amount as item_amount','sales.dsr_id','sales.sum_id','dsr_stock_items.id as dsr_stock_id')
-     ->where('sales.status', '=', 1)
-     ->where('sales.sum_id',$request->id)
-     ->groupBy('sales.item_id')
-     ->get();
+       $sales = DB::table('sales')
+       ->join('dsr_stock_items','sales.stock_id','dsr_stock_items.id')
+       ->select('sales.id','sales.item_id','sales.item_name', DB::raw('sum(sales.item_qty) as item_qty '),'sales.item_amount as item_amount','sales.dsr_id','sales.sum_id','dsr_stock_items.id as dsr_stock_id')
+       ->where('sales.status', '=', 1)
+       ->where('sales.sum_id',$request->id)
+       ->groupBy('sales.item_id')
+       ->get();
 
-     $inhand = DB::table('dsrs')
-     ->select('dsrs.id','dsrs.in_hand','dsrs.cash','dsrs.cheque')
-     ->where('dsrs.status', '=', 1)
-     ->where('dsrs.sum_id',$request->id)
-     ->get();
+       $inhand = DB::table('dsrs')
+       ->select('dsrs.id','dsrs.in_hand','dsrs.cash','dsrs.cheque')
+       ->where('dsrs.status', '=', 1)
+       ->where('dsrs.sum_id',$request->id)
+       ->get();
 
-     $credit = DB::table('credits')
-     ->select('credits.id','credits.credit_customer_name','credits.credit_amount')
-     ->where('credits.status', '=', 1)
-     ->where('credits.sum_id',$request->id)
-     ->get();
+       $credit = DB::table('credits')
+       ->select('credits.id','credits.credit_customer_name','credits.credit_amount')
+       ->where('credits.status', '=', 1)
+       ->where('credits.sum_id',$request->id)
+       ->get();
 
-     $creditCollection = DB::table('credit_collections')
-     ->select('credit_collections.id','credit_collection_customer_name','credit_collection_amount','option_id')
-     ->where('credit_collections.status', '=', 1)
-     ->where('credit_collections.sum_id',$request->id)
-     ->get();
+       $creditCollection = DB::table('credit_collections')
+       ->select('credit_collections.id','credit_collection_customer_name','credit_collection_amount','option_id')
+       ->where('credit_collections.status', '=', 1)
+       ->where('credit_collections.sum_id',$request->id)
+       ->get();
 
-     $retailer = DB::table('retailer_returns')
-     ->join('items','retailer_returns.re_item_id','items.id')
-     ->leftjoin('dsr_stock_items','items.id','dsr_stock_items.item_id')
-     ->select('retailer_returns.id','retailer_returns.re_item_id','items.name','re_customer_name','re_item_qty','re_item_amount','dsr_stock_items.id as dsr_stock_id')
-     ->where('retailer_returns.status', '=', 1)
-     ->where('retailer_returns.sum_id',$request->id)
-     ->get();
+       $retailer = DB::table('retailer_returns')
+       ->join('items','retailer_returns.re_item_id','items.id')
+       ->leftjoin('dsr_stock_items','items.id','dsr_stock_items.item_id')
+       ->select('retailer_returns.id','retailer_returns.re_item_id','items.name','re_customer_name','re_item_qty','re_item_amount','dsr_stock_items.id as dsr_stock_id')
+       ->where('retailer_returns.status', '=', 1)
+       ->where('retailer_returns.sum_id',$request->id)
+       ->get();
 
-     $bank = DB::table('bankings')
-     ->join('banks','banks.id','bankings.bank_id')
-     ->select('bankings.id','banks.id as bankId','banks.bank_name','bank_ref_no','bank_amount')
-     ->where('bankings.status', '=', 1)
-     ->where('bankings.sum_id',$request->id)
-     ->get();
+       $bank = DB::table('bankings')
+       ->join('banks','banks.id','bankings.bank_id')
+       ->select('bankings.id','banks.id as bankId','banks.bank_name','bank_ref_no','bank_amount')
+       ->where('bankings.status', '=', 1)
+       ->where('bankings.sum_id',$request->id)
+       ->get();
 
-     $direct_bank = DB::table('directbankings')
-     ->join('banks','banks.id','directbankings.direct_bank_id')
-     ->select('directbankings.id','direct_bank_customer_name','banks.id as bankId','banks.bank_name','direct_bank_ref_no','direct_bank_amount')
-     ->where('directbankings.status', '=', 1)
-     ->where('directbankings.sum_id',$request->id)
-     ->get();
-
-
-     $data["saleData"] = $sales;
-     $data["inhandData"] = $inhand;
-     $data["creditData"] = $credit;
-     $data["creditcolData"] = $creditCollection;
-     $data["reData"] = $retailer;
-     $data["bankData"] = $bank;
-     $data["directbankData"] = $direct_bank;
-
-     return response($data);
- }
+       $direct_bank = DB::table('directbankings')
+       ->join('banks','banks.id','directbankings.direct_bank_id')
+       ->select('directbankings.id','direct_bank_customer_name','banks.id as bankId','banks.bank_name','direct_bank_ref_no','direct_bank_amount')
+       ->where('directbankings.status', '=', 1)
+       ->where('directbankings.sum_id',$request->id)
+       ->get();
 
 
- public function CollectionApprove(Request $request){
+       $data["saleData"] = $sales;
+       $data["inhandData"] = $inhand;
+       $data["creditData"] = $credit;
+       $data["creditcolData"] = $creditCollection;
+       $data["reData"] = $retailer;
+       $data["bankData"] = $bank;
+       $data["directbankData"] = $direct_bank;
+
+       return response($data);
+   }
+
+
+   public function CollectionApprove(Request $request){
 
     $pending_sum = $request->get('pending_sum_id');
     $dsr_id = $request->get('id');
@@ -168,10 +168,10 @@ class DsrController extends Controller
         }
 
         foreach($creditCollectionTable as $credit){
-         DB::table('credit_collections')->where('id','=',$credit['id'])->update(['credit_collection_customer_name'=>$credit['ccName'] ]);
-     }
+           DB::table('credit_collections')->where('id','=',$credit['id'])->update(['credit_collection_customer_name'=>$credit['ccName'] ]);
+       }
 
-     foreach($creditCollectionItemTable as $credit_collections){
+       foreach($creditCollectionItemTable as $credit_collections){
         if(floatval($credit_collections['old_price']) != floatval($credit_collections['price'])){
 
             $lastInsertId = 0;
@@ -270,10 +270,10 @@ public function CreditApprove(Request $request){
 
         foreach($creditItemTable as $credit_item){
             if(floatval($credit_item['old_price']) != floatval($credit_item['price'])){
-               $lastInsertId = 0;
-               $check_additional_data = DB::table('additional')->where('sum_id', '=', $pending_sum)->where('dsr_id', '=', $dsr_id)->where('date', '=', $todayDate)->get();
+             $lastInsertId = 0;
+             $check_additional_data = DB::table('additional')->where('sum_id', '=', $pending_sum)->where('dsr_id', '=', $dsr_id)->where('date', '=', $todayDate)->get();
 
-               if(count($check_additional_data) == 0){
+             if(count($check_additional_data) == 0){
                 DB::insert('insert into additional (dsr_id, sum_id, date, user_id, status, created_at) values (?, ?, ?, ?, ?, ?)', [$dsr_id, $pending_sum, $todayDate, $user_id, 1, $todayDate." ".$todayTime]);
                 $lastInsertId  = DB::table('additional')->latest('id')->first();
             }else{
@@ -302,7 +302,7 @@ public function CreditApprove(Request $request){
         }
     }
 
-     return response(1);
+    return response(1);
 }
 }
 
@@ -341,8 +341,8 @@ public function ApproveDsr(Request $request){
 
         DB::table('pending_sum')->where('id','=',$pending_sum)
         ->update(['inhand_sum'=>floatval($cash_total)+floatval($cheque_total),
-           "inhand_cash"=>$cash_total,
-           'inhand_cheque'=>$cheque_total ]);
+         "inhand_cash"=>$cash_total,
+         'inhand_cheque'=>$cheque_total ]);
     }
 
 
@@ -507,11 +507,11 @@ public function ApproveDsr(Request $request){
 
 
 
-$updateItemData = DB::table('pending_sum')
-->where('id','=',$request->get('pending_sum_id'))
-->update([
-    'status'=>2,
-]);
+// $updateItemData = DB::table('pending_sum')
+// ->where('id','=',$request->get('pending_sum_id'))
+// ->update([
+//     'status'=>2,
+// ]);
 
     return response(1);
 
@@ -525,10 +525,10 @@ public function RemoveSale(Request $request){
 
     $item_qty_total = 0;
     foreach($get_sales_details as $sale_details){
-     $item_qty_total += $sale_details->item_qty;
- }
+       $item_qty_total += $sale_details->item_qty;
+   }
 
- if($item_qty_total == $request->deductQty){
+   if($item_qty_total == $request->deductQty){
     foreach($get_sales_details as $sd){
         $updateSale = DB::table('sales')->where('id','=',$sd->id)->update(['status'=>0]);
     }
@@ -617,17 +617,17 @@ public function RemoveCredit(Request $request){
     $creditItemAmount = 0;
     if(count($get_credit_items) != 0){
         foreach($get_credit_items as $credits){
-         DB::table('credit_items')->where('credit_id','=',$request->id)->update(['status'=>0]);
-         $creditItemAmount += $credits->item_price;
-     }
+           DB::table('credit_items')->where('credit_id','=',$request->id)->update(['status'=>0]);
+           $creditItemAmount += $credits->item_price;
+       }
 
-     DB::update('update credits set credit_amount = credit_amount - ? where id = ?', array($creditItemAmount,$request->id));
+       DB::update('update credits set credit_amount = credit_amount - ? where id = ?', array($creditItemAmount,$request->id));
 
- }
+   }
 
- DB::update('update pending_sum set credit_sum = credit_sum - ? where id = ?', array($request->deduction,$request->sum_id));
+   DB::update('update pending_sum set credit_sum = credit_sum - ? where id = ?', array($request->deduction,$request->sum_id));
 
- return response($updateCredit);
+   return response($updateCredit);
 }
 
 public function removeCreditItems(Request $request){
@@ -672,13 +672,13 @@ public function RemoveCreditCol(Request $request){
 
 
 public function removeCreditCollectionItems(Request $request){
- $updateCreditCollection = DB::table('credit_collection_items')->where('id','=',$request->credit_col_items_id)->update(['status'=>0]);
+   $updateCreditCollection = DB::table('credit_collection_items')->where('id','=',$request->credit_col_items_id)->update(['status'=>0]);
 
- DB::update('update credit_collections set credit_collection_amount = credit_collection_amount - ? where id = ?', array($request->amount, $request->credit_col_id));
+   DB::update('update credit_collections set credit_collection_amount = credit_collection_amount - ? where id = ?', array($request->amount, $request->credit_col_id));
 
- DB::update('update pending_sum set credit_collection_sum = credit_collection_sum - ? where id = ?', array($request->amount, $request->sum_id));
+   DB::update('update pending_sum set credit_collection_sum = credit_collection_sum - ? where id = ?', array($request->amount, $request->sum_id));
 
- return response($updateCreditCollection);
+   return response($updateCreditCollection);
 }
 
 
@@ -701,14 +701,14 @@ public function CompleteDsr(){
 
 public function SearchCompleteDsr(Request $request){
 
- date_default_timezone_set("Asia/colombo");
- $todayDate = date('Y-m-d');
+   date_default_timezone_set("Asia/colombo");
+   $todayDate = date('Y-m-d');
 
- $name = $request->get('name');
- $from = $request->get('from');
- $to = $request->get('to');
+   $name = $request->get('name');
+   $from = $request->get('from');
+   $to = $request->get('to');
 
- if($name !=""){
+   if($name !=""){
     session(['dsr_name' => $name]);
 }
 
@@ -717,7 +717,7 @@ if($from !=""){
 }
 
 if($to !=""){
- session(['dsr_to' => $to]);
+   session(['dsr_to' => $to]);
 }
 
 
@@ -767,69 +767,69 @@ if($request->session()->get('dsr_name') != "" && $request->session()->get('dsr_f
 
 public function getCompleteDsr(Request $request)
 {
- date_default_timezone_set("Asia/colombo");
- $todayDate = date('Y-m-d');
+   date_default_timezone_set("Asia/colombo");
+   $todayDate = date('Y-m-d');
 
- $data = [];
+   $data = [];
 
- $sales = DB::table('sales')
- ->join('dsr_stock_items','sales.stock_id','dsr_stock_items.id')
- ->select('sales.id','sales.item_id','sales.item_name', DB::raw('sum(sales.item_qty) as item_qty '),'sales.item_amount as item_amount','sales.dsr_id','sales.sum_id','dsr_stock_items.id as dsr_stock_id')
- ->where('sales.status', '=', 1)
- ->where('sales.sum_id',$request->id)
- ->groupBy('sales.item_id')
- ->get();
+   $sales = DB::table('sales')
+   ->join('dsr_stock_items','sales.stock_id','dsr_stock_items.id')
+   ->select('sales.id','sales.item_id','sales.item_name', DB::raw('sum(sales.item_qty) as item_qty '),'sales.item_amount as item_amount','sales.dsr_id','sales.sum_id','dsr_stock_items.id as dsr_stock_id')
+   ->where('sales.status', '=', 1)
+   ->where('sales.sum_id',$request->id)
+   ->groupBy('sales.item_id')
+   ->get();
 
- $inhand = DB::table('dsrs')
- ->select('dsrs.id','dsrs.in_hand','dsrs.cash','dsrs.cheque','dsrs.sum_id','dsrs.status')
- ->where('dsrs.status', '=', 1)
- ->where('dsrs.sum_id',$request->id)
- ->get();
+   $inhand = DB::table('dsrs')
+   ->select('dsrs.id','dsrs.in_hand','dsrs.cash','dsrs.cheque','dsrs.sum_id','dsrs.status')
+   ->where('dsrs.status', '=', 1)
+   ->where('dsrs.sum_id',$request->id)
+   ->get();
 
- $credit = DB::table('credits')
- ->select('credits.id','credits.credit_customer_name','credits.credit_amount','credits.sum_id','credits.status')
- ->where('credits.status', '=', 1)
- ->where('credits.sum_id',$request->id)
- ->get();
+   $credit = DB::table('credits')
+   ->select('credits.id','credits.credit_customer_name','credits.credit_amount','credits.sum_id','credits.status')
+   ->where('credits.status', '=', 1)
+   ->where('credits.sum_id',$request->id)
+   ->get();
 
- $creditCollection = DB::table('credit_collections')
- ->select('credit_collections.id','credit_collection_customer_name','credit_collection_amount')
- ->where('credit_collections.status', '=', 1)
- ->where('credit_collections.sum_id',$request->id)
- ->get();
+   $creditCollection = DB::table('credit_collections')
+   ->select('credit_collections.id','credit_collection_customer_name','credit_collection_amount')
+   ->where('credit_collections.status', '=', 1)
+   ->where('credit_collections.sum_id',$request->id)
+   ->get();
 
- $retailer = DB::table('retailer_returns')
- ->join('items','retailer_returns.re_item_id','items.id')
- ->leftjoin('dsr_stock_items','items.id','dsr_stock_items.item_id')
- ->select('retailer_returns.id','retailer_returns.re_item_id','items.name','re_customer_name','re_item_qty','re_item_amount','dsr_stock_items.id as dsr_stock_id')
- ->where('retailer_returns.status', '=', 1)
- ->where('retailer_returns.sum_id',$request->id)
- ->get();
+   $retailer = DB::table('retailer_returns')
+   ->join('items','retailer_returns.re_item_id','items.id')
+   ->leftjoin('dsr_stock_items','items.id','dsr_stock_items.item_id')
+   ->select('retailer_returns.id','retailer_returns.re_item_id','items.name','re_customer_name','re_item_qty','re_item_amount','dsr_stock_items.id as dsr_stock_id')
+   ->where('retailer_returns.status', '=', 1)
+   ->where('retailer_returns.sum_id',$request->id)
+   ->get();
 
- $bank = DB::table('bankings')
- ->join('banks','bankings.bank_id','banks.id')
- ->select('bankings.id','banks.bank_name','bank_ref_no','bank_amount')
- ->where('bankings.status', '=', 1)
- ->where('bankings.sum_id',$request->id)
- ->get();
+   $bank = DB::table('bankings')
+   ->join('banks','bankings.bank_id','banks.id')
+   ->select('bankings.id','banks.bank_name','bank_ref_no','bank_amount')
+   ->where('bankings.status', '=', 1)
+   ->where('bankings.sum_id',$request->id)
+   ->get();
 
- $direct_bank = DB::table('directbankings')
- ->join('banks','directbankings.direct_bank_id','banks.id')
- ->select('directbankings.id','direct_bank_customer_name','banks.bank_name','direct_bank_ref_no','direct_bank_amount')
- ->where('directbankings.status', '=', 1)
- ->where('directbankings.sum_id',$request->id)
- ->get();
+   $direct_bank = DB::table('directbankings')
+   ->join('banks','directbankings.direct_bank_id','banks.id')
+   ->select('directbankings.id','direct_bank_customer_name','banks.bank_name','direct_bank_ref_no','direct_bank_amount')
+   ->where('directbankings.status', '=', 1)
+   ->where('directbankings.sum_id',$request->id)
+   ->get();
 
 
- $data["saleData"] = $sales;
- $data["inhandData"] = $inhand;
- $data["creditData"] = $credit;
- $data["creditcolData"] = $creditCollection;
- $data["reData"] = $retailer;
- $data["bankData"] = $bank;
- $data["directbankData"] = $direct_bank;
+   $data["saleData"] = $sales;
+   $data["inhandData"] = $inhand;
+   $data["creditData"] = $credit;
+   $data["creditcolData"] = $creditCollection;
+   $data["reData"] = $retailer;
+   $data["bankData"] = $bank;
+   $data["directbankData"] = $direct_bank;
 
- return response($data);
+   return response($data);
 }
 
 
@@ -846,6 +846,7 @@ function InhandCheques(Request $request){
 function CreditItems(Request $request){
     $data = DB::table('credit_items')
     ->join('items','items.id','credit_items.item_id')
+    ->select('credit_items.id','credit_items.credit_id','items.name','credit_items.item_price','credit_items.status')
     ->where('credit_items.status', '=', 1)->where('credit_id', '=', $request->id)->get();
     return response($data);
 }
@@ -853,6 +854,7 @@ function CreditItems(Request $request){
 function ViewCreditItems(Request $request){
     $data = DB::table('credit_items')
     ->join('items','items.id','credit_items.item_id')
+    ->select('credit_items.id','credit_items.credit_id','items.name','credit_items.item_price','credit_items.status')
     ->where('credit_items.status', '=', 1)->where('credit_id', '=', $request->id)->get();
     return response($data);
 }
@@ -860,6 +862,7 @@ function ViewCreditItems(Request $request){
 function CreditCollectionItems(Request $request){
     $data = DB::table('credit_collection_items')
     ->join('items','items.id','credit_collection_items.item_id')
+    ->select('credit_collection_items.id','credit_collection_items.credit_collection_id','items.name','credit_collection_items.item_price','credit_collection_items.status')
     ->where('credit_collection_items.status', '=', 1)->where('credit_collection_id', '=', $request->id)->get();
     return response($data);
 }
@@ -867,6 +870,7 @@ function CreditCollectionItems(Request $request){
 function ViewCreditCollectionItems(Request $request){
     $data = DB::table('credit_collection_items')
     ->join('items','items.id','credit_collection_items.item_id')
+    ->select('credit_collection_items.id','credit_collection_items.credit_collection_id','items.name','credit_collection_items.item_price','credit_collection_items.status')
     ->where('credit_collection_items.status', '=', 1)->where('credit_collection_items.credit_collection_id', '=', $request->id)->get();
     return response($data);
 }
@@ -878,9 +882,9 @@ public function rejectApprove(Request $request){
         Alert::success('Updated!', 'Request has been rejected successfully.');
         return redirect()->route('pending_dsr');
     }else{
-     Alert::warning('Oops..', 'Something went wrong!');
-     return redirect()->back();
- }
+       Alert::warning('Oops..', 'Something went wrong!');
+       return redirect()->back();
+   }
 }
 
 
